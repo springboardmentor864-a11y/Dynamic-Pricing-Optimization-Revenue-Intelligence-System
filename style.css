@@ -1,0 +1,19 @@
+ubuntu-medium{
+    font-weight: 500;
+    font-style: normal;
+}
+.ubuntu-medium{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+.ubuntu-medium-italic{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+.ubuntu-medium-heavy{
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: heavy;
+}
