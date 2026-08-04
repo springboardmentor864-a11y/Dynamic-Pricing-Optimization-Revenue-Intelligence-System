@@ -1,0 +1,60 @@
+/* App-wide primitives shared by every PricePilot page. */
+
+.pp-card {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.pp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+}
+
+.pp-badge-success {
+  background-color: color-mix(in oklab, var(--success) 16%, transparent);
+  color: color-mix(in oklab, var(--success) 80%, var(--foreground));
+}
+
+.pp-badge-danger {
+  background-color: color-mix(in oklab, var(--destructive) 16%, transparent);
+  color: color-mix(in oklab, var(--destructive) 80%, var(--foreground));
+}
+
+.pp-badge-warning {
+  background-color: color-mix(in oklab, var(--warning) 22%, transparent);
+  color: color-mix(in oklab, var(--warning) 70%, var(--foreground));
+}
+
+.pp-badge-muted {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.pp-input {
+  width: 100%;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.pp-input:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 22%, transparent);
+}
+
+.pp-input-search {
+  padding-left: 2.25rem;
+}
