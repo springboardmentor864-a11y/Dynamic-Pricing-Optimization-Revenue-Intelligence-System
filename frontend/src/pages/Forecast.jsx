@@ -13,17 +13,24 @@ export default function Forecast() {
   const { forecast, loading, error } = useForecast();
 
   const stats = useMemo(() => {
-    const total = forecast.reduce((s, f) => s + Number(f.demand ?? 0), 0);
+    const total = forecast.reduce(
+      (s, f) => s + Number(f.demand ?? f.actual_demand ?? 0),
+      0,
+    );
     const peak = forecast.reduce(
-      (best, f) => (Number(f.demand ?? 0) > Number(best?.demand ?? 0) ? f : best),
+      (best, f) =>
+        Number(f.demand ?? f.actual_demand ?? 0) > Number(best?.demand ?? best?.actual_demand ?? 0)
+          ? f
+          : best,
       forecast[0],
     );
     const accuracy =
       forecast.length > 0
         ? 1 -
           forecast.reduce((s, f) => {
-            const actual = Number(f.demand ?? 0) || 1;
-            return s + Math.abs(actual - Number(f.predicted ?? actual)) / actual;
+            const actual = Number(f.demand ?? f.actual_demand ?? 0) || 1;
+            const predicted = Number(f.predicted ?? f.forecast ?? actual);
+            return s + Math.abs(actual - predicted) / actual;
           }, 0) /
             forecast.length
         : 0;
@@ -39,7 +46,7 @@ export default function Forecast() {
 
       {error ? (
         <div className="mb-5 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
-          Backend unreachable — showing demo data.
+          Unable to load data.
         </div>
       ) : null}
 
@@ -107,8 +114,8 @@ export default function Forecast() {
                   </thead>
                   <tbody>
                     {forecast.map((f, i) => {
-                      const actual = Number(f.demand ?? 0);
-                      const predicted = Number(f.predicted ?? actual);
+                      const actual = Number(f.demand ?? f.actual_demand ?? 0);
+                      const predicted = Number(f.predicted ?? f.forecast ?? actual);
                       const variance = predicted - actual;
                       return (
                         <tr key={f.date ?? i}>

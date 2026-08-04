@@ -15,14 +15,21 @@ import "../styles/Tables.css";
 
 export default function Dashboard() {
   const { products, loading: pLoading, error: pError } = useProducts();
-  const { forecast, loading: fLoading } = useForecast();
-  const { recommendations, loading: rLoading } = useRecommendations();
+  const { forecast, loading: fLoading, error: fError } = useForecast();
+  const { recommendations, loading: rLoading, error: rError } = useRecommendations();
 
   const loading = pLoading || fLoading || rLoading;
+  const error = pError || fError || rError;
 
   const stats = useMemo(() => {
-    const revenue = forecast.reduce((sum, f) => sum + Number(f.revenue ?? 0), 0);
-    const demand = forecast.reduce((sum, f) => sum + Number(f.demand ?? 0), 0);
+    const revenue = forecast.reduce(
+      (sum, f) => sum + Number(f.revenue ?? f.total_revenue ?? 0),
+      0,
+    );
+    const demand = forecast.reduce(
+      (sum, f) => sum + Number(f.demand ?? f.actual_demand ?? 0),
+      0,
+    );
     const avgGain =
       recommendations.length > 0
         ? recommendations.reduce((s, r) => s + Number(r.revenue_gain ?? 0), 0) /
@@ -43,9 +50,9 @@ export default function Dashboard() {
         description="Live pricing performance, demand signals and AI optimization opportunities."
       />
 
-      {pError ? (
+      {error ? (
         <div className="mb-5 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
-          Backend unreachable — showing demo data. {pError}
+          Unable to load data.
         </div>
       ) : null}
 

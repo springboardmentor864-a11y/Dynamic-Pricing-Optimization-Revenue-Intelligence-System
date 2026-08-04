@@ -41,7 +41,7 @@ export default function Products() {
 
       {error ? (
         <div className="mb-5 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
-          Backend unreachable — showing demo data.
+          Unable to load data.
         </div>
       ) : null}
 

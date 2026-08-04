@@ -21,19 +21,47 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
-export const fetchProducts = async () => {
+/**
+ * Normalizes API payloads so the UI can consume both object arrays and
+ * database tuples returned by the FastAPI backend.
+ */
+const normalizeRecords = (payload, keys, fallback = []) => {
+  const rows = Array.isArray(payload)
+    ? payload
+    : payload?.data || payload?.items || payload?.results || payload?.records || payload?.rows;
+
+  if (!Array.isArray(rows)) return fallback;
+
+  return rows.map((row) => {
+    if (Array.isArray(row)) {
+      return keys.reduce((acc, key, index) => {
+        acc[key] = row[index];
+        return acc;
+      }, {});
+    }
+
+    return row && typeof row === "object" ? row : {};
+  });
+};
+
+/** Central API helpers for the dashboard, products, forecast and recommendations pages. */
+export const getProducts = async () => {
   const { data } = await client.get("/products");
-  return data;
+  return normalizeRecords(data, ["id", "name", "price", "stock", "category"], []);
 };
 
-export const fetchForecast = async () => {
+export const getForecast = async () => {
   const { data } = await client.get("/forecast");
-  return data;
+  return normalizeRecords(data, ["date", "demand", "revenue", "predicted"], []);
 };
 
-export const fetchRecommendations = async () => {
+export const getRecommendations = async () => {
   const { data } = await client.get("/recommendations");
-  return data;
+  return normalizeRecords(
+    data,
+    ["id", "product", "current_price", "recommended_price", "revenue_gain", "status"],
+    [],
+  );
 };
 
 export default client;

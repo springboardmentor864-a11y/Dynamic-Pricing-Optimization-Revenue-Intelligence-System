@@ -1,10 +1,9 @@
-import { fetchForecast } from "../services/api";
-import { DUMMY_FORECAST } from "../utils/constants";
+import { getForecast } from "../services/api";
 import { useApiResource } from "./useApiResource";
 
-/** Demand forecast from GET /forecast (falls back to demo data). */
+/** Demand forecast from GET /forecast. */
 export function useForecast() {
-  const { data, loading, error, refresh } = useApiResource(fetchForecast, DUMMY_FORECAST);
-  const forecast = Array.isArray(data) ? data : (data?.forecast ?? DUMMY_FORECAST);
+  const { data, loading, error, refresh } = useApiResource(getForecast, []);
+  const forecast = Array.isArray(data) ? data : [];
   return { forecast, loading, error, refresh };
 }

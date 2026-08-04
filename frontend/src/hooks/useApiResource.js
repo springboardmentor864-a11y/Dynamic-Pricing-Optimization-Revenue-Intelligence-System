@@ -2,10 +2,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { STORAGE_KEYS, DEFAULT_REFRESH_INTERVAL } from "../utils/constants";
 
 /**
- * Shared data-fetching hook: loads from the API and silently falls back to
- * dummy data when the FastAPI backend is unreachable.
+ * Shared data-fetching hook for the page-level API calls.
+ * It keeps loading/error state and preserves the UI even when one endpoint fails.
  */
-export function useApiResource(fetcher, fallback) {
+export function useApiResource(fetcher, fallback = []) {
   const [data, setData] = useState(fallback);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,13 +14,12 @@ export function useApiResource(fetcher, fallback) {
 
   const load = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       const result = await fetcherRef.current();
-      setData(Array.isArray(result) || result ? result : fallback);
-      setError(null);
+      setData(Array.isArray(result) ? result : fallback);
     } catch (err) {
-      // Graceful degradation — keep the UI usable with demo data.
-      setError(err?.message || "Unable to reach the backend. Showing demo data.");
+      setError(err?.message || "Unable to load data");
       setData(fallback);
     } finally {
       setLoading(false);

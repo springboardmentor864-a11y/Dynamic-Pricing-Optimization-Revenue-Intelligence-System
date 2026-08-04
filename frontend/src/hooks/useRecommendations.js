@@ -1,15 +1,9 @@
-import { fetchRecommendations } from "../services/api";
-import { DUMMY_RECOMMENDATIONS } from "../utils/constants";
+import { getRecommendations } from "../services/api";
 import { useApiResource } from "./useApiResource";
 
-/** AI pricing recommendations from GET /recommendations (falls back to demo data). */
+/** AI pricing recommendations from GET /recommendations. */
 export function useRecommendations() {
-  const { data, loading, error, refresh } = useApiResource(
-    fetchRecommendations,
-    DUMMY_RECOMMENDATIONS,
-  );
-  const recommendations = Array.isArray(data)
-    ? data
-    : (data?.recommendations ?? DUMMY_RECOMMENDATIONS);
+  const { data, loading, error, refresh } = useApiResource(getRecommendations, []);
+  const recommendations = Array.isArray(data) ? data : [];
   return { recommendations, loading, error, refresh };
 }
