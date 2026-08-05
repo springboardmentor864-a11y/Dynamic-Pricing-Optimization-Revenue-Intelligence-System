@@ -13,30 +13,31 @@ export const setBaseUrl = (url) => {
   }
 };
 
-const client = axios.create({ timeout: 8000 });
+const client = axios.create({
+  timeout: 8000,
+});
 
-// Always resolve against the currently configured backend URL.
 client.interceptors.request.use((config) => {
   config.baseURL = getBaseUrl();
   return config;
 });
 
-/**
- * Normalizes API payloads so the UI can consume both object arrays and
- * database tuples returned by the FastAPI backend.
- */
 const normalizeRecords = (payload, keys, fallback = []) => {
   const rows = Array.isArray(payload)
     ? payload
-    : payload?.data || payload?.items || payload?.results || payload?.records || payload?.rows;
+    : payload?.data ||
+      payload?.items ||
+      payload?.results ||
+      payload?.records ||
+      payload?.rows;
 
   if (!Array.isArray(rows)) return fallback;
 
   return rows.map((row) => {
     if (Array.isArray(row)) {
-      return keys.reduce((acc, key, index) => {
-        acc[key] = row[index];
-        return acc;
+      return keys.reduce((obj, key, index) => {
+        obj[key] = row[index];
+        return obj;
       }, {});
     }
 
@@ -44,23 +45,61 @@ const normalizeRecords = (payload, keys, fallback = []) => {
   });
 };
 
-/** Central API helpers for the dashboard, products, forecast and recommendations pages. */
+// Products API
 export const getProducts = async () => {
   const { data } = await client.get("/products");
-  return normalizeRecords(data, ["id", "name", "price", "stock", "category"], []);
-};
 
-export const getForecast = async () => {
-  const { data } = await client.get("/forecast");
-  return normalizeRecords(data, ["date", "demand", "revenue", "predicted"], []);
-};
-
-export const getRecommendations = async () => {
-  const { data } = await client.get("/recommendations");
   return normalizeRecords(
     data,
-    ["id", "product", "current_price", "recommended_price", "revenue_gain", "status"],
-    [],
+    [
+      "id",
+      "name",
+      "price",
+      "stock",
+      "category"
+    ],
+    []
+  );
+};
+
+// Forecast API
+export const getForecast = async () => {
+  const { data } = await client.get("/forecast");
+
+  return normalizeRecords(
+    data,
+    [
+      "id",
+      "product_id",
+      "forecast_date",
+      "forecasted_demand",
+      "lower_bound",
+      "upper_bound",
+      "confidence",
+      "model_name",
+      "created_at"
+    ],
+    []
+  );
+};
+
+// Recommendations API
+export const getRecommendations = async () => {
+  const { data } = await client.get("/recommendations");
+
+  return normalizeRecords(
+    data,
+    [
+      "id",
+      "product_id",
+      "current_price",
+      "recommended_price",
+      "forecasted_demand",
+      "competitor_price",
+      "reason",
+      "created_at"
+    ],
+    []
   );
 };
 
