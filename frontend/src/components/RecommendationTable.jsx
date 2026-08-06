@@ -61,7 +61,7 @@ export default function RecommendationTable({ recommendations = [], limit }) {
                       {safeText(r.reason)}
                     </td>
                     <td className="whitespace-nowrap text-muted-foreground">
-                      {formatDateTime(r.created_at)}
+                      {formatDateTime(r.generated_at)}
                     </td>
                   </tr>
                 );

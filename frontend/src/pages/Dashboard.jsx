@@ -41,15 +41,15 @@ export default function Dashboard() {
 
   const priceById = useMemo(() => {
     const map = new Map();
-    products.forEach((p) => map.set(String(p.id), safeNum(p.price)));
+    products.forEach((p) => map.set(String(p.id), safeNum(p.current_price)));
     return map;
   }, [products]);
 
   const stats = useMemo(() => {
-    const demands = forecast.map((f) => safeNum(f.forecasted_demand));
+    const demands = forecast.map((f) => safeNum(f.predicted_demand));
     return {
       totalProducts: products.length,
-      totalDemand: sum(forecast, "forecasted_demand"),
+      totalDemand: sum(forecast, "predicted_demand"),
       avgCurrentPrice: average(recommendations, "current_price"),
       avgRecommendedPrice: average(recommendations, "recommended_price"),
       avgConfidence: average(forecast, "confidence"),
@@ -66,7 +66,7 @@ export default function Dashboard() {
       const entry =
         buckets.get(key) ??
         { key, date: formatShortDate(f.forecast_date), demand: 0, lower: 0, upper: 0, revenue: 0, conf: 0, n: 0 };
-      const demand = safeNum(f.forecasted_demand);
+      const demand = safeNum(f.predicted_demand);
       entry.demand += demand;
       entry.lower += safeNum(f.lower_bound);
       entry.upper += safeNum(f.upper_bound);

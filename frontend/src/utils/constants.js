@@ -22,17 +22,17 @@ export const NAV_ITEMS = [
  * Column order of the raw arrays returned by the FastAPI backend inside `data`.
  * Used to convert every row array into a JavaScript object.
  */
-export const PRODUCT_COLUMNS = ["id", "name", "price", "stock", "category"];
+export const PRODUCT_COLUMNS = ["id", "name", "category", "current_price", "cost_price", "stock"];
 
 export const FORECAST_COLUMNS = [
   "id",
   "product_id",
   "forecast_date",
-  "forecasted_demand",
+  "predicted_demand",
   "lower_bound",
   "upper_bound",
   "confidence",
-  "model_name",
+  "model_version",
   "created_at",
 ];
 
@@ -44,7 +44,7 @@ export const RECOMMENDATION_COLUMNS = [
   "forecasted_demand",
   "competitor_price",
   "reason",
-  "created_at",
+  "generated_at",
 ];
 
 export const EMPTY_TEXT = "No Data Available";

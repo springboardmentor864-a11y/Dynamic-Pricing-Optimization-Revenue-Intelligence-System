@@ -6,9 +6,10 @@ import { formatCurrency, formatNumber, safeText, sortBy, stockLabel } from "../u
 const COLUMNS = [
   { key: "id", label: "ID" },
   { key: "name", label: "Product Name" },
-  { key: "price", label: "Price" },
-  { key: "stock", label: "Stock" },
   { key: "category", label: "Category" },
+  { key: "current_price", label: "Price" },
+  { key: "cost_price", label: "Cost" },
+  { key: "stock", label: "Stock" },
 ];
 
 /** Sortable products table: ID, Product Name, Price, Stock, Category. */
@@ -52,7 +53,7 @@ export default function ProductTable({ products = [], limit }) {
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td className="pp-table-empty" colSpan={5}>
+                <td className="pp-table-empty" colSpan={6}>
                   {EMPTY_TEXT}
                 </td>
               </tr>
@@ -63,17 +64,18 @@ export default function ProductTable({ products = [], limit }) {
                   <tr key={p.id ?? i}>
                     <td className="text-muted-foreground">#{safeText(p.id, "0")}</td>
                     <td className="font-medium text-foreground">{safeText(p.name)}</td>
-                    <td className="tabular-nums">{formatCurrency(p.price)}</td>
+                    <td>
+                      <span className="pp-badge pp-badge-muted">
+                        {safeText(p.category, "Uncategorized")}
+                      </span>
+                    </td>
+                    <td className="tabular-nums">{formatCurrency(p.current_price)}</td>
+                    <td className="tabular-nums">{formatCurrency(p.cost_price)}</td>
                     <td>
                       <div className="flex items-center gap-2">
                         <span className="tabular-nums">{formatNumber(p.stock)}</span>
                         <span className={`pp-badge pp-badge-${stock.tone}`}>{stock.label}</span>
                       </div>
-                    </td>
-                    <td>
-                      <span className="pp-badge pp-badge-muted">
-                        {safeText(p.category, "Uncategorized")}
-                      </span>
                     </td>
                   </tr>
                 );

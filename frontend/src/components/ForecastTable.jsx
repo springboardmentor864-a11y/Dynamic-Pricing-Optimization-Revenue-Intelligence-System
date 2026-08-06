@@ -33,7 +33,7 @@ export default function ForecastTable({ forecast = [], limit }) {
                     {formatDate(f.forecast_date)}
                   </td>
                   <td className="text-muted-foreground">#{safeText(f.product_id, "0")}</td>
-                  <td className="tabular-nums">{formatNumber(f.forecasted_demand)}</td>
+                  <td className="tabular-nums">{formatNumber(f.predicted_demand)}</td>
                   <td className="tabular-nums">{formatNumber(f.lower_bound)}</td>
                   <td className="tabular-nums">{formatNumber(f.upper_bound)}</td>
                   <td>

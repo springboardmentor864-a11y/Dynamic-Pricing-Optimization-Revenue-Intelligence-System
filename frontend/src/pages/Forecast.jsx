@@ -26,16 +26,16 @@ export default function Forecast() {
     const q = query.trim().toLowerCase();
     if (!q) return forecast;
     return forecast.filter((f) =>
-      [f.product_id, f.forecast_date, f.model_name]
+      [f.product_id, f.forecast_date, f.model_version]
         .map((v) => String(v ?? "").toLowerCase())
         .some((v) => v.includes(q)),
     );
   }, [forecast, query]);
 
   const stats = useMemo(() => {
-    const demands = filtered.map((f) => safeNum(f.forecasted_demand));
+    const demands = filtered.map((f) => safeNum(f.predicted_demand));
     return {
-      total: sum(filtered, "forecasted_demand"),
+      total: sum(filtered, "predicted_demand"),
       avgConfidence: average(filtered, "confidence"),
       max: demands.length ? Math.max(...demands) : 0,
       min: demands.length ? Math.min(...demands) : 0,
@@ -48,7 +48,7 @@ export default function Forecast() {
         .sort((a, b) => new Date(a.forecast_date) - new Date(b.forecast_date))
         .map((f) => ({
           date: formatShortDate(f.forecast_date),
-          demand: safeNum(f.forecasted_demand),
+          demand: safeNum(f.predicted_demand),
           lower: safeNum(f.lower_bound),
           upper: safeNum(f.upper_bound),
         })),
