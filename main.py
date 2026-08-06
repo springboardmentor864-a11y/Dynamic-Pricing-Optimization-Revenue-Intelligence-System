@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from database import get_db_connection
 from fastapi.middleware.cors import CORSMiddleware
+import psycopg2.extras  # <-- We added this import so we can use RealDictCursor
 
 app = FastAPI()
 
@@ -19,7 +20,8 @@ def home():
 @app.get("/products")
 def get_products():
     conn = get_db_connection()
-    cursor = conn.cursor()
+    # Notice the cursor_factory added here!
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) 
     try:
         cursor.execute("SELECT * FROM products")
         rows = cursor.fetchall()
@@ -31,7 +33,7 @@ def get_products():
 @app.get("/forecast")
 def get_forecast():
     conn = get_db_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     try:
         cursor.execute("SELECT * FROM demand_forecasts")
         rows = cursor.fetchall()
@@ -43,7 +45,7 @@ def get_forecast():
 @app.get("/recommendations")
 def get_recommendations():
     conn = get_db_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     try:
         cursor.execute("SELECT * FROM price_recommendations")
         rows = cursor.fetchall()

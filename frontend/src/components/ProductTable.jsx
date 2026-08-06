@@ -79,8 +79,7 @@ export default function ProductTable({ products = [], limit }) {
                       </span>
                     </td>
 
-                    <td>{formatCurrency(p.price)}</td>
-
+<td>{formatCurrency(p.cost_price)}</td>
                     <td>
                       <div className="flex items-center gap-2">
                         <span>{formatNumber(p.stock)}</span>
