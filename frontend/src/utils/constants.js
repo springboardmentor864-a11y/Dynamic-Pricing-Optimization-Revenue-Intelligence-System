@@ -2,6 +2,9 @@
 
 export const DEFAULT_BASE_URL = "http://127.0.0.1:8000";
 
+
+export const EMPTY_TEXT = "No data available";
+
 export const STORAGE_KEYS = {
   baseUrl: "pricepilot.baseUrl",
   refreshInterval: "pricepilot.refreshInterval",
@@ -19,20 +22,26 @@ export const NAV_ITEMS = [
 ];
 
 /**
- * Column order of the raw arrays returned by the FastAPI backend inside `data`.
- * Used to convert every row array into a JavaScript object.
+ * Column order of the raw arrays returned by the FastAPI backend.
  */
-export const PRODUCT_COLUMNS = ["id", "name", "category", "current_price", "cost_price", "stock"];
+
+export const PRODUCT_COLUMNS = [
+  "id",
+  "name",
+  "price",
+  "stock",
+  "category",
+];
 
 export const FORECAST_COLUMNS = [
   "id",
   "product_id",
   "forecast_date",
-  "predicted_demand",
+  "forecasted_demand",
   "lower_bound",
   "upper_bound",
   "confidence",
-  "model_version",
+  "model_name",
   "created_at",
 ];
 
@@ -44,7 +53,5 @@ export const RECOMMENDATION_COLUMNS = [
   "forecasted_demand",
   "competitor_price",
   "reason",
-  "generated_at",
+  "created_at",
 ];
-
-export const EMPTY_TEXT = "No Data Available";

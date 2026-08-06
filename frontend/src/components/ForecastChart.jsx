@@ -37,7 +37,7 @@ export default function ForecastChart({
   title,
   subtitle,
   data = [],
-  xKey = "date",
+  xKey = "forecast_date",
   series = [],
   variant = "line",
   height = 300,
