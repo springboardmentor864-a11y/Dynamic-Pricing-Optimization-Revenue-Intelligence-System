@@ -1,143 +1,137 @@
-import { useMemo } from "react";
-import { FiActivity, FiCalendar, FiTarget } from "react-icons/fi";
+import { useMemo, useState } from "react";
+import { FiActivity, FiArrowDownRight, FiArrowUpRight, FiPercent } from "react-icons/fi";
 import PageHeader from "../components/PageHeader";
 import StatCard from "../components/StatCard";
+import SearchBar from "../components/SearchBar";
 import ForecastChart from "../components/ForecastChart";
+import ForecastTable from "../components/ForecastTable";
 import Loader from "../components/Loader";
 import { useForecast } from "../hooks/useForecast";
-import { formatCurrency, formatNumber } from "../utils/helpers";
+import {
+  average,
+  formatConfidence,
+  formatNumber,
+  formatShortDate,
+  safeNum,
+  sum,
+} from "../utils/helpers";
 import "../styles/Dashboard.css";
 import "../styles/Tables.css";
 
 export default function Forecast() {
   const { forecast, loading, error } = useForecast();
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return forecast;
+    return forecast.filter((f) =>
+      [f.product_id, f.forecast_date, f.model_name]
+        .map((v) => String(v ?? "").toLowerCase())
+        .some((v) => v.includes(q)),
+    );
+  }, [forecast, query]);
 
   const stats = useMemo(() => {
-    const total = forecast.reduce(
-      (s, f) => s + Number(f.demand ?? f.actual_demand ?? 0),
-      0,
-    );
-    const peak = forecast.reduce(
-      (best, f) =>
-        Number(f.demand ?? f.actual_demand ?? 0) > Number(best?.demand ?? best?.actual_demand ?? 0)
-          ? f
-          : best,
-      forecast[0],
-    );
-    const accuracy =
-      forecast.length > 0
-        ? 1 -
-          forecast.reduce((s, f) => {
-            const actual = Number(f.demand ?? f.actual_demand ?? 0) || 1;
-            const predicted = Number(f.predicted ?? f.forecast ?? actual);
-            return s + Math.abs(actual - predicted) / actual;
-          }, 0) /
-            forecast.length
-        : 0;
-    return { total, peak, accuracy };
-  }, [forecast]);
+    const demands = filtered.map((f) => safeNum(f.forecasted_demand));
+    return {
+      total: sum(filtered, "forecasted_demand"),
+      avgConfidence: average(filtered, "confidence"),
+      max: demands.length ? Math.max(...demands) : 0,
+      min: demands.length ? Math.min(...demands) : 0,
+    };
+  }, [filtered]);
+
+  const chartData = useMemo(
+    () =>
+      [...filtered]
+        .sort((a, b) => new Date(a.forecast_date) - new Date(b.forecast_date))
+        .map((f) => ({
+          date: formatShortDate(f.forecast_date),
+          demand: safeNum(f.forecasted_demand),
+          lower: safeNum(f.lower_bound),
+          upper: safeNum(f.upper_bound),
+        })),
+    [filtered],
+  );
 
   return (
     <>
       <PageHeader
-        title="Demand Forecast"
-        description="Model-predicted demand, accuracy and period-by-period history."
+        title="Forecast"
+        description="Model-predicted demand with confidence bounds per product."
+        actions={<span className="pp-badge pp-badge-muted">{filtered.length} rows</span>}
       />
 
       {error ? (
-        <div className="mb-5 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
-          Unable to load data.
+        <div className="mb-5 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
+          Unable to reach the backend — check the Backend URL in Settings.
         </div>
       ) : null}
 
       {loading ? (
-        <Loader label="Loading forecast..." />
+        <div className="space-y-6">
+          <Loader variant="cards" rows={4} label="Loading forecast metrics..." />
+          <Loader variant="skeleton" rows={6} label="Loading forecast..." />
+        </div>
       ) : (
         <div className="space-y-6">
           <div className="pp-stat-grid">
             <StatCard
               title="Total Forecasted Demand"
               value={formatNumber(stats.total)}
-              trend={0.096}
               icon={FiActivity}
               hint="units"
             />
             <StatCard
-              title="Peak Period"
-              value={stats.peak?.date ?? "—"}
-              trend={0.147}
-              icon={FiCalendar}
-              hint={`${formatNumber(stats.peak?.demand)} units`}
+              title="Average Confidence"
+              value={formatConfidence(stats.avgConfidence)}
+              icon={FiPercent}
+              hint="model confidence"
             />
             <StatCard
-              title="Model Accuracy"
-              value={`${(stats.accuracy * 100).toFixed(1)}%`}
-              trend={0.018}
-              icon={FiTarget}
-              hint="MAPE-based"
+              title="Highest Forecasted Demand"
+              value={formatNumber(stats.max)}
+              icon={FiArrowUpRight}
+              hint="peak units"
             />
             <StatCard
-              title="Forecast Revenue"
-              value={formatCurrency(
-                forecast.reduce((s, f) => s + Number(f.revenue ?? 0), 0),
-              )}
-              trend={0.112}
-              icon={FiTarget}
-              hint="projected"
+              title="Lowest Forecasted Demand"
+              value={formatNumber(stats.min)}
+              icon={FiArrowDownRight}
+              hint="trough units"
             />
           </div>
 
-          <ForecastChart
-            title="Actual vs. Predicted Demand"
-            subtitle="Units per period"
-            data={forecast}
-            height={340}
-            series={[
-              { key: "demand", name: "Actual", color: "var(--chart-1)" },
-              { key: "predicted", name: "Predicted", color: "var(--chart-2)", dashed: true },
-            ]}
+          <SearchBar
+            value={query}
+            onChange={setQuery}
+            placeholder="Search by product ID, date or model"
+            className="sm:max-w-sm"
           />
 
+          <div className="pp-chart-grid">
+            <ForecastChart
+              title="Forecasted Demand"
+              subtitle="Units per forecast date"
+              data={chartData}
+              series={[{ key: "demand", name: "Forecasted demand", color: "var(--chart-1)" }]}
+            />
+            <ForecastChart
+              title="Forecast Range"
+              subtitle="Lower and upper bounds"
+              data={chartData}
+              variant="area"
+              series={[
+                { key: "upper", name: "Upper bound", color: "var(--chart-2)" },
+                { key: "lower", name: "Lower bound", color: "var(--chart-1)" },
+              ]}
+            />
+          </div>
+
           <section>
-            <h2 className="mb-3 text-base font-semibold text-foreground">Forecast History</h2>
-            <div className="pp-card">
-              <div className="pp-table-wrap">
-                <table className="pp-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Period</th>
-                      <th scope="col">Actual Demand</th>
-                      <th scope="col">Predicted Demand</th>
-                      <th scope="col">Variance</th>
-                      <th scope="col">Revenue</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {forecast.map((f, i) => {
-                      const actual = Number(f.demand ?? f.actual_demand ?? 0);
-                      const predicted = Number(f.predicted ?? f.forecast ?? actual);
-                      const variance = predicted - actual;
-                      return (
-                        <tr key={f.date ?? i}>
-                          <td className="font-medium text-foreground">{f.date}</td>
-                          <td className="tabular-nums">{formatNumber(actual)}</td>
-                          <td className="tabular-nums">{formatNumber(predicted)}</td>
-                          <td>
-                            <span
-                              className={`pp-badge ${variance >= 0 ? "pp-badge-success" : "pp-badge-danger"}`}
-                            >
-                              {variance >= 0 ? "+" : ""}
-                              {formatNumber(variance)}
-                            </span>
-                          </td>
-                          <td className="tabular-nums">{formatCurrency(f.revenue)}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <h2 className="mb-3 text-base font-semibold text-foreground">Forecast Table</h2>
+            <ForecastTable forecast={filtered} />
           </section>
         </div>
       )}

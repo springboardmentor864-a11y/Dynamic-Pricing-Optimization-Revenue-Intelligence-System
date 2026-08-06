@@ -1,116 +1,124 @@
 import { useMemo, useState } from "react";
-import { FiCheckCircle, FiClock, FiTrendingUp } from "react-icons/fi";
+import { FiActivity, FiDollarSign, FiTarget, FiTrendingUp } from "react-icons/fi";
 import PageHeader from "../components/PageHeader";
 import SearchBar from "../components/SearchBar";
 import StatCard from "../components/StatCard";
+import ForecastChart from "../components/ForecastChart";
 import RecommendationTable from "../components/RecommendationTable";
 import Loader from "../components/Loader";
 import { useRecommendations } from "../hooks/useRecommendations";
-import { formatPercent } from "../utils/helpers";
+import { useProducts } from "../hooks/useProducts";
+import { average, formatCurrency, formatNumber, safeNum, safeText, sum } from "../utils/helpers";
 import "../styles/Dashboard.css";
 import "../styles/Tables.css";
 
-const STATUSES = ["all", "pending", "approved", "rejected"];
-
 export default function Recommendations() {
   const { recommendations, loading, error } = useRecommendations();
+  const { products } = useProducts();
   const [query, setQuery] = useState("");
-  const [status, setStatus] = useState("all");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return recommendations.filter((r) => {
-      const name = String(r.product ?? r.name ?? "").toLowerCase();
-      const matchesQuery = !q || name.includes(q);
-      const matchesStatus =
-        status === "all" || String(r.status ?? "pending").toLowerCase() === status;
-      return matchesQuery && matchesStatus;
-    });
-  }, [recommendations, query, status]);
+    if (!q) return recommendations;
+    return recommendations.filter((r) =>
+      [r.product_id, r.reason]
+        .map((v) => String(v ?? "").toLowerCase())
+        .some((v) => v.includes(q)),
+    );
+  }, [recommendations, query]);
 
-  const stats = useMemo(() => {
-    const approved = recommendations.filter(
-      (r) => String(r.status ?? "").toLowerCase() === "approved",
-    ).length;
-    const pending = recommendations.filter(
-      (r) => String(r.status ?? "pending").toLowerCase() === "pending",
-    ).length;
-    const avgGain =
-      recommendations.length > 0
-        ? recommendations.reduce((s, r) => s + Number(r.revenue_gain ?? 0), 0) /
-          recommendations.length
-        : 0;
-    return { approved, pending, avgGain };
-  }, [recommendations]);
+  const stats = useMemo(
+    () => ({
+      total: filtered.length,
+      avgCurrent: average(filtered, "current_price"),
+      avgRecommended: average(filtered, "recommended_price"),
+      totalDemand: sum(filtered, "forecasted_demand"),
+    }),
+    [filtered],
+  );
+
+  const chartData = useMemo(
+    () =>
+      filtered.slice(0, 12).map((r) => ({
+        product: safeText(
+          products.find((p) => String(p.id) === String(r.product_id))?.name,
+          `#${safeText(r.product_id, "0")}`,
+        ),
+        current: safeNum(r.current_price),
+        recommended: safeNum(r.recommended_price),
+        competitor: safeNum(r.competitor_price),
+      })),
+    [filtered, products],
+  );
 
   return (
     <>
       <PageHeader
-        title="Pricing Recommendations"
-        description="AI-suggested price moves ranked by expected revenue impact."
+        title="Recommendations"
+        description="AI-suggested price moves with competitor context and demand outlook."
+        actions={<span className="pp-badge pp-badge-muted">{filtered.length} rows</span>}
       />
 
       {error ? (
-        <div className="mb-5 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
-          Unable to load data.
+        <div className="mb-5 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
+          Unable to reach the backend — check the Backend URL in Settings.
         </div>
       ) : null}
 
       {loading ? (
-        <Loader label="Loading recommendations..." />
+        <div className="space-y-6">
+          <Loader variant="cards" rows={4} label="Loading recommendation metrics..." />
+          <Loader variant="skeleton" rows={6} label="Loading recommendations..." />
+        </div>
       ) : (
         <div className="space-y-6">
           <div className="pp-stat-grid">
             <StatCard
-              title="Open Recommendations"
-              value={stats.pending}
-              trend={0.05}
-              icon={FiClock}
-              hint="awaiting review"
-            />
-            <StatCard
-              title="Approved"
-              value={stats.approved}
-              trend={0.09}
-              icon={FiCheckCircle}
-              hint="live in pricing"
-            />
-            <StatCard
-              title="Avg. Expected Gain"
-              value={formatPercent(stats.avgGain)}
-              trend={stats.avgGain}
-              icon={FiTrendingUp}
-              hint="per recommendation"
-            />
-            <StatCard
-              title="Total Suggestions"
-              value={recommendations.length}
-              trend={0.032}
+              title="Total Recommendations"
+              value={formatNumber(stats.total)}
               icon={FiTrendingUp}
               hint="this cycle"
             />
+            <StatCard
+              title="Average Current Price"
+              value={formatCurrency(stats.avgCurrent)}
+              icon={FiDollarSign}
+              hint="live pricing"
+            />
+            <StatCard
+              title="Average Recommended Price"
+              value={formatCurrency(stats.avgRecommended)}
+              icon={FiTarget}
+              hint="AI suggested"
+            />
+            <StatCard
+              title="Total Forecasted Demand"
+              value={formatNumber(stats.totalDemand)}
+              icon={FiActivity}
+              hint="units"
+            />
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <SearchBar
-              value={query}
-              onChange={setQuery}
-              placeholder="Search recommendations"
-              className="sm:max-w-sm"
-            />
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              aria-label="Filter by status"
-              className="pp-input sm:max-w-[12rem]"
-            >
-              {STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {s === "all" ? "All statuses" : s}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SearchBar
+            value={query}
+            onChange={setQuery}
+            placeholder="Search by product ID or reason"
+            className="sm:max-w-sm"
+          />
+
+          <ForecastChart
+            title="Current Price vs Recommended Price"
+            subtitle="Compared against competitor pricing"
+            data={chartData}
+            xKey="product"
+            variant="bar"
+            height={320}
+            series={[
+              { key: "current", name: "Current", color: "var(--chart-1)" },
+              { key: "recommended", name: "Recommended", color: "var(--chart-2)" },
+              { key: "competitor", name: "Competitor", color: "var(--chart-3, var(--muted-foreground))" },
+            ]}
+          />
 
           <RecommendationTable recommendations={filtered} />
         </div>

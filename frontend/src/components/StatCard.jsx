@@ -6,7 +6,7 @@ export default function StatCard({ title, value, trend, icon: Icon, hint }) {
   const up = isPositive(trend);
 
   return (
-    <div className="pp-card p-5">
+    <div className="pp-card pp-glass p-5 hover:-translate-y-0.5">
       <div className="flex items-start justify-between gap-3">
         <p className="text-sm font-medium text-muted-foreground">{title}</p>
         {Icon ? (

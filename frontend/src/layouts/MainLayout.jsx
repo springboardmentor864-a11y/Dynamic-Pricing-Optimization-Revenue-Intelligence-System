@@ -27,7 +27,7 @@ export default function MainLayout() {
           onQueryChange={setQuery}
           onMenuClick={() => setMenuOpen(true)}
         />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="pp-gradient-bg pp-fade-in flex-1 p-4 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

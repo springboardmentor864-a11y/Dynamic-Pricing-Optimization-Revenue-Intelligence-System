@@ -1,23 +1,24 @@
 import { useMemo, useState } from "react";
-import { FiChevronDown, FiChevronUp, FiExternalLink } from "react-icons/fi";
-import { formatCurrency, formatNumber, sortBy, stockLabel } from "../utils/helpers";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { EMPTY_TEXT } from "../utils/constants";
+import { formatCurrency, formatNumber, safeText, sortBy, stockLabel } from "../utils/helpers";
 
 const COLUMNS = [
   { key: "id", label: "ID" },
-  { key: "name", label: "Product" },
+  { key: "name", label: "Product Name" },
   { key: "price", label: "Price" },
   { key: "stock", label: "Stock" },
   { key: "category", label: "Category" },
 ];
 
-/** Sortable products table: ID, Product, Price, Stock, Category, Action. */
-export default function ProductTable({ products = [], compact = false }) {
+/** Sortable products table: ID, Product Name, Price, Stock, Category. */
+export default function ProductTable({ products = [], limit }) {
   const [sort, setSort] = useState({ key: "id", direction: "asc" });
 
-  const rows = useMemo(
-    () => sortBy(products, sort.key, sort.direction),
-    [products, sort],
-  );
+  const rows = useMemo(() => {
+    const sorted = sortBy(products, sort.key, sort.direction);
+    return limit ? sorted.slice(0, limit) : sorted;
+  }, [products, sort, limit]);
 
   const toggle = (key) =>
     setSort((prev) =>
@@ -27,7 +28,7 @@ export default function ProductTable({ products = [], compact = false }) {
     );
 
   return (
-    <div className="pp-card">
+    <div className="pp-card pp-glass">
       <div className="pp-table-wrap">
         <table className="pp-table">
           <thead>
@@ -46,23 +47,22 @@ export default function ProductTable({ products = [], compact = false }) {
                   </button>
                 </th>
               ))}
-              {compact ? null : <th scope="col">Action</th>}
             </tr>
           </thead>
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td className="pp-table-empty" colSpan={compact ? 5 : 6}>
-                  No products match your filters.
+                <td className="pp-table-empty" colSpan={5}>
+                  {EMPTY_TEXT}
                 </td>
               </tr>
             ) : (
-              rows.map((p) => {
+              rows.map((p, i) => {
                 const stock = stockLabel(p.stock);
                 return (
-                  <tr key={p.id}>
-                    <td className="text-muted-foreground">#{p.id}</td>
-                    <td className="font-medium text-foreground">{p.name}</td>
+                  <tr key={p.id ?? i}>
+                    <td className="text-muted-foreground">#{safeText(p.id, "0")}</td>
+                    <td className="font-medium text-foreground">{safeText(p.name)}</td>
                     <td className="tabular-nums">{formatCurrency(p.price)}</td>
                     <td>
                       <div className="flex items-center gap-2">
@@ -71,18 +71,10 @@ export default function ProductTable({ products = [], compact = false }) {
                       </div>
                     </td>
                     <td>
-                      <span className="pp-badge pp-badge-muted">{p.category}</span>
+                      <span className="pp-badge pp-badge-muted">
+                        {safeText(p.category, "Uncategorized")}
+                      </span>
                     </td>
-                    {compact ? null : (
-                      <td>
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-                        >
-                          Optimize <FiExternalLink className="h-3.5 w-3.5" />
-                        </button>
-                      </td>
-                    )}
                   </tr>
                 );
               })

@@ -58,3 +58,48 @@
 .pp-input-search {
   padding-left: 2.25rem;
 }
+
+/* Glass surface used across cards, tables and charts. */
+.pp-glass {
+  background-color: color-mix(in oklab, var(--card) 78%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border-color: color-mix(in oklab, var(--border) 70%, transparent);
+}
+
+/* Ambient gradient page backdrop. */
+.pp-gradient-bg {
+  background-image:
+    radial-gradient(60rem 30rem at 8% -10%, color-mix(in oklab, var(--chart-1) 18%, transparent), transparent 70%),
+    radial-gradient(50rem 26rem at 100% 0%, color-mix(in oklab, var(--chart-2) 16%, transparent), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+.pp-skeleton {
+  border-radius: 0.6rem;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--muted) 70%, transparent) 25%,
+    color-mix(in oklab, var(--muted) 40%, transparent) 37%,
+    color-mix(in oklab, var(--muted) 70%, transparent) 63%
+  );
+  background-size: 400% 100%;
+  animation: pp-shimmer 1.4s ease infinite;
+}
+
+@keyframes pp-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.pp-fade-in {
+  animation: pp-fade-in 0.35s ease both;
+}
+
+@keyframes pp-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.pp-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}

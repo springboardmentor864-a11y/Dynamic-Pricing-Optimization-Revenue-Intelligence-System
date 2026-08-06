@@ -1,5 +1,11 @@
 import axios from "axios";
-import { DEFAULT_BASE_URL, STORAGE_KEYS } from "../utils/constants";
+import {
+  DEFAULT_BASE_URL,
+  FORECAST_COLUMNS,
+  PRODUCT_COLUMNS,
+  RECOMMENDATION_COLUMNS,
+  STORAGE_KEYS,
+} from "../utils/constants";
 
 /** Reads the (user-configurable) backend URL from localStorage. */
 export const getBaseUrl = () => {
@@ -9,98 +15,57 @@ export const getBaseUrl = () => {
 
 export const setBaseUrl = (url) => {
   if (typeof window !== "undefined") {
-    window.localStorage.setItem(STORAGE_KEYS.baseUrl, url);
+    window.localStorage.setItem(STORAGE_KEYS.baseUrl, String(url || "").trim());
   }
 };
 
-const client = axios.create({
-  timeout: 8000,
-});
+const client = axios.create({ timeout: 10000 });
 
+// Always resolve against the currently configured backend URL.
 client.interceptors.request.use((config) => {
   config.baseURL = getBaseUrl();
   return config;
 });
 
-const normalizeRecords = (payload, keys, fallback = []) => {
-  const rows = Array.isArray(payload)
-    ? payload
-    : payload?.data ||
-      payload?.items ||
-      payload?.results ||
-      payload?.records ||
-      payload?.rows;
+/**
+ * The backend returns rows as arrays inside `data`.
+ * Convert each array row into an object using the given column order.
+ * Object rows (if ever returned) are passed through untouched.
+ */
+export const normalizeRows = (payload, columns) => {
+  const rows = Array.isArray(payload?.data)
+    ? payload.data
+    : Array.isArray(payload)
+      ? payload
+      : [];
 
-  if (!Array.isArray(rows)) return fallback;
-
-  return rows.map((row) => {
-    if (Array.isArray(row)) {
-      return keys.reduce((obj, key, index) => {
-        obj[key] = row[index];
-        return obj;
-      }, {});
-    }
-
-    return row && typeof row === "object" ? row : {};
-  });
+  return rows
+    .map((row) => {
+      if (Array.isArray(row)) {
+        return columns.reduce((acc, key, i) => {
+          acc[key] = row[i] ?? null;
+          return acc;
+        }, {});
+      }
+      if (row && typeof row === "object") return row;
+      return null;
+    })
+    .filter(Boolean);
 };
 
-// Products API
-export const getProducts = async () => {
+export const fetchProducts = async () => {
   const { data } = await client.get("/products");
-
-  return normalizeRecords(
-    data,
-    [
-      "id",
-      "name",
-      "price",
-      "stock",
-      "category"
-    ],
-    []
-  );
+  return normalizeRows(data, PRODUCT_COLUMNS);
 };
 
-// Forecast API
-export const getForecast = async () => {
+export const fetchForecast = async () => {
   const { data } = await client.get("/forecast");
-
-  return normalizeRecords(
-    data,
-    [
-      "id",
-      "product_id",
-      "forecast_date",
-      "forecasted_demand",
-      "lower_bound",
-      "upper_bound",
-      "confidence",
-      "model_name",
-      "created_at"
-    ],
-    []
-  );
+  return normalizeRows(data, FORECAST_COLUMNS);
 };
 
-// Recommendations API
-export const getRecommendations = async () => {
+export const fetchRecommendations = async () => {
   const { data } = await client.get("/recommendations");
-
-  return normalizeRecords(
-    data,
-    [
-      "id",
-      "product_id",
-      "current_price",
-      "recommended_price",
-      "forecasted_demand",
-      "competitor_price",
-      "reason",
-      "created_at"
-    ],
-    []
-  );
+  return normalizeRows(data, RECOMMENDATION_COLUMNS);
 };
 
 export default client;

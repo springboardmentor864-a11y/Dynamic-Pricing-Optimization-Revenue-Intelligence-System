@@ -33,15 +33,13 @@ export default function Products() {
     <>
       <PageHeader
         title="Products"
-        description="Search, filter and sort every SKU tracked by the pricing engine."
-        actions={
-          <span className="pp-badge pp-badge-muted">{filtered.length} results</span>
-        }
+        description="Every SKU tracked by the pricing engine."
+        actions={<span className="pp-badge pp-badge-muted">{filtered.length} results</span>}
       />
 
       {error ? (
-        <div className="mb-5 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
-          Unable to load data.
+        <div className="mb-5 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground">
+          Unable to reach the backend — check the Backend URL in Settings.
         </div>
       ) : null}
 
@@ -66,7 +64,11 @@ export default function Products() {
         </select>
       </div>
 
-      {loading ? <Loader label="Loading products..." /> : <ProductTable products={filtered} />}
+      {loading ? (
+        <Loader variant="skeleton" rows={8} label="Loading products..." />
+      ) : (
+        <ProductTable products={filtered} />
+      )}
     </>
   );
 }

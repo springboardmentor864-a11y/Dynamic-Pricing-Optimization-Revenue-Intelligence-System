@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { STORAGE_KEYS, DEFAULT_REFRESH_INTERVAL } from "../utils/constants";
 
 /**
- * Shared data-fetching hook for the page-level API calls.
- * It keeps loading/error state and preserves the UI even when one endpoint fails.
+ * Shared data-fetching hook. Always returns a real array from the backend —
+ * on failure it returns an empty list plus an error message (no mock data).
  */
-export function useApiResource(fetcher, fallback = []) {
-  const [data, setData] = useState(fallback);
+export function useApiResource(fetcher) {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const fetcherRef = useRef(fetcher);
@@ -14,17 +14,16 @@ export function useApiResource(fetcher, fallback = []) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    setError(null);
     try {
       const result = await fetcherRef.current();
-      setData(Array.isArray(result) ? result : fallback);
+      setData(Array.isArray(result) ? result : []);
+      setError(null);
     } catch (err) {
-      setError(err?.message || "Unable to load data");
-      setData(fallback);
+      setData([]);
+      setError(err?.message || "Unable to reach the backend.");
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
