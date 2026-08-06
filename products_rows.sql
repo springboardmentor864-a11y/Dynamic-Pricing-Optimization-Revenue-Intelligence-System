@@ -1,1 +1,0 @@
-INSERT INTO "public"."products" ("id", "name", "category", "current_price", "cost_price", "stock") VALUES (1, 'Sample Product', 'Electronics', '500.00', '400.00', 100);
