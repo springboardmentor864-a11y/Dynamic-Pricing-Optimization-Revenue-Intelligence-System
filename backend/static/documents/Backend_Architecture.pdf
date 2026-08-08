@@ -1,0 +1,25 @@
+====================================================================
+PRICEPILOT AI ENTERPRISE PLATFORM - OFFICIAL DOCUMENT
+====================================================================
+Document Title: Backend Architecture Specification
+Category       : Architecture
+Document ID    : backend-architecture
+Version        : v2.0
+Updated Date   : 2026-08-03
+Organization   : Infosys Springboard 7.0 (Completion: August 2026)
+Authors        : Team PricePilot AI (Narendar Reddy, Manvitha, Pravallika, Ashwindh)
+====================================================================
+
+DESCRIPTION:
+FastAPI router organization, middleware stack, SQLAlchemy ORM patterns, and openpyxl Excel compilation engine.
+
+KEY HIGHLIGHTS:
+1. Enterprise dynamic pricing model powered by Extra Trees Regressor (96.5% R² Accuracy).
+2. Production REST backend built with FastAPI, SQLAlchemy ORM, and Neon PostgreSQL.
+3. Modern frontend interface built with React, Vite, Tailwind CSS, and Framer Motion.
+4. Complete security layer with JWT token authentication, bcrypt hashing, and OTP verification.
+5. Automated Excel user data exports via openpyxl with styled tables and freeze panes.
+
+====================================================================
+CONFIDENTIAL & PROPRIETARY - PRICEPILOT AI ENTERPRISE 2026
+====================================================================

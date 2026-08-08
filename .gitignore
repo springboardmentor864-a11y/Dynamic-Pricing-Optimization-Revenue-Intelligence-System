@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Trained ML Models (large binaries)
+trained_models/*.pkl
+trained_models/*.joblib
+!trained_models/.gitkeep
+# Logs & Temporary Files
+*.log
+logs/
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+# OS Specific
+.DS_Store
+Thumbs.db
+pricepilot.db
+*.db
+backend/.env
