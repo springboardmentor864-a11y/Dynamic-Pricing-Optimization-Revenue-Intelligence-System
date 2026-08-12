@@ -20,17 +20,28 @@ router = APIRouter(prefix="/api", tags=["Predictions"])
 
 # Load trained Extra Trees Regressor model
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.abspath(os.path.join(BASE_DIR, "..", "..", "trained_models", "best_price_model.pkl"))
+candidate_paths = [
+    os.path.abspath(os.path.join(BASE_DIR, "..", "trained_models", "best_price_model.pkl")),
+    os.path.abspath(os.path.join(BASE_DIR, "..", "..", "trained_models", "best_price_model.pkl")),
+    os.path.abspath(os.path.join(os.getcwd(), "trained_models", "best_price_model.pkl")),
+    os.path.abspath(os.path.join(os.getcwd(), "..", "trained_models", "best_price_model.pkl"))
+]
+
+MODEL_PATH = None
+for p in candidate_paths:
+    if os.path.exists(p):
+        MODEL_PATH = p
+        break
 
 model = None
-if os.path.exists(MODEL_PATH):
+if MODEL_PATH and os.path.exists(MODEL_PATH):
     try:
         model = joblib.load(MODEL_PATH)
         print(f"Extra Trees Regressor model loaded successfully from {MODEL_PATH}")
     except Exception as e:
         print(f"Error loading model: {e}")
 else:
-    print(f"Model file not found at {MODEL_PATH}")
+    print(f"Model file best_price_model.pkl not found in candidates: {candidate_paths}")
 
 @router.get("/model-status")
 def model_status():

@@ -548,3 +548,197 @@ class PasswordResetOTP(Base):
     )
 
 
+# ==============================
+# COMPETITOR PRICE TABLE
+# ==============================
+
+class CompetitorPrice(Base):
+    __tablename__ = "competitor_prices"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    product_id = Column(
+        String(50),
+        nullable=False,
+        index=True
+    )
+
+    product_name = Column(
+        String(150),
+        nullable=False
+    )
+
+    category = Column(
+        String(100),
+        default="General",
+        nullable=False,
+        index=True
+    )
+
+    brand = Column(
+        String(100),
+        default="Generic",
+        nullable=False,
+        index=True
+    )
+
+    our_price = Column(
+        Float,
+        nullable=False
+    )
+
+    competitor_name = Column(
+        String(100),
+        nullable=False,
+        index=True
+    )
+
+    competitor_product_name = Column(
+        String(150),
+        nullable=True
+    )
+
+    competitor_price = Column(
+        Float,
+        nullable=False
+    )
+
+    price_difference = Column(
+        Float,
+        nullable=False,
+        default=0.0
+    )
+
+    price_difference_percentage = Column(
+        Float,
+        nullable=False,
+        default=0.0
+    )
+
+    competitor_rating = Column(
+        Float,
+        default=4.5
+    )
+
+    competitor_stock = Column(
+        Integer,
+        default=50
+    )
+
+    marketplace = Column(
+        String(100),
+        default="Online Market",
+        nullable=False,
+        index=True
+    )
+
+    currency = Column(
+        String(10),
+        default="INR",
+        nullable=False
+    )
+
+    source = Column(
+        String(100),
+        default="Manual",
+        nullable=False
+    )
+
+    captured_at = Column(
+        String(50),
+        nullable=False,
+        index=True
+    )
+
+    recorded_at = Column(
+        String(50),
+        nullable=True,
+        index=True
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+
+# ==============================
+# COMPETITOR ANALYSIS TABLE
+# ==============================
+
+class CompetitorAnalysis(Base):
+    __tablename__ = "competitor_analysis"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    product_id = Column(
+        String(50),
+        nullable=False,
+        index=True
+    )
+
+    our_price = Column(
+        Float,
+        nullable=False
+    )
+
+    lowest_competitor_price = Column(
+        Float,
+        nullable=False
+    )
+
+    highest_competitor_price = Column(
+        Float,
+        nullable=False
+    )
+
+    average_competitor_price = Column(
+        Float,
+        nullable=False
+    )
+
+    price_difference = Column(
+        Float,
+        nullable=False
+    )
+
+    price_difference_percentage = Column(
+        Float,
+        nullable=False
+    )
+
+    recommended_price = Column(
+        Float,
+        nullable=False
+    )
+
+    competitive_status = Column(
+        String(30),
+        nullable=False,
+        index=True
+    )
+
+    analyzed_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+
+
+

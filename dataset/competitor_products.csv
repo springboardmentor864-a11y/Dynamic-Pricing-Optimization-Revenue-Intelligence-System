@@ -1,0 +1,41 @@
+product_id,product_name,category,brand,our_price,cost_price,stock,is_active,description
+P1001,Apple iPhone 15 Pro (128GB),Mobiles,Apple,129900.0,98000.0,178,True,DUMMY DATA: High performance Mobile by Apple.
+P1002,Samsung Galaxy S24 Ultra,Mobiles,Samsung,119999.0,91000.0,43,True,DUMMY DATA: High performance Mobile by Samsung.
+P1003,OnePlus 12 5G (256GB),Mobiles,OnePlus,64999.0,48000.0,21,True,DUMMY DATA: High performance Mobile by OnePlus.
+P1004,Google Pixel 8 Pro,Mobiles,Google,75999.0,56000.0,85,True,DUMMY DATA: High performance Mobile by Google.
+P1005,Xiaomi 14 Ultra,Mobiles,Xiaomi,69999.0,52000.0,77,True,DUMMY DATA: High performance Mobile by Xiaomi.
+P2001,MacBook Pro M3 14-inch,Laptops,Apple,169900.0,135000.0,72,True,DUMMY DATA: High performance Laptop by Apple.
+P2002,Dell XPS 15 OLED,Laptops,Dell,185000.0,142000.0,50,True,DUMMY DATA: High performance Laptop by Dell.
+P2003,HP Spectre x360 14,Laptops,HP,139990.0,108000.0,41,True,DUMMY DATA: High performance Laptop by HP.
+P2004,Lenovo ThinkPad X1 Carbon,Laptops,Lenovo,154990.0,118000.0,188,True,DUMMY DATA: High performance Laptop by Lenovo.
+P2005,ASUS ROG Zephyrus G16,Laptops,ASUS,179990.0,138000.0,154,True,DUMMY DATA: High performance Laptop by ASUS.
+P3001,Sony WH-1000XM5 Wireless Headphones,Headphones,Sony,26990.0,18500.0,37,True,DUMMY DATA: High performance Headphone by Sony.
+P3002,Bose QuietComfort Ultra,Headphones,Bose,29900.0,21000.0,166,True,DUMMY DATA: High performance Headphone by Bose.
+P3003,Apple AirPods Max,Headphones,Apple,59900.0,44000.0,123,True,DUMMY DATA: High performance Headphone by Apple.
+P3004,Sennheiser Momentum 4 Wireless,Headphones,Sennheiser,24990.0,17000.0,23,True,DUMMY DATA: High performance Headphone by Sennheiser.
+P3005,JBL Tour ONE M2,Headphones,JBL,19999.0,13000.0,22,True,DUMMY DATA: High performance Headphone by JBL.
+P4001,Apple Watch Ultra 2,Smart Watches,Apple,89900.0,68000.0,38,True,DUMMY DATA: High performance Smart Watche by Apple.
+P4002,Samsung Galaxy Watch 6 Classic,Smart Watches,Samsung,36999.0,26000.0,70,True,DUMMY DATA: High performance Smart Watche by Samsung.
+P4003,Garmin Fenix 7 Pro Sapphire,Smart Watches,Garmin,79990.0,59000.0,74,True,DUMMY DATA: High performance Smart Watche by Garmin.
+P4004,Fitbit Sense 2,Smart Watches,Fitbit,21999.0,15000.0,144,True,DUMMY DATA: High performance Smart Watche by Fitbit.
+P4005,OnePlus Watch 2,Smart Watches,OnePlus,17999.0,12500.0,169,True,DUMMY DATA: High performance Smart Watche by OnePlus.
+P5001,Dyson V15 Detect Vacuum,Home Appliances,Dyson,65900.0,48000.0,21,True,DUMMY DATA: High performance Home Appliance by Dyson.
+P5002,LG 55-inch OLED EVO 4K Smart TV,Home Appliances,LG,124990.0,92000.0,158,True,DUMMY DATA: High performance Home Appliance by LG.
+P5003,Samsung 450L French Door Refrigerator,Home Appliances,Samsung,78990.0,58000.0,65,True,DUMMY DATA: High performance Home Appliance by Samsung.
+P5004,Bosch 8kg Front Load Washing Machine,Home Appliances,Bosch,48990.0,36000.0,198,True,DUMMY DATA: High performance Home Appliance by Bosch.
+P5005,Philips Digital Air Fryer XXL,Home Appliances,Philips,14995.0,9800.0,181,True,DUMMY DATA: High performance Home Appliance by Philips.
+P6001,Sony PlayStation 5 Slim Console,Electronics,Sony,54990.0,42000.0,194,True,DUMMY DATA: High performance Electronic by Sony.
+P6002,Nintendo Switch OLED Model,Electronics,Nintendo,31990.0,23000.0,154,True,DUMMY DATA: High performance Electronic by Nintendo.
+P6003,Canon EOS R6 Mark II Mirrorless Camera,Electronics,Canon,215995.0,168000.0,122,True,DUMMY DATA: High performance Electronic by Canon.
+P6004,GoPro HERO12 Black Action Camera,Electronics,GoPro,37990.0,27000.0,71,True,DUMMY DATA: High performance Electronic by GoPro.
+P6005,Sonos Era 300 Smart Speaker,Electronics,Sonos,52999.0,39000.0,129,True,DUMMY DATA: High performance Electronic by Sonos.
+P7001,Nike Air Force 1 '07 Sneakers,Fashion,Nike,9695.0,6200.0,165,True,DUMMY DATA: High performance Fashion by Nike.
+P7002,Adidas Ultraboost Light Running Shoes,Fashion,Adidas,17999.0,11500.0,86,True,DUMMY DATA: High performance Fashion by Adidas.
+P7003,Levi's 501 Original Fit Jeans,Fashion,Levi's,4599.0,2600.0,16,True,DUMMY DATA: High performance Fashion by Levi's.
+P7004,Puma Unisex Leather Jacket,Fashion,Puma,8999.0,5400.0,55,True,DUMMY DATA: High performance Fashion by Puma.
+P7005,Ray-Ban Aviator Classic Sunglasses,Fashion,Ray-Ban,10890.0,6900.0,193,True,DUMMY DATA: High performance Fashion by Ray-Ban.
+P8001,Anker 737 Power Bank 24000mAh,Accessories,Anker,12999.0,8200.0,123,True,DUMMY DATA: High performance Accessorie by Anker.
+P8002,Logitech MX Master 3S Wireless Mouse,Accessories,Logitech,9995.0,6400.0,102,True,DUMMY DATA: High performance Accessorie by Logitech.
+P8003,Keychron K2 V2 Mechanical Keyboard,Accessories,Keychron,8499.0,5200.0,86,True,DUMMY DATA: High performance Accessorie by Keychron.
+P8004,SanDisk Extreme PRO 1TB Portable SSD,Accessories,SanDisk,13490.0,8900.0,54,True,DUMMY DATA: High performance Accessorie by SanDisk.
+P8005,Belkin 3-in-1 Magsafe Wireless Charger,Accessories,Belkin,11999.0,7800.0,70,True,DUMMY DATA: High performance Accessorie by Belkin.

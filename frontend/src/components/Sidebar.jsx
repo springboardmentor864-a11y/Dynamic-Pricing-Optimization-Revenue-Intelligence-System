@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard, DollarSign, LineChart, BarChart2, History,
   Database, FileText, Settings, CircleHelp, ChevronLeft, ChevronRight,
-  Sparkles, Plane, User, Users, LogOut, ShieldAlert, Cpu
+  Sparkles, Plane, User, Users, LogOut, ShieldAlert, Cpu, Store
 } from 'lucide-react';
 
 const Sidebar = ({
@@ -22,6 +22,7 @@ const Sidebar = ({
   const userMenuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     { id: 'prediction', label: 'AI Price Predictor', icon: DollarSign, badge: 'ML', path: '/predict' },
+    { id: 'competitors', label: 'Competitor Analysis', icon: Store, badge: 'Intel', path: '/competitor-analysis' },
     { id: 'history', label: 'Prediction History', icon: History, path: '/history' },
     { id: 'analytics', label: 'Analytics', icon: LineChart, path: '/analytics' },
     { id: 'models', label: 'ML Benchmarks', icon: BarChart2, path: '/models' },
@@ -35,6 +36,7 @@ const Sidebar = ({
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     { id: 'user-management', label: 'User Management', icon: Users, badge: 'Approval', path: '/users' },
     { id: 'prediction', label: 'Pricing Engine', icon: DollarSign, badge: 'AI', path: '/predict' },
+    { id: 'competitors', label: 'Competitor Analysis', icon: Store, badge: 'Intel', path: '/competitor-analysis' },
     { id: 'history', label: 'Prediction History', icon: History, path: '/history' },
     { id: 'analytics', label: 'System Analytics', icon: LineChart, path: '/analytics' },
     { id: 'models', label: 'ML Benchmarks', icon: BarChart2, badge: 'Extra Trees', path: '/models' },
@@ -63,16 +65,15 @@ const Sidebar = ({
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed lg:static top-0 left-0 bottom-0 z-40 bg-[#111827] border-r border-[#1F2937] flex flex-col justify-between transition-all duration-300 ease-in-out ${
-          isCollapsed ? 'w-20' : 'w-64'
-        } ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+        className={`fixed lg:static top-0 left-0 bottom-0 z-40 bg-[#111827] border-r border-[#1F2937] flex flex-col justify-between transition-all duration-300 ease-in-out ${isCollapsed ? 'w-20' : 'w-64'
+          } ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         <div className="p-4 space-y-6">
 
           {/* Logo & Sidebar Collapse Toggle */}
           <div className="flex items-center justify-between pb-2 border-b border-[#1F2937]">
             {!isCollapsed && (
-              <div 
+              <div
                 onClick={() => navigate('/dashboard')}
                 className="flex items-center gap-2.5 cursor-pointer"
               >
@@ -96,13 +97,12 @@ const Sidebar = ({
 
           {/* Role Status Card (When expanded) */}
           {!isCollapsed && (
-            <div className={`p-3 rounded-[14px] border transition ${
-              isAdmin
+            <div className={`p-3 rounded-[14px] border transition ${isAdmin
                 ? 'bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border-purple-500/25'
                 : 'bg-gradient-to-r from-blue-900/30 to-indigo-900/30 border-blue-500/25'
-            }`}>
+              }`}>
               <div className="flex items-center gap-2 text-xs font-bold text-slate-200 mb-1">
-                <Sparkles className={`w-3.5 h-3.5 ${isAdmin ? 'text-purple-400' : 'text-blue-400'}`} /> 
+                <Sparkles className={`w-3.5 h-3.5 ${isAdmin ? 'text-purple-400' : 'text-blue-400'}`} />
                 {isAdmin ? 'Admin Console' : 'User Portal'}
               </div>
               <p className="text-[11px] text-slate-400 font-mono">
@@ -128,11 +128,10 @@ const Sidebar = ({
                   key={item.id}
                   onClick={() => handleSelect(item)}
                   title={isCollapsed ? item.label : undefined}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-[12px] font-medium text-xs transition-all duration-200 group ${
-                    isActive
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-[12px] font-medium text-xs transition-all duration-200 group ${isActive
                       ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-purple-500/20 font-bold scale-[1.01]'
                       : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
-                  } ${isCollapsed ? 'justify-center px-0' : ''}`}
+                    } ${isCollapsed ? 'justify-center px-0' : ''}`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-purple-400'}`} />
@@ -141,13 +140,12 @@ const Sidebar = ({
 
                   {!isCollapsed && item.badge && (
                     <span
-                      className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
-                        isActive
+                      className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${isActive
                           ? 'bg-white/20 text-white border-white/30'
                           : item.badge === 'Admin'
-                          ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
-                          : 'bg-slate-800 text-slate-400 border-[#1F2937]'
-                      }`}
+                            ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+                            : 'bg-slate-800 text-slate-400 border-[#1F2937]'
+                        }`}
                     >
                       {item.badge}
                     </span>

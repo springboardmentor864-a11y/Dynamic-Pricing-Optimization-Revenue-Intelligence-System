@@ -200,3 +200,152 @@ class BulkDeleteRequest(BaseModel):
     user_ids: List[int]
 
 
+# ==========================================================
+# Competitor Price Analysis Schemas
+# ==========================================================
+
+class CompetitorPriceCreate(BaseModel):
+    product_id: str
+    competitor_name: str
+    competitor_product_name: Optional[str] = None
+    competitor_price: float
+    currency: Optional[str] = "INR"
+    source: Optional[str] = "Manual"
+    captured_at: Optional[str] = None
+    category: Optional[str] = "Electronics"
+    brand: Optional[str] = "Generic"
+    our_price: Optional[float] = None
+    competitor_rating: Optional[float] = 4.5
+    competitor_stock: Optional[int] = 50
+    marketplace: Optional[str] = ""
+
+
+class CompetitorPriceUpdate(BaseModel):
+    competitor_name: Optional[str] = None
+    competitor_product_name: Optional[str] = None
+    competitor_price: Optional[float] = None
+    currency: Optional[str] = None
+    source: Optional[str] = None
+    captured_at: Optional[str] = None
+    our_price: Optional[float] = None
+    competitor_rating: Optional[float] = None
+    competitor_stock: Optional[int] = None
+    marketplace: Optional[str] = None
+
+
+class CompetitorPriceResponse(BaseModel):
+    id: int
+    product_id: str
+    product_name: Optional[str] = ""
+    category: Optional[str] = "General"
+    brand: Optional[str] = "Generic"
+    our_price: float
+    competitor_name: str
+    competitor_product_name: Optional[str] = ""
+    competitor_price: float
+    price_difference: float
+    price_difference_percentage: float
+    competitor_rating: Optional[float] = 4.5
+    competitor_stock: Optional[int] = 50
+    marketplace: Optional[str] = ""
+    currency: str = "INR"
+    source: str = "Manual"
+    captured_at: str
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class CompetitorItem(BaseModel):
+    name: str
+    price: float
+    difference: float
+    difference_percentage: float
+    rating: Optional[float] = 4.5
+    stock: Optional[int] = 50
+    marketplace: Optional[str] = ""
+    source: Optional[str] = "Manual"
+    currency: Optional[str] = "INR"
+    captured_at: Optional[str] = ""
+
+
+class CompetitorAnalysisItem(BaseModel):
+    id: Optional[int] = None
+    product_id: str
+    product_name: str
+    category: str
+    brand: str
+    our_price: float
+    lowest_competitor_price: float
+    highest_competitor_price: float
+    average_competitor_price: float
+    price_difference: float
+    price_difference_percentage: float
+    recommended_price: float
+    competitive_status: str  # UNDERPRICED, COMPETITIVE, OVERPRICED
+    competitor_count: int
+    analyzed_at: Optional[datetime] = None
+
+
+class ProductDetailComparison(BaseModel):
+    product_id: str
+    product_name: str
+    category: str
+    brand: str
+    our_price: float
+    average_competitor_price: float
+    lowest_competitor_price: float
+    highest_competitor_price: float
+    price_difference: float
+    price_difference_percentage: float
+    price_position: str
+    position_indicator: str  # Below Market, At Market, Above Market
+    competitive_status: str  # UNDERPRICED, COMPETITIVE, OVERPRICED
+    recommended_price: float
+    recommendation_reason: str
+    competitors: List[CompetitorItem]
+
+
+class CompetitorRecommendationResponse(BaseModel):
+    product_id: str
+    our_price: float
+    ml_recommended_price: float
+    average_competitor_price: float
+    lowest_competitor_price: float
+    highest_competitor_price: float
+    recommended_price: float
+    competitive_status: str
+    reason: str
+
+
+class CompetitorTrendPoint(BaseModel):
+    date: str
+    our_price: float
+    prices: Dict[str, float]
+
+
+class CompetitorSummaryResponse(BaseModel):
+    total_products_analyzed: int
+    competitive_products: int
+    overpriced_products: int
+    underpriced_products: int
+    average_price_gap: float
+    average_percentage_gap: float
+    potential_pricing_opportunities: int
+    most_competitive_marketplace: str
+    status_distribution: Dict[str, float]  # {"UNDERPRICED": 25.0, "COMPETITIVE": 50.0, "OVERPRICED": 25.0}
+    insights: List[str]
+    categories: List[str]
+    competitors: List[str]
+    marketplaces: List[str]
+
+
+class CSVImportResponse(BaseModel):
+    successful_rows: int
+    failed_rows: int
+    validation_errors: List[str]
+    status: str
+
+
+

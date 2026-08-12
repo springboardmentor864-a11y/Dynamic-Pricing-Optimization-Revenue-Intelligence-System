@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -137,6 +137,67 @@ export const adminResetPassword = async (userId, newPassword) => {
   return response.data;
 };
 
+// Competitor Price Analysis APIs
+export const getCompetitorAnalysis = async (params = {}) => {
+  const response = await api.get('/api/competitors/analysis', { params });
+  return response.data;
+};
+
+export const getProductCompetitorComparison = async (productId) => {
+  const response = await api.get(`/api/competitors/product/${encodeURIComponent(productId)}`);
+  return response.data;
+};
+
+export const addCompetitorPrice = async (payload) => {
+  const response = await api.post('/api/competitors/prices', payload);
+  return response.data;
+};
+
+export const updateCompetitorPrice = async (id, payload) => {
+  const response = await api.put(`/api/competitors/prices/${id}`, payload);
+  return response.data;
+};
+
+export const deleteCompetitorPrice = async (id) => {
+  const response = await api.delete(`/api/competitors/prices/${id}`);
+  return response.data;
+};
+
+export const getCompetitorSummary = async () => {
+  const response = await api.get('/api/competitors/summary');
+  return response.data;
+};
+
+export const getCompetitorRecommendation = async (productId) => {
+  const response = await api.get(`/api/competitors/recommendation/${encodeURIComponent(productId)}`);
+  return response.data;
+};
+
+export const importCompetitorCSV = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await api.post('/api/competitors/import-csv', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
+};
+
+export const refreshCompetitorData = async () => {
+  const response = await api.post('/api/competitors/refresh');
+  return response.data;
+};
+
+export const resetCompetitorData = async () => {
+  const response = await api.delete('/api/competitors/reset');
+  return response.data;
+};
+
+// Aliases for compatibility
+export const getCompetitorRecords = getCompetitorAnalysis;
+export const getCompetitorProducts = getCompetitorAnalysis;
+export const getCompetitorProductCompare = getProductCompetitorComparison;
+export const uploadCompetitorCSV = importCompetitorCSV;
+
 // Forgot Password & OTP APIs
 export const requestOTP = async (identifier) => {
   const response = await api.post('/api/auth/forgot-password/request-otp', { identifier });
@@ -165,7 +226,7 @@ export const exportUsersExcel = async (userIds = null) => {
   const response = await api.get(url, {
     responseType: 'blob'
   });
-  
+
   const blob = new Blob([response.data], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   });
@@ -205,7 +266,7 @@ export const downloadProjectDocument = async (docId, filename) => {
   const response = await api.get(`/api/docs/download/${docId}`, {
     responseType: 'blob'
   });
-  
+
   const blob = new Blob([response.data], { type: 'application/octet-stream' });
   const link = document.createElement('a');
   link.href = window.URL.createObjectURL(blob);

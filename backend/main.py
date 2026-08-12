@@ -15,12 +15,12 @@ from fastapi.staticfiles import StaticFiles
 try:
     from database import engine, Base, get_db_status_details
     from seed import init_db_and_seed
-    from routers import auth, predict, dashboard, users, docs
+    from routers import auth, predict, dashboard, users, docs, competitors
     from middleware import SecurityHeadersMiddleware
 except ImportError:
     from backend.database import engine, Base, get_db_status_details
     from backend.seed import init_db_and_seed
-    from backend.routers import auth, predict, dashboard, users, docs
+    from backend.routers import auth, predict, dashboard, users, docs, competitors
     from backend.middleware import SecurityHeadersMiddleware
 
 
@@ -70,15 +70,17 @@ app = FastAPI(
 
 app.add_middleware(SecurityHeadersMiddleware)
 
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS")
+origins = [origin.strip() for origin in allowed_origins_env.split(",")] if allowed_origins_env else [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-        "*"
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -100,6 +102,7 @@ app.include_router(users.admin_router)
 app.include_router(predict.router)
 app.include_router(dashboard.router)
 app.include_router(docs.router)
+app.include_router(competitors.router)
 
 
 
