@@ -1,0 +1,18 @@
+{
+    "dataset_size": 18451743,
+    "dataset_mtime": 1783781594.4966114,
+    "dataset_records": 102425,
+    "total_orders": 99441,
+    "gross_revenue": 14803808.78,
+    "total_products": 32951,
+    "average_price": 124.42,
+    "lowest_price": 0.85,
+    "highest_price": 6735.0,
+    "best_model": "XGBoost Regressor",
+    "r2_score": 0.8228008076602115,
+    "mse": 727.3014349305919,
+    "rmse": 26.968526747499425,
+    "mae": 15.484320950271815,
+    "train_time": 22.540021657943726,
+    "prediction_time": 0.4771449565887451
+}

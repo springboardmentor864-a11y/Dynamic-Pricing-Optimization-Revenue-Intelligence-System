@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+catboost
+lightgbm
+reportlab
+aiofiles
+python-multipart
+sqlalchemy
+psycopg2-binary
+google-generativeai
+python-dotenv

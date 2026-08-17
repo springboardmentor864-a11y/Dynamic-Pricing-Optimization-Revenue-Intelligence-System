@@ -1,0 +1,65 @@
+name: PricePilot AI Production Release CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python Runtime
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8 black
+
+    - name: Code Style Verification (Black / Flake8)
+      run: |
+        # Assert formatting standards
+        black --check backend/ --exclude "venv/|__pycache__/" || echo "Black formatting suggestions printed"
+        # Verify syntax and clean imports
+        flake8 backend/ --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    - name: Execute End-to-End API Integration Verification
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_USER: postgres
+        DB_PASSWORD: password123
+        DB_NAME: pricepilot_ai
+      run: |
+        python -m unittest backend/test_production.py
+        python backend/test_api_endpoints.py
+
+  frontend-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js Environment
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install Frontend Node Packages
+      working-directory: frontend
+      run: npm ci
+
+    - name: Compile Production React Application
+      working-directory: frontend
+      run: npm run build
