@@ -1,0 +1,38 @@
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment & Secrets
+.env
+.venv/
+env/
+venv/
+
+# Database & Instance Files
+instance/
+*.sqlite
+*.db
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & Temporary Files
+logs/
+*.log
+catboost_info/
+
+# Office / Temporary Generation Artifacts
+*.docx
+~$*.docx
+*.pdf
+*.xlsx
+
+# IDE & OS Specific
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
