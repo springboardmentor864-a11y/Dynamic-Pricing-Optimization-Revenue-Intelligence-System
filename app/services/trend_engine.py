@@ -142,7 +142,8 @@ class TrendAndOpportunityEngine:
             detected_type = "PRICED_TOO_LOW"
             recommended_price = round(median * 0.96, 2)
             pct_increase = ((recommended_price - our_price) / our_price) * 100.0
-            explanation = f"Our price (R$ {our_price:.2f}) is {((median - our_price)/median)*100:.1f}% below market median (R$ {median:.2f}). Increasing by {pct_increase:.1f}% to R$ {recommended_price:.2f} expands gross margin without losing price competitiveness."
+            margin_gain = round((recommended_price - our_price) * demand, 2)
+            explanation = f"Current price (R$ {our_price:.2f}) is {((median - our_price)/median)*100:.1f}% below market median (R$ {median:.2f}). A {pct_increase:.1f}% increase to R$ {recommended_price:.2f} expands margin by R$ {margin_gain:.2f} while preserving competitive position."
             confidence = 0.92
 
         # Rule 2: Priced Too High
@@ -150,7 +151,7 @@ class TrendAndOpportunityEngine:
             detected_type = "PRICED_TOO_HIGH"
             recommended_price = round(median * 1.05, 2)
             pct_diff = ((recommended_price - our_price) / our_price) * 100.0
-            explanation = f"Our price (R$ {our_price:.2f}) exceeds market ceiling. Lowering price by {abs(pct_diff):.1f}% to R$ {recommended_price:.2f} restores sales conversion and demand volume."
+            explanation = f"Current price (R$ {our_price:.2f}) exceeds market ceiling. Adjusting by {abs(pct_diff):.1f}% to R$ {recommended_price:.2f} aligns with benchmark volume band."
             confidence = 0.88
 
         # Rule 3: High Demand Opportunity
@@ -158,27 +159,30 @@ class TrendAndOpportunityEngine:
             detected_type = "HIGH_DEMAND"
             recommended_price = round(median * 1.03, 2)
             pct_increase = ((recommended_price - our_price) / our_price) * 100.0
-            explanation = f"Strong forecasted demand ({demand:.0f} units/day) provides pricing power. Raising price by +{pct_increase:.1f}% captures higher revenue per order."
+            margin_gain = round((recommended_price - our_price) * demand, 2)
+            explanation = f"Forecast demand is {demand:.0f} units/day. The model indicates room for a {pct_increase:.1f}% price adjustment to R$ {recommended_price:.2f} with estimated additional margin of R$ {margin_gain:.2f}."
             confidence = 0.90
 
         # Rule 4: Low Competition Opportunity
         elif comp_count <= 2 and our_price < median:
             detected_type = "LOW_COMPETITION"
             recommended_price = round(median * 0.98, 2)
-            explanation = f"Only {comp_count} competitor(s) tracking this SKU. Increasing price towards market median (R$ {median:.2f}) optimizes margin with low competitive threat."
+            margin_gain = round((recommended_price - our_price) * demand, 2)
+            explanation = f"Low competitive density ({comp_count} tracked competitor(s)). Adjusting price towards market median (R$ {median:.2f}) yields estimated additional margin of R$ {margin_gain:.2f}."
             confidence = 0.85
 
         # Rule 5: Margin Improvement
         elif (median - our_price) > 5.0:
             detected_type = "MARGIN_IMPROVEMENT"
             recommended_price = round(median * 0.98, 2)
-            explanation = f"Price is R$ {median - our_price:.2f} below median. Adjusting to R$ {recommended_price:.2f} captures extra margin while staying competitive."
+            margin_gain = round((recommended_price - our_price) * demand, 2)
+            explanation = f"Price is R$ {median - our_price:.2f} below median. Adjusting to R$ {recommended_price:.2f} yields estimated additional margin of R$ {margin_gain:.2f}."
             confidence = 0.87
 
         else:
             detected_type = "STABLE"
             recommended_price = our_price
-            explanation = f"Price is optimally positioned relative to market median (R$ {median:.2f}). Maintain current pricing."
+            explanation = f"Current price is positioned at parity with market median (R$ {median:.2f}). Maintain active price."
             confidence = 0.95
 
         price_change_pct = round(((recommended_price - our_price) / our_price) * 100.0, 2)
