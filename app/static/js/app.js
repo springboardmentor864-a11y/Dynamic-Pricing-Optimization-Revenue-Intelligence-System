@@ -9,6 +9,7 @@ const App = {
   async init() {
     this.bindEvents();
     this.updateUserUI();
+    await this.populateForecastProductDropdown();
     await this.loadDashboard();
   },
 
@@ -99,7 +100,18 @@ const App = {
 
     if (targetNav) targetNav.classList.add('active');
     if (targetPane) targetPane.classList.add('active');
-    if (bcCurrent && targetNav) bcCurrent.textContent = targetNav.textContent.trim().replace(/^[\s\S]*?\s/, '');
+
+    const tabNames = {
+      'dashboard': 'Overview',
+      'pricing': 'AI Price Engine',
+      'forecasting': 'Demand Forecast',
+      'products': 'Product Catalog',
+      'competitors': 'Competitor Radar',
+      'market-intelligence': 'Market & Revenue Intelligence',
+      'executive-bi': 'Executive BI',
+      'admin': 'Audit Trail'
+    };
+    if (bcCurrent) bcCurrent.textContent = tabNames[tabId] || (targetNav ? targetNav.innerText.trim() : 'Overview');
 
     if (tabId === 'products') this.loadProducts();
     if (tabId === 'analytics') this.loadAnalytics();
@@ -324,6 +336,32 @@ const App = {
     }
   },
 
+  async populateForecastProductDropdown() {
+    const select = document.getElementById('fc-product-select');
+    if (!select) return;
+    try {
+      const res = await API.getProducts(1, '');
+      if (res && res.products && res.products.length > 0) {
+        select.innerHTML = res.products.map(p => 
+          `<option value="${p.product_id}">${p.product_id} (${p.category_name} - R$ ${p.current_price.toFixed(2)})</option>`
+        ).join('');
+        if (!this.activeForecastProductId) {
+          this.activeForecastProductId = res.products[0].product_id;
+        }
+      }
+    } catch (e) {
+      console.debug('Product dropdown population deferred:', e);
+    }
+  },
+
+  async onForecastProductChange() {
+    const select = document.getElementById('fc-product-select');
+    if (select) {
+      this.activeForecastProductId = select.value;
+    }
+    await this.loadDemandForecast(this.activeForecastHorizon);
+  },
+
   async changeForecastHorizon(days) {
     this.activeForecastHorizon = days;
     document.querySelectorAll('.horizon-btn').forEach(btn => {
@@ -337,17 +375,35 @@ const App = {
   },
 
   async loadDemandForecast(days = 30) {
+    await this.populateForecastProductDropdown();
+    const select = document.getElementById('fc-product-select');
+    const productId = select && select.value ? select.value : (this.activeForecastProductId || 'health_beauty_001');
+    this.activeForecastProductId = productId;
+    this.activeForecastHorizon = days;
+
+    const errorBanner = document.getElementById('fc-error-banner');
+    if (errorBanner) {
+      errorBanner.style.display = 'none';
+      errorBanner.textContent = '';
+    }
+
     try {
-      const res = await API.forecastDemand('PROD_DEFAULT_101', days);
+      const res = await API.forecastDemand(productId, days);
       
+      const prodTitleEl = document.getElementById('fc-prod-title');
+      const prodNameEl = document.getElementById('fc-prod-name');
       const totalUnitsEl = document.getElementById('fc-total-units');
       const avgDailyEl = document.getElementById('fc-avg-daily');
       const trendBadgeEl = document.getElementById('fc-trend-badge');
       const confidenceEl = document.getElementById('fc-confidence');
+      const interpTextEl = document.getElementById('fc-interpretation-text');
 
+      if (prodTitleEl) prodTitleEl.textContent = `${res.product_name || res.product_id} — ${days}-Day Demand Forecast`;
+      if (prodNameEl) prodNameEl.textContent = `Category: ${res.category_name || 'Catalog'} | Model: Time-Series Random Forest Regressor`;
       if (totalUnitsEl) totalUnitsEl.textContent = `${res.total_forecasted_units.toLocaleString()} Units`;
       if (avgDailyEl) avgDailyEl.textContent = `${res.avg_daily_demand.toFixed(1)} / day`;
       if (confidenceEl) confidenceEl.textContent = `${(res.confidence_score * 100).toFixed(1)}%`;
+      if (interpTextEl) interpTextEl.textContent = res.interpretation || 'Demand projections compiled from historical autoregressive regressor.';
 
       if (trendBadgeEl) {
         let badgeClass = 'primary';
@@ -356,11 +412,17 @@ const App = {
         trendBadgeEl.innerHTML = `<span class="badge-minimal ${badgeClass}">${res.trend_classification}</span>`;
       }
 
-      ChartsEngine.initDemandForecastChart('demand-forecast-chart', res);
-      this.showToast(`Updated ${days}-day demand forecast`, 'info');
+      if (typeof ChartsEngine !== 'undefined' && ChartsEngine.initDemandForecastChart) {
+        ChartsEngine.initDemandForecastChart('demand-forecast-chart', res);
+      }
+      this.showToast(`Updated ${days}-day demand forecast for ${res.product_name || productId}`, 'info');
     } catch (e) {
       console.error('Error loading demand forecast:', e);
-      this.showToast('Failed to load demand forecast: ' + e.message, 'error');
+      if (errorBanner) {
+        errorBanner.style.display = 'block';
+        errorBanner.textContent = `Demand forecast unavailable: ${e.message || 'Error executing ML demand inference.'}`;
+      }
+      this.showToast('Demand forecast unavailable: ' + e.message, 'error');
     }
   },
 
@@ -605,17 +667,23 @@ const App = {
           `<span style="color: ${gapColor}; font-weight: 600;">${item.price_difference > 0 ? '+' : ''}R$ ${item.price_difference.toFixed(2)} (${item.price_difference_pct > 0 ? '+' : ''}${item.price_difference_pct.toFixed(1)}%)</span>` : 
           '—';
 
+        let recAction = 'Maintain active price';
+        if (item.price_position === 'Lowest') recAction = 'Room to increase price towards market median';
+        else if (item.price_position === 'Overpriced') recAction = 'Reduce price to align with market ceiling';
+        else if (item.price_position === 'Competitive') recAction = 'Optimal positioning within peer spread';
+        else if (item.price_position === 'Premium') recAction = 'Monitor premium margin sustainability';
+
         return `
           <tr>
-            <td><strong style="color: var(--text-heading);">${item.product_id}</strong></td>
+            <td><strong>${item.product_id}</strong></td>
             <td><span style="font-size: 11px; color: var(--text-secondary);">${item.category_name}</span></td>
-            <td><strong>R$ ${item.our_price.toFixed(2)}</strong></td>
-            <td>${item.lowest_competitor_price !== null ? `R$ ${item.lowest_competitor_price.toFixed(2)}` : '—'}</td>
-            <td>${item.average_competitor_price !== null ? `R$ ${item.average_competitor_price.toFixed(2)}` : '—'}</td>
-            <td>${item.highest_competitor_price !== null ? `R$ ${item.highest_competitor_price.toFixed(2)}` : '—'}</td>
-            <td>${gapText}</td>
-            <td><span class="${posClass}">${item.price_position}</span></td>
-            <td><span style="font-size: 11.5px; color: var(--text-secondary);">${item.price_position === 'Overpriced' ? '⚠️ ' : ''}${item.price_position === 'Lowest' ? '🚀 ' : ''}${item.price_position} — ${item.competitor_count} sources</span></td>
+            <td class="text-right"><strong>R$ ${item.our_price.toFixed(2)}</strong></td>
+            <td class="text-right">${item.lowest_competitor_price !== null ? `R$ ${item.lowest_competitor_price.toFixed(2)}` : '—'}</td>
+            <td class="text-right">${item.average_competitor_price !== null ? `R$ ${item.average_competitor_price.toFixed(2)}` : '—'}</td>
+            <td class="text-right">${item.highest_competitor_price !== null ? `R$ ${item.highest_competitor_price.toFixed(2)}` : '—'}</td>
+            <td class="text-right">${gapText}</td>
+            <td class="text-center"><span class="${posClass}">${item.price_position}</span></td>
+            <td style="font-size: 11.5px; color: var(--text-secondary);">${recAction} <span style="font-size: 10.5px; color: var(--text-muted);">(${item.competitor_count} sources)</span></td>
           </tr>
         `;
       }).join('');
@@ -781,11 +849,54 @@ const App = {
   // Market Intelligence Controller Methods
   async loadMarketIntelligenceTab() {
     this.renderTableSkeleton('market-table-body', 5, 8);
+    this.renderTableSkeleton('revenue-table-body', 5, 10);
     await Promise.all([
       this.loadMarketOverviewData(),
+      this.loadMarketCompetitiveIntelligence(),
+      this.loadMarketOpportunitiesData(),
       this.loadMarketTrendsData(),
-      this.loadMarketOpportunitiesData()
+      this.loadRevenueOverviewData(),
+      this.loadRevenueRecommendationsData(),
+      this.onSimulationInputChange()
     ]);
+  },
+
+  async loadMarketCompetitiveIntelligence() {
+    try {
+      const res = await API.getCompetitorComparison({ limit: 50 });
+      const summary = res.summary || {};
+      const comparisons = res.comparisons || [];
+
+      const medEl = document.getElementById('comp-kpi-median');
+      const rangeEl = document.getElementById('comp-kpi-range');
+      const ourPriceEl = document.getElementById('comp-kpi-our-price');
+      const gapStatEl = document.getElementById('comp-kpi-gap-stat');
+
+      if (comparisons.length > 0) {
+        const ourPrices = comparisons.map(c => c.our_price).filter(v => v !== null && !isNaN(v));
+        const compMinPrices = comparisons.map(c => c.lowest_competitor_price).filter(v => v !== null && !isNaN(v));
+        const compMaxPrices = comparisons.map(c => c.highest_competitor_price).filter(v => v !== null && !isNaN(v));
+        const avgMedians = comparisons.map(c => c.average_competitor_price).filter(v => v !== null && !isNaN(v));
+
+        const avgOur = ourPrices.length ? (ourPrices.reduce((a, b) => a + b, 0) / ourPrices.length) : 0;
+        const avgMed = avgMedians.length ? (avgMedians.reduce((a, b) => a + b, 0) / avgMedians.length) : avgOur;
+        const minComp = compMinPrices.length ? Math.min(...compMinPrices) : avgOur * 0.8;
+        const maxComp = compMaxPrices.length ? Math.max(...compMaxPrices) : avgOur * 1.2;
+
+        if (medEl) medEl.textContent = `R$ ${avgMed.toFixed(2)}`;
+        if (rangeEl) rangeEl.textContent = `R$ ${minComp.toFixed(2)} – R$ ${maxComp.toFixed(2)}`;
+        if (ourPriceEl) ourPriceEl.textContent = `R$ ${avgOur.toFixed(2)}`;
+
+        const avgGap = summary.avg_catalog_price_gap !== undefined ? summary.avg_catalog_price_gap : (avgOur - avgMed);
+        const avgGapPct = avgMed > 0 ? (avgGap / avgMed) * 100 : 0;
+        if (gapStatEl) {
+          gapStatEl.textContent = `${avgGapPct >= 0 ? '+' : ''}${avgGapPct.toFixed(1)}%`;
+          gapStatEl.style.color = avgGapPct > 5 ? '#f87171' : (avgGapPct < -5 ? '#10b981' : 'var(--text-heading)');
+        }
+      }
+    } catch (e) {
+      console.debug('Competitive intelligence summary load deferred:', e);
+    }
   },
 
   async loadMarketOverviewData() {
@@ -799,13 +910,22 @@ const App = {
 
       // Update KPI Cards
       const stabilityEl = document.getElementById('market-kpi-stability');
+      const volatilityEl = document.getElementById('market-kpi-volatility');
+      const posEl = document.getElementById('market-kpi-position');
+      const trendEl = document.getElementById('market-kpi-trend');
       const riskCountEl = document.getElementById('market-kpi-risk-count');
+      const lossCountEl = document.getElementById('market-kpi-loss-count');
+
       if (stabilityEl) stabilityEl.textContent = (summary.catalog_stability_score || 100.0).toFixed(1);
+      if (volatilityEl) volatilityEl.textContent = `${(summary.catalog_volatility_index || 0.0).toFixed(1)}%`;
+      if (posEl) posEl.textContent = summary.dominant_position || 'Competitive';
+      if (trendEl) trendEl.textContent = summary.dominant_trend || 'Stable';
 
       const highRiskCount = (summary.risk_counts['High Risk - Overpriced'] || 0) + 
                             (summary.risk_counts['Volatility Risk'] || 0) + 
                             (summary.risk_counts['Margin Risk - Low Price'] || 0);
       if (riskCountEl) riskCountEl.textContent = highRiskCount;
+      if (lossCountEl) lossCountEl.textContent = summary.loss_making_count || 0;
 
       // Render Catalog Market Table
       const tbody = document.getElementById('market-table-body');
@@ -828,14 +948,14 @@ const App = {
 
         return `
           <tr>
-            <td><strong style="color: var(--text-heading);">${p.product_id}</strong></td>
+            <td><strong>${p.product_id}</strong></td>
             <td><span style="font-size: 11px; color: var(--text-secondary);">${p.category_name}</span></td>
-            <td><strong>R$ ${p.our_price.toFixed(2)}</strong></td>
-            <td>${p.median_market_price !== null ? `R$ ${p.median_market_price.toFixed(2)}` : '—'}</td>
-            <td><span style="color: ${p.price_volatility_pct > 15 ? '#f87171' : 'var(--text-body)'}; font-weight: 500;">${p.price_volatility_pct.toFixed(1)}%</span></td>
-            <td><span class="${posClass}">${p.positioning_label}</span></td>
-            <td><span style="color: ${riskColor}; font-weight: 600; font-size: 11px;">${p.risk_label}</span></td>
-            <td><span style="font-size: 11.5px; color: var(--text-secondary);">${p.positioning_explanation}</span></td>
+            <td class="text-right"><strong>R$ ${p.our_price.toFixed(2)}</strong></td>
+            <td class="text-right">${p.median_market_price !== null ? `R$ ${p.median_market_price.toFixed(2)}` : '—'}</td>
+            <td class="text-right"><span style="color: ${p.price_volatility_pct > 15 ? '#f87171' : 'var(--text-body)'}; font-weight: 500;">${p.price_volatility_pct.toFixed(1)}%</span></td>
+            <td class="text-center"><span class="${posClass}">${p.positioning_label}</span></td>
+            <td class="text-center"><span style="color: ${riskColor}; font-weight: 600; font-size: 11px;">${p.risk_label}</span></td>
+            <td style="font-size: 11.5px; color: var(--text-secondary);">${p.positioning_explanation}</td>
           </tr>
         `;
       }).join('');
@@ -876,37 +996,64 @@ const App = {
   },
 
   renderOpportunityCards(opportunities) {
+    const tbody = document.getElementById('market-opportunity-table-body');
     const container = document.getElementById('market-opportunity-cards-container');
-    if (!container) return;
 
-    if (!opportunities || opportunities.length === 0) {
-      container.innerHTML = '<div class="card-minimal" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 24px;">No immediate pricing opportunities flagged for this view. Catalog prices are well optimized.</div>';
-      return;
+    if (tbody) {
+      if (!opportunities || opportunities.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 16px;">No immediate pricing opportunities flagged for this view. Catalog prices are well optimized.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = opportunities.slice(0, 8).map(o => {
+        const typeBadgeClass = o.recommendation_type === 'PRICED_TOO_LOW' ? 'success' : (o.recommendation_type === 'PRICED_TOO_HIGH' ? 'warning' : 'primary');
+        const gapPct = o.price_change_pct || 0;
+        const gapColor = gapPct > 0 ? '#10b981' : (gapPct < 0 ? '#f59e0b' : 'var(--text-body)');
+        const demandRunrate = (o.expected_revenue && o.expected_revenue > 2000) ? 'High' : 'Moderate';
+        const actionText = gapPct > 0 ? `Increase to R$ ${o.recommended_price.toFixed(2)}` : (gapPct < 0 ? `Adjust to R$ ${o.recommended_price.toFixed(2)}` : `Maintain at R$ ${o.current_price.toFixed(2)}`);
+        const estMedian = o.current_price * (1 + (gapPct / 100));
+
+        return `
+          <tr>
+            <td><strong>${o.product_sku || o.product_id}</strong></td>
+            <td class="text-right">R$ ${o.current_price.toFixed(2)}</td>
+            <td class="text-right">R$ ${estMedian.toFixed(2)}</td>
+            <td class="text-right" style="color: ${gapColor}; font-weight: 600;">${gapPct >= 0 ? '+' : ''}${gapPct.toFixed(1)}%</td>
+            <td class="text-center"><span class="badge-minimal ${demandRunrate === 'High' ? 'primary' : 'neutral'}">${demandRunrate}</span></td>
+            <td class="text-center"><span class="badge-minimal ${typeBadgeClass}">${(o.recommendation_type || '').replace(/_/g, ' ')}</span></td>
+            <td><span style="color: var(--text-heading); font-weight: 500;">${actionText}</span> <span style="font-size: 11px; color: #10b981; margin-left: 6px;">(+R$ ${(o.expected_margin || 0).toFixed(2)} margin)</span></td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    container.innerHTML = opportunities.slice(0, 3).map(o => {
-      const typeBadgeClass = o.recommendation_type === 'PRICED_TOO_LOW' ? 'success' : (o.recommendation_type === 'PRICED_TOO_HIGH' ? 'warning' : 'primary');
-      const actionText = o.price_change_pct > 0 ? `Increase price by +${o.price_change_pct.toFixed(1)}%` : `Lower price by ${o.price_change_pct.toFixed(1)}%`;
-
-      return `
-        <div class="card-minimal" style="border-left: 3px solid ${o.price_change_pct > 0 ? 'var(--success)' : 'var(--warning)'};">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="color: var(--text-heading); font-size: 13px;">${o.product_sku}</strong>
-            <span class="badge-minimal ${typeBadgeClass}">${o.recommendation_type.replace(/_/g, ' ')}</span>
+    if (container) {
+      if (!opportunities || opportunities.length === 0) {
+        container.innerHTML = '<div class="card-minimal" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 20px;">No immediate pricing opportunities flagged.</div>';
+        return;
+      }
+      container.innerHTML = opportunities.slice(0, 3).map(o => {
+        const typeBadgeClass = o.recommendation_type === 'PRICED_TOO_LOW' ? 'success' : (o.recommendation_type === 'PRICED_TOO_HIGH' ? 'warning' : 'primary');
+        const actionText = o.price_change_pct > 0 ? `Increase price by +${o.price_change_pct.toFixed(1)}%` : `Lower price by ${o.price_change_pct.toFixed(1)}%`;
+        return `
+          <div class="kpi-card-minimal">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="color: var(--text-heading); font-size: 12.5px;">${o.product_sku}</strong>
+              <span class="badge-minimal ${typeBadgeClass}">${o.recommendation_type.replace(/_/g, ' ')}</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: baseline; margin-bottom: 6px;">
+              <span style="font-size: 11.5px; color: var(--text-muted); text-decoration: line-through;">R$ ${o.current_price.toFixed(2)}</span>
+              <span style="font-size: 14px; font-weight: 700; color: var(--text-heading);">R$ ${o.recommended_price.toFixed(2)}</span>
+            </div>
+            <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.35; margin-bottom: 6px;">${o.explanation}</p>
+            <div style="font-size: 10.5px; color: var(--text-muted); display: flex; justify-content: space-between;">
+              <span>Confidence: ${(o.confidence_score * 100).toFixed(0)}%</span>
+              <span style="color: #10b981; font-weight: 600;">Est. Margin Gain: +R$ ${(o.expected_margin || 0).toFixed(2)}</span>
+            </div>
           </div>
-          <div style="display: flex; gap: 12px; align-items: baseline; margin-bottom: 8px;">
-            <span style="font-size: 12px; color: var(--text-muted); text-decoration: line-through;">R$ ${o.current_price.toFixed(2)}</span>
-            <span style="font-size: 15px; font-weight: 700; color: var(--text-heading);">R$ ${o.recommended_price.toFixed(2)}</span>
-            <span style="font-size: 11px; font-weight: 600; color: ${o.price_change_pct > 0 ? '#10b981' : '#f59e0b'};">(${actionText})</span>
-          </div>
-          <p style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 10px;">${o.explanation}</p>
-          <div style="font-size: 10.5px; color: var(--text-muted); display: flex; justify-content: space-between;">
-            <span>Confidence: ${(o.confidence_score * 100).toFixed(0)}%</span>
-            <span style="color: #10b981; font-weight: 600;">Potential Margin Gain: +R$ ${(o.expected_margin || 0).toFixed(2)}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
   },
 
   onMarketSearchChange() {
@@ -982,22 +1129,22 @@ const App = {
       }
 
       tbody.innerHTML = filtered.map(r => {
-        const stratColor = r.strategy_type === 'Loss Prevention' ? '#f87171' : (r.strategy_type === 'Premium Pricing' ? '#fbbf24' : '#60a5fa');
-        const riskColor = r.risk_level === 'HIGH' ? '#f87171' : (r.risk_level === 'MEDIUM' ? '#fbbf24' : '#10b981');
-        const breakeven = r.current_price * 0.65; // Approx baseline break-even
+        const stratBadge = r.strategy_type === 'Loss Prevention' ? 'danger' : (r.strategy_type === 'Premium Pricing' ? 'warning' : 'primary');
+        const riskBadge = r.risk_level === 'HIGH' ? 'danger' : (r.risk_level === 'MEDIUM' ? 'warning' : 'success');
+        const breakeven = r.current_price * 0.65;
 
         return `
           <tr>
-            <td><strong style="color: var(--text-heading);">${r.product_sku}</strong></td>
-            <td><span style="font-size: 11.5px; color: var(--text-muted);">R$ ${(r.current_price * 0.60).toFixed(2)}</span></td>
-            <td>R$ ${r.current_price.toFixed(2)}</td>
-            <td><span style="font-size: 11.5px; color: #f87171;">R$ ${breakeven.toFixed(2)}</span></td>
-            <td><strong style="color: #10b981;">R$ ${r.recommended_price.toFixed(2)}</strong></td>
-            <td><span style="color: ${stratColor}; font-weight: 600; font-size: 11.5px;">${r.strategy_type}</span></td>
-            <td><strong style="color: #10b981;">+R$ ${(r.expected_profit || 0).toFixed(2)}</strong></td>
-            <td><span style="color: #c084fc; font-weight: 600;">+${(r.expected_roi || 0).toFixed(1)}%</span></td>
-            <td><span style="color: ${riskColor}; font-size: 11px; font-weight: 700;">${r.risk_level}</span></td>
-            <td><span style="font-size: 11.5px; color: var(--text-secondary);">${r.explanation}</span></td>
+            <td><strong>${r.product_sku}</strong></td>
+            <td class="text-right" style="color: var(--text-muted);">R$ ${(r.current_price * 0.60).toFixed(2)}</td>
+            <td class="text-right">R$ ${r.current_price.toFixed(2)}</td>
+            <td class="text-right" style="color: #f87171;">R$ ${breakeven.toFixed(2)}</td>
+            <td class="text-right"><strong style="color: #10b981;">R$ ${r.recommended_price.toFixed(2)}</strong></td>
+            <td class="text-center"><span class="badge-minimal ${stratBadge}">${r.strategy_type}</span></td>
+            <td class="text-right" style="color: #10b981; font-weight: 600;">+R$ ${(r.expected_profit || 0).toFixed(2)}</td>
+            <td class="text-right" style="color: #38bdf8; font-weight: 600;">+${(r.expected_roi || 0).toFixed(1)}%</td>
+            <td class="text-center"><span class="badge-minimal ${riskBadge}">${r.risk_level}</span></td>
+            <td style="font-size: 11.5px; color: var(--text-secondary);">${r.explanation}</td>
           </tr>
         `;
       }).join('');
