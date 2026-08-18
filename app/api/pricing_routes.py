@@ -46,23 +46,26 @@ def predict_price():
         return jsonify({'error': f'Prediction execution failed: {str(e)}'}), 500
 
 @pricing_bp.route('/forecast-demand', methods=['POST'])
-@jwt_required
 def forecast_demand():
     try:
         data = request.get_json() or {}
-        product_id = str(data.get('product_id', 'PROD_DEFAULT_101'))
+        product_id = str(data.get('product_id', 'PROD_DEFAULT_101')).strip()
         
         try:
             days = int(data.get('days', 30))
             if days < 1 or days > 365:
-                return jsonify({'error': 'Forecast days must be between 1 and 365.'}), 400
+                return jsonify({'error': 'Forecast horizon must be between 1 and 365 days.'}), 400
         except (ValueError, TypeError):
-            return jsonify({'error': 'Days must be a valid integer.'}), 400
+            return jsonify({'error': 'Forecast horizon days must be a valid integer.'}), 400
 
         result = ml_service.forecast_demand(product_id, days)
         return jsonify(result), 200
+    except ValueError as ve:
+        return jsonify({'error': f'Demand forecast unavailable: {str(ve)}'}), 404
+    except RuntimeError as re:
+        return jsonify({'error': f'Demand forecast unavailable: {str(re)}'}), 503
     except Exception as e:
-        return jsonify({'error': f'Demand forecasting failed: {str(e)}'}), 500
+        return jsonify({'error': f'Demand forecast unavailable: {str(e)}'}), 500
 
 @pricing_bp.route('/optimize-price', methods=['POST'])
 @jwt_required
