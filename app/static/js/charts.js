@@ -1,22 +1,25 @@
-/* PricePilot AI — Luxury Interactive ApexCharts Engine */
+/* ==========================================================================
+   PricePilot — Professional Enterprise Analytical Chart Engine
+   ========================================================================== */
+
 const ChartsEngine = {
   chartInstances: {},
 
-  initSparkline(containerId, data, color = '#6366f1') {
+  initSparkline(containerId, data, color = '#2563eb') {
     const options = {
       chart: {
         type: 'area',
-        height: 32,
+        height: 28,
         sparkline: { enabled: true },
         background: 'transparent'
       },
-      stroke: { curve: 'smooth', width: 2 },
+      stroke: { curve: 'smooth', width: 1.8 },
       fill: {
         type: 'gradient',
-        gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05 }
+        gradient: { shadeIntensity: 1, opacityFrom: 0.35, opacityTo: 0.02 }
       },
       colors: [color],
-      series: [{ name: 'Metric Trend', data }],
+      series: [{ name: 'Trend', data }],
       tooltip: { enabled: false },
       dataLabels: { enabled: false }
     };
@@ -27,49 +30,49 @@ const ChartsEngine = {
     const options = {
       chart: {
         type: 'area',
-        height: 340,
+        height: 300,
         toolbar: {
           show: true,
-          tools: { download: true, selection: true, zoom: true, zoomin: true, zoomout: true, pan: true, reset: true }
+          tools: { download: true, selection: false, zoom: true, zoomin: true, zoomout: true, pan: false, reset: true }
         },
         background: 'transparent',
-        fontFamily: 'Plus Jakarta Sans, sans-serif'
+        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
       },
       theme: { mode: 'dark' },
-      colors: ['#6366f1', '#a855f7'],
-      stroke: { curve: 'smooth', width: 2.5 },
-      dataLabels: { enabled: false }, // CRITICAL FIX: Hide overlapping point text labels
+      colors: ['#2563eb', '#38bdf8'],
+      stroke: { curve: 'smooth', width: 2 },
+      dataLabels: { enabled: false },
       fill: {
         type: 'gradient',
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.40,
-          opacityTo: 0.03,
+          opacityFrom: 0.3,
+          opacityTo: 0.02,
           stops: [0, 95, 100]
         }
       },
       xaxis: {
         categories: monthlyData.labels,
-        labels: { style: { colors: '#94a3b8', fontSize: '11px', fontWeight: 500 } },
-        axisBorder: { show: false },
-        axisTicks: { show: false },
-        crosshairs: { show: true, stroke: { color: '#6366f1', dashArray: 4 } }
+        labels: { style: { colors: '#64748b', fontSize: '11px', fontWeight: 500 } },
+        axisBorder: { color: '#1e293b' },
+        axisTicks: { color: '#1e293b' },
+        crosshairs: { show: true, stroke: { color: '#2563eb', dashArray: 4 } }
       },
       yaxis: {
         labels: {
-          style: { colors: '#94a3b8', fontSize: '11px' },
+          style: { colors: '#64748b', fontSize: '11px' },
           formatter: (v) => `R$ ${(v / 1000).toFixed(0)}k`
         }
       },
       series: monthlyData.series,
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       legend: { position: 'top', horizontalAlign: 'right', labels: { colors: '#94a3b8' } },
       tooltip: {
         shared: true,
         intersect: false,
         theme: 'dark',
         y: {
-          formatter: (val) => `R$ ${val ? val.toLocaleString() : '0'}`
+          formatter: (val) => `R$ ${val ? val.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}`
         }
       }
     };
@@ -80,29 +83,29 @@ const ChartsEngine = {
     const options = {
       chart: {
         type: 'bar',
-        height: 340,
+        height: 300,
         toolbar: {
           show: true,
-          tools: { download: true, selection: true, zoom: true, zoomin: true, zoomout: true, pan: true, reset: true }
+          tools: { download: true, selection: false, zoom: true, zoomin: true, zoomout: true, pan: false, reset: true }
         },
         background: 'transparent',
-        fontFamily: 'Plus Jakarta Sans, sans-serif'
+        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
       },
       theme: { mode: 'dark' },
-      colors: ['#10b981', '#06b6d4'],
-      dataLabels: { enabled: false }, // CRITICAL FIX: Hide overlapping point text labels
+      colors: ['#2563eb', '#10b981'],
+      dataLabels: { enabled: false },
       xaxis: {
         categories: weeklyData.labels,
-        labels: { style: { colors: '#94a3b8', fontSize: '11px', fontWeight: 500 } },
-        axisBorder: { show: false }
+        labels: { style: { colors: '#64748b', fontSize: '11px', fontWeight: 500 } },
+        axisBorder: { color: '#1e293b' }
       },
       yaxis: [
-        { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: (v) => `R$ ${(v / 1000).toFixed(0)}k` } },
-        { opposite: true, labels: { style: { colors: '#94a3b8', fontSize: '11px' } } }
+        { labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `R$ ${(v / 1000).toFixed(0)}k` } },
+        { opposite: true, labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `${v} orders` } }
       ],
       series: weeklyData.series,
-      plotOptions: { bar: { borderRadius: 6, columnWidth: '45%' } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      plotOptions: { bar: { borderRadius: 4, columnWidth: '40%' } },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       legend: { position: 'top', horizontalAlign: 'right', labels: { colors: '#94a3b8' } },
       tooltip: { theme: 'dark' }
     };
@@ -111,14 +114,14 @@ const ChartsEngine = {
 
   initCustomerStateChart(containerId, insights) {
     const options = {
-      chart: { type: 'donut', height: 300, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'donut', height: 280, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
       labels: insights.customers_by_state.labels,
       series: insights.customers_by_state.data,
-      colors: ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#06b6d4', '#64748b'],
+      colors: ['#2563eb', '#38bdf8', '#10b981', '#f59e0b', '#ef4444', '#64748b', '#06b6d4', '#94a3b8'],
       stroke: { width: 0 },
-      dataLabels: { enabled: false }, // CRITICAL FIX: Clean legend tooltips
-      legend: { position: 'bottom', labels: { colors: '#94a3b8' } },
+      dataLabels: { enabled: false },
+      legend: { position: 'bottom', labels: { colors: '#94a3b8', fontSize: '11px' } },
       tooltip: { theme: 'dark' }
     };
     this.renderOrUpdate('customerState', containerId, options);
@@ -126,15 +129,15 @@ const ChartsEngine = {
 
   initFeatureImportanceChart(containerId, fiData) {
     const options = {
-      chart: { type: 'bar', height: 300, toolbar: { show: true }, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'bar', height: 280, toolbar: { show: false }, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      colors: ['#6366f1'],
-      dataLabels: { enabled: false }, // CRITICAL FIX: Hide overlapping point text labels
-      plotOptions: { bar: { horizontal: true, borderRadius: 5, barHeight: '55%' } },
-      xaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
+      colors: ['#2563eb'],
+      dataLabels: { enabled: false },
+      plotOptions: { bar: { horizontal: true, borderRadius: 3, barHeight: '50%' } },
+      xaxis: { labels: { style: { colors: '#64748b', fontSize: '11px' } }, axisBorder: { color: '#1e293b' } },
       yaxis: { categories: fiData.features, labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
-      series: [{ name: 'Importance Score', data: fiData.composite_score }],
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      series: [{ name: 'Weight / Contribution', data: fiData.composite_score }],
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       tooltip: { theme: 'dark' }
     };
     this.renderOrUpdate('featureImportance', containerId, options);
@@ -151,25 +154,41 @@ const ChartsEngine = {
     const options = {
       chart: {
         type: 'line',
-        height: 340,
+        height: 320,
         toolbar: { show: true },
         background: 'transparent',
-        fontFamily: 'Plus Jakarta Sans, sans-serif'
+        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
       },
       theme: { mode: 'dark' },
-      colors: ['#6366f1', '#10b981', '#ef4444'],
-      stroke: { curve: 'smooth', width: [3, 1.5, 1.5], dashArray: [0, 4, 4] },
+      colors: ['#38bdf8', '#10b981', '#f59e0b'],
+      stroke: { curve: 'smooth', width: [2.5, 1.5, 1.5], dashArray: [0, 4, 4] },
       dataLabels: { enabled: false },
       series: [
-        { name: 'Projected Demand (Units)', data: forecast },
+        { name: 'Projected Demand', data: forecast },
         { name: 'Upper Bound (95% CI)', data: upperBound },
         { name: 'Lower Bound (95% CI)', data: lowerBound }
       ],
-      xaxis: { categories: dates, labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
-      yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      xaxis: { 
+        categories: dates, 
+        tickAmount: Math.min(10, dates.length),
+        labels: { 
+          style: { colors: '#64748b', fontSize: '11px' },
+          rotate: dates.length > 30 ? -45 : 0
+        },
+        axisBorder: { color: '#1e293b' }
+      },
+      yaxis: { 
+        labels: { 
+          style: { colors: '#64748b', fontSize: '11px' },
+          formatter: (val) => `${Math.round(val)} units`
+        } 
+      },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       legend: { position: 'top', labels: { colors: '#94a3b8' } },
-      tooltip: { theme: 'dark' }
+      tooltip: { 
+        theme: 'dark',
+        y: { formatter: (val) => `${Math.round(val)} units/day` }
+      }
     };
     this.renderOrUpdate('demandForecast', containerId, options);
   },
@@ -184,25 +203,25 @@ const ChartsEngine = {
     const options = {
       chart: {
         type: 'line',
-        height: 320,
-        toolbar: { show: true },
+        height: 290,
+        toolbar: { show: false },
         background: 'transparent',
-        fontFamily: 'Plus Jakarta Sans, sans-serif'
+        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
       },
       theme: { mode: 'dark' },
-      colors: ['#10b981', '#a855f7'],
-      stroke: { curve: 'smooth', width: [3, 2] },
+      colors: ['#10b981', '#38bdf8'],
+      stroke: { curve: 'smooth', width: [2.5, 1.8] },
       dataLabels: { enabled: false },
       series: [
-        { name: 'Projected Profit (BRL)', data: profit },
+        { name: 'Projected Net Profit (BRL)', data: profit },
         { name: 'Expected Demand (Units)', data: demand }
       ],
-      xaxis: { categories: prices, labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
+      xaxis: { categories: prices, labels: { style: { colors: '#64748b', fontSize: '11px' } }, axisBorder: { color: '#1e293b' } },
       yaxis: [
-        { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: (v) => `R$ ${v}` } },
-        { opposite: true, labels: { style: { colors: '#94a3b8', fontSize: '11px' } } }
+        { labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `R$ ${v.toFixed(0)}` } },
+        { opposite: true, labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `${Math.round(v)} u` } }
       ],
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       legend: { position: 'top', labels: { colors: '#94a3b8' } },
       tooltip: { theme: 'dark' }
     };
@@ -221,11 +240,11 @@ const ChartsEngine = {
     ];
 
     const options = {
-      chart: { type: 'donut', height: 260, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'donut', height: 260, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
       labels: labels,
       series: series,
-      colors: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#64748b'],
+      colors: ['#10b981', '#38bdf8', '#f59e0b', '#ef4444', '#64748b'],
       stroke: { width: 0 },
       dataLabels: { enabled: false },
       legend: { position: 'bottom', labels: { colors: '#94a3b8', fontSize: '11px' } },
@@ -242,21 +261,24 @@ const ChartsEngine = {
     const rolling30 = trendsData.trends.map(t => t.rolling_30d_avg || t.current_price);
 
     const options = {
-      chart: { type: 'line', height: 300, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'line', height: 270, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      colors: ['#6366f1', '#10b981', '#f59e0b'],
-      stroke: { curve: 'smooth', width: [3, 2, 2], dashArray: [0, 3, 5] },
+      colors: ['#38bdf8', '#10b981', '#f59e0b'],
+      stroke: { curve: 'smooth', width: [2.5, 1.8, 1.8], dashArray: [0, 3, 5] },
       dataLabels: { enabled: false },
       series: [
         { name: '7-Day Rolling Avg', data: rolling7 },
         { name: '14-Day Rolling Avg', data: rolling14 },
         { name: '30-Day Rolling Avg', data: rolling30 }
       ],
-      xaxis: { categories: skus, labels: { style: { colors: '#94a3b8', fontSize: '10px' } } },
-      yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: (v) => `R$ ${v.toFixed(0)}` } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
-      legend: { position: 'top', labels: { colors: '#94a3b8' } },
-      tooltip: { theme: 'dark' }
+      xaxis: { categories: skus, labels: { style: { colors: '#64748b', fontSize: '10px' } }, axisBorder: { color: '#1e293b' } },
+      yaxis: { labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `R$ ${v.toFixed(0)}` } },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
+      legend: { position: 'top', labels: { colors: '#94a3b8', fontSize: '11px' } },
+      tooltip: { 
+        theme: 'dark',
+        y: { formatter: (v) => `R$ ${v.toFixed(2)}` }
+      }
     };
     this.renderOrUpdate('rollingAverage', containerId, options);
   },
@@ -272,15 +294,15 @@ const ChartsEngine = {
     ];
 
     const options = {
-      chart: { type: 'bar', height: 260, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'bar', height: 270, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      colors: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
-      plotOptions: { bar: { borderRadius: 6, distributed: true, columnWidth: '50%' } },
+      colors: ['#10b981', '#38bdf8', '#f59e0b', '#ef4444'],
+      plotOptions: { bar: { borderRadius: 4, distributed: true, columnWidth: '45%' } },
       dataLabels: { enabled: false },
-      series: [{ name: 'Products Count', data: series }],
-      xaxis: { categories: labels, labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
-      yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' } } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      series: [{ name: 'Catalog SKU Count', data: series }],
+      xaxis: { categories: labels, labels: { style: { colors: '#94a3b8', fontSize: '11px' } }, axisBorder: { color: '#1e293b' } },
+      yaxis: { labels: { style: { colors: '#64748b', fontSize: '11px' } } },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       legend: { show: false },
       tooltip: { theme: 'dark' }
     };
@@ -296,9 +318,9 @@ const ChartsEngine = {
     const projProf = items.map(i => i.projected_profit);
 
     const options = {
-      chart: { type: 'bar', height: 300, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'bar', height: 260, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      colors: ['#64748b', '#6366f1', '#10b981'],
+      colors: ['#475569', '#2563eb', '#10b981'],
       stroke: { width: 0 },
       dataLabels: { enabled: false },
       series: [
@@ -306,10 +328,10 @@ const ChartsEngine = {
         { name: 'Projected Revenue', data: projRev },
         { name: 'Projected Profit', data: projProf }
       ],
-      xaxis: { categories: skus, labels: { style: { colors: '#94a3b8', fontSize: '10px' } } },
-      yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: (v) => `R$ ${(v/1000).toFixed(1)}k` } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
-      legend: { position: 'top', labels: { colors: '#94a3b8' } },
+      xaxis: { categories: skus, labels: { style: { colors: '#64748b', fontSize: '10px' } }, axisBorder: { color: '#1e293b' } },
+      yaxis: { labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `R$ ${(v/1000).toFixed(1)}k` } },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
+      legend: { position: 'top', labels: { colors: '#94a3b8', fontSize: '11px' } },
       tooltip: { theme: 'dark' }
     };
     this.renderOrUpdate('revenueProfitTrend', containerId, options);
@@ -322,65 +344,46 @@ const ChartsEngine = {
     const revenues = sensitivityCurve.map(s => s.projected_revenue);
 
     const options = {
-      chart: { type: 'line', height: 300, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'line', height: 260, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      colors: ['#10b981', '#6366f1'],
-      stroke: { curve: 'smooth', width: [3, 2] },
+      colors: ['#10b981', '#38bdf8'],
+      stroke: { curve: 'smooth', width: [2.5, 1.8] },
       dataLabels: { enabled: false },
       series: [
         { name: 'Projected Net Profit', data: profits },
         { name: 'Projected Gross Revenue', data: revenues }
       ],
-      xaxis: { categories: prices, labels: { style: { colors: '#94a3b8', fontSize: '10px' } } },
-      yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: (v) => `R$ ${v.toFixed(0)}` } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
-      legend: { position: 'top', labels: { colors: '#94a3b8' } },
+      xaxis: { categories: prices, labels: { style: { colors: '#64748b', fontSize: '10px' } }, axisBorder: { color: '#1e293b' } },
+      yaxis: { labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `R$ ${v.toFixed(0)}` } },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
+      legend: { position: 'top', labels: { colors: '#94a3b8', fontSize: '11px' } },
       tooltip: { theme: 'dark' }
     };
     this.renderOrUpdate('scenarioSensitivity', containerId, options);
   },
 
-  initPricingStrategyChart(containerId, strategyCounts) {
-    if (!strategyCounts) return;
-    const labels = Object.keys(strategyCounts);
-    const series = Object.values(strategyCounts);
-
-    const options = {
-      chart: { type: 'donut', height: 260, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
-      theme: { mode: 'dark' },
-      labels: labels,
-      series: series,
-      colors: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#3b82f6', '#06b6d4', '#8b5cf6'],
-      stroke: { width: 0 },
-      dataLabels: { enabled: false },
-      legend: { position: 'bottom', labels: { colors: '#94a3b8', fontSize: '10px' } },
-      tooltip: { theme: 'dark' }
-    };
-    this.renderOrUpdate('pricingStrategyDist', containerId, options);
-  },
-
   initExecWaterfallChart(containerId, kpis) {
     if (!kpis) return;
+    function roundNum(v) { return Math.round(v * 100) / 100; }
+
     const seriesData = [
       { x: 'Baseline Revenue', y: kpis.total_revenue },
-      { x: 'Price Elasticity Gain', y: roundNum(kpis.potential_profit_lift * 0.45) },
-      { x: 'Competitor Re-alignment', y: roundNum(kpis.potential_profit_lift * 0.35) },
+      { x: 'Elasticity Gain', y: roundNum(kpis.potential_profit_lift * 0.45) },
+      { x: 'Benchmark Re-alignment', y: roundNum(kpis.potential_profit_lift * 0.35) },
       { x: 'Cost Optimization', y: roundNum(kpis.potential_profit_lift * 0.20) },
       { x: 'Optimized Revenue', y: kpis.projected_revenue }
     ];
 
-    function roundNum(v) { return Math.round(v * 100) / 100; }
-
     const options = {
-      chart: { type: 'bar', height: 280, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'bar', height: 270, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      plotOptions: { bar: { borderRadius: 4, columnWidth: '45%' } },
-      colors: ['#6366f1', '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'],
+      plotOptions: { bar: { borderRadius: 3, columnWidth: '40%' } },
+      colors: ['#2563eb', '#10b981', '#38bdf8', '#f59e0b', '#64748b'],
       dataLabels: { enabled: false },
-      series: [{ name: 'Financial Impact (R$)', data: seriesData }],
-      xaxis: { type: 'category', labels: { style: { colors: '#94a3b8', fontSize: '10px' } } },
-      yaxis: { labels: { style: { colors: '#94a3b8', fontSize: '11px' }, formatter: (v) => `R$ ${(v/1000).toFixed(1)}k` } },
-      grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+      series: [{ name: 'Financial Contribution (R$)', data: seriesData }],
+      xaxis: { type: 'category', labels: { style: { colors: '#64748b', fontSize: '10px' } }, axisBorder: { color: '#1e293b' } },
+      yaxis: { labels: { style: { colors: '#64748b', fontSize: '11px' }, formatter: (v) => `R$ ${(v/1000).toFixed(1)}k` } },
+      grid: { borderColor: '#1e293b', strokeDashArray: 2 },
       tooltip: { theme: 'dark' }
     };
     this.renderOrUpdate('execWaterfall', containerId, options);
@@ -394,9 +397,9 @@ const ChartsEngine = {
     }));
 
     const options = {
-      chart: { type: 'treemap', height: 280, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'treemap', height: 270, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
-      colors: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#3b82f6', '#06b6d4', '#8b5cf6'],
+      colors: ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#38bdf8', '#64748b', '#06b6d4', '#475569'],
       series: [{ data: seriesData }],
       tooltip: { theme: 'dark' }
     };
@@ -409,11 +412,11 @@ const ChartsEngine = {
     const values = categories.map(c => positionCounts[c] || 0);
 
     const options = {
-      chart: { type: 'radar', height: 280, background: 'transparent', fontFamily: 'Plus Jakarta Sans, sans-serif' },
+      chart: { type: 'radar', height: 270, background: 'transparent', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' },
       theme: { mode: 'dark' },
       colors: ['#38bdf8'],
-      markers: { size: 4 },
-      series: [{ name: 'SKUs Count', data: values }],
+      markers: { size: 3 },
+      series: [{ name: 'SKU Count', data: values }],
       xaxis: { categories: categories, labels: { style: { colors: '#94a3b8', fontSize: '10px' } } },
       yaxis: { show: false },
       tooltip: { theme: 'dark' }
