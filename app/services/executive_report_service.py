@@ -41,20 +41,56 @@ class ExecutiveReportService:
     @classmethod
     def _fetch_report_dataset(cls, report_type, category_id=None):
         """
-        Fetches structured dataset for the specified report type.
+        Fetches structured dataset for the specified report type from live backend engines.
         """
         exec_overview = ExecutiveBIService.get_executive_overview(category_id=category_id)
         kpis = exec_overview['executive_kpis']
 
-        if report_type == 'Revenue Report' or report_type == 'Profit Report':
+        if report_type in ['Revenue Report', 'Profit Report']:
             data = RevenueOptimizationEngine.get_catalog_revenue_overview(category_id=category_id)['products']
-        elif report_type in ['Market Intelligence Report', 'Competitor Analysis Report']:
+        elif report_type == 'Market Intelligence Report':
             data = MarketIntelligenceEngine.get_market_overview(category_id=category_id)['products']
+        elif report_type in ['Competitor Analysis Report', 'Competitor Report']:
+            from app.services.comparison_engine import PriceComparisonEngine
+            comp_res = PriceComparisonEngine.get_catalog_comparison(category_id=category_id)
+            data = comp_res.get('comparisons', [])
+        elif report_type in ['Forecast Report', 'Demand Forecast Report']:
+            from app.models import DemandForecast, Product
+            forecasts = DemandForecast.query.all()
+            data = []
+            for fc in forecasts:
+                p = Product.query.filter_by(product_id=fc.product_id).first()
+                data.append({
+                    'product_id': fc.product_id,
+                    'product_name': f"{p.brand or ''} {p.sku}" if p else fc.product_id,
+                    'forecast_date': fc.forecast_date,
+                    'forecasted_demand': fc.forecasted_demand,
+                    'lower_bound': fc.lower_bound,
+                    'upper_bound': fc.upper_bound,
+                    'current_price': p.current_price if p else 0.0,
+                    'projected_profit': round((p.current_price - p.cost_price) * fc.forecasted_demand, 2) if p else 0.0
+                })
         elif report_type == 'Pricing Recommendation Report':
+            from app.services.pricing_strategy_engine import PricingStrategyEngine
             data = PricingStrategyEngine.get_catalog_strategies()['recommendations']
+        elif report_type == 'Simulation Report':
+            from app.services.simulation_engine import SimulationEngine
+            sim_catalog = SimulationEngine.simulate_catalog_scenario(price_change_pct=5.0, cost_change_pct=0.0)
+            data = []
+            for s in sim_catalog.get('simulations', []):
+                data.append({
+                    'product_id': s['product_id'],
+                    'baseline_price': s['baseline']['price'],
+                    'simulated_price': s['simulation']['price'],
+                    'baseline_revenue': s['baseline']['revenue'],
+                    'simulated_revenue': s['simulation']['revenue'],
+                    'baseline_profit': s['baseline']['profit'],
+                    'simulated_profit': s['simulation']['profit'],
+                    'profit_delta_pct': s['impact']['profit_delta_pct']
+                })
         else:
             # Executive Summary (default)
-            data = rev_data = RevenueOptimizationEngine.get_catalog_revenue_overview(category_id=category_id)['products']
+            data = RevenueOptimizationEngine.get_catalog_revenue_overview(category_id=category_id)['products']
 
         return kpis, data
 
