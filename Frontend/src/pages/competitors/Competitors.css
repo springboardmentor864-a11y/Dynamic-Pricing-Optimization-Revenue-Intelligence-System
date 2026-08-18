@@ -1,0 +1,787 @@
+/* =========================================================
+   COMPETITORS PAGE
+========================================================= */
+
+.competitor-container {
+    min-height: 100vh;
+    width: 100%;
+    padding: 34px;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 5% 0%,
+            rgba(99, 102, 241, 0.12),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 95% 5%,
+            rgba(14, 165, 233, 0.10),
+            transparent 25%
+        ),
+        linear-gradient(
+            180deg,
+            #f8fafc 0%,
+            #f1f5f9 100%
+        );
+
+    color: #0f172a;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.competitor-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-bottom: 30px;
+}
+
+.page-eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    margin-bottom: 9px;
+    padding: 6px 10px;
+
+    border: 1px solid #c7d2fe;
+    border-radius: 999px;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.9px;
+}
+
+.competitor-header h1 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 34px;
+    line-height: 1.1;
+    font-weight: 850;
+    letter-spacing: -1px;
+}
+
+.competitor-header p {
+    margin: 9px 0 0;
+
+    max-width: 600px;
+
+    color: #64748b;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   PRIMARY ACTION
+========================================================= */
+
+.primary-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 165px;
+
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(79, 70, 229, 0.25);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 32px rgba(79, 70, 229, 0.32);
+}
+
+.primary-action:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-message {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 22px;
+    padding: 14px 16px;
+
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+
+    background: #fff1f2;
+    color: #be123c;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow:
+        0 5px 15px rgba(190, 24, 93, 0.05);
+}
+
+
+/* =========================================================
+   KPI SECTION
+========================================================= */
+
+.competitor-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 17px;
+
+    margin-bottom: 26px;
+}
+
+.competitor-kpi {
+    position: relative;
+
+    min-height: 135px;
+
+    padding: 21px;
+
+    overflow: hidden;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.05);
+
+    backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.competitor-kpi:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 13px 32px rgba(15, 23, 42, 0.08);
+}
+
+.kpi-label {
+    display: block;
+
+    margin-bottom: 11px;
+
+    color: #64748b;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.competitor-kpi strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #0f172a;
+
+    font-size: 25px;
+    font-weight: 850;
+
+    letter-spacing: -0.6px;
+}
+
+.competitor-kpi small {
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   EDITOR CARD
+========================================================= */
+
+.competitor-editor {
+    margin-bottom: 26px;
+
+    padding: 25px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 19px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.98),
+            rgba(248, 250, 252, 0.96)
+        );
+
+    box-shadow:
+        0 12px 35px rgba(15, 23, 42, 0.06);
+}
+
+.editor-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 21px;
+}
+
+.section-label {
+    display: inline-block;
+
+    margin-bottom: 5px;
+
+    color: #6366f1;
+
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 0.9px;
+}
+
+.editor-heading h2 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.competitor-form {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr
+        auto;
+
+    gap: 16px;
+
+    align-items: end;
+
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+
+    box-shadow: none;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-group label {
+    color: #475569;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.competitor-form select,
+.competitor-form input {
+    width: 100%;
+    height: 45px;
+
+    box-sizing: border-box;
+
+    padding: 0 13px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    color: #0f172a;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.competitor-form select:hover,
+.competitor-form input:hover {
+    border-color: #cbd5e1;
+}
+
+.competitor-form select:focus,
+.competitor-form input:focus {
+    background: #ffffff;
+
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 4px rgba(99, 102, 241, 0.10);
+}
+
+.competitor-form input::placeholder {
+    color: #a1acba;
+}
+
+.competitor-form select:disabled,
+.competitor-form input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   FORM BUTTONS
+========================================================= */
+
+.competitor-buttons {
+    display: flex;
+    gap: 9px;
+
+    align-items: center;
+}
+
+.competitor-buttons button {
+    height: 45px;
+
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 7px 17px rgba(79, 70, 229, 0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.competitor-buttons button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 22px rgba(79, 70, 229, 0.27);
+}
+
+.competitor-buttons button:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.cancel-btn {
+    height: 40px;
+
+    padding: 0 15px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #475569;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   COMPETITOR LIST
+========================================================= */
+
+.competitor-list {
+    overflow: hidden;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 19px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 12px 35px rgba(15, 23, 42, 0.06);
+}
+
+.competitor-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #eef2f7;
+}
+
+.competitor-list-header h2 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 18px;
+    font-weight: 850;
+}
+
+.competitor-list-header p {
+    margin: 5px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+.competitor-list-header > span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 12px;
+
+    border: 1px solid #c7d2fe;
+    border-radius: 999px;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY
+========================================================= */
+
+.competitor-loading {
+    padding: 60px 20px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.competitor-empty {
+    padding: 65px 20px;
+
+    text-align: center;
+}
+
+.competitor-empty h3 {
+    margin: 0;
+
+    color: #334155;
+
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.competitor-empty p {
+    margin: 8px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.competitor-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.competitor-table {
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: collapse;
+}
+
+.competitor-table th {
+    padding: 13px 18px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    font-size: 10px;
+    font-weight: 850;
+
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+
+    text-align: left;
+}
+
+.competitor-table td {
+    padding: 16px 18px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #eef2f7;
+
+    font-size: 12px;
+    font-weight: 550;
+
+    vertical-align: middle;
+}
+
+.competitor-table tbody tr {
+    transition:
+        background 0.18s ease;
+}
+
+.competitor-table tbody tr:hover {
+    background: #f8faff;
+}
+
+.competitor-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.competitor-table td:first-child {
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.competitor-table td:nth-child(4) {
+    color: #0f172a;
+
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.competitor-table td:last-child {
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.edit-btn,
+.delete-btn {
+    padding: 7px 12px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.edit-btn {
+    margin-right: 6px;
+
+    border: 1px solid #c7d2fe;
+
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.edit-btn:hover {
+    background: #e0e7ff;
+
+    transform: translateY(-1px);
+}
+
+.delete-btn {
+    border: 1px solid #fecaca;
+
+    background: #fff1f2;
+    color: #dc2626;
+}
+
+.delete-btn:hover {
+    background: #ffe4e6;
+
+    transform: translateY(-1px);
+}
+
+.edit-btn:disabled,
+.delete-btn:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1150px) {
+
+    .competitor-kpis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .competitor-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .competitor-buttons {
+        grid-column: span 2;
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .competitor-container {
+        padding: 20px;
+    }
+
+    .competitor-header {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .competitor-header h1 {
+        font-size: 28px;
+    }
+
+    .primary-action {
+        width: 100%;
+    }
+
+    .competitor-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .competitor-editor {
+        padding: 20px;
+    }
+
+    .competitor-form {
+        grid-template-columns: 1fr;
+    }
+
+    .competitor-buttons {
+        grid-column: span 1;
+
+        width: 100%;
+    }
+
+    .competitor-buttons button {
+        width: 100%;
+    }
+
+    .editor-heading {
+        align-items: flex-start;
+    }
+
+    .competitor-list-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .competitor-table {
+        min-width: 850px;
+    }
+}

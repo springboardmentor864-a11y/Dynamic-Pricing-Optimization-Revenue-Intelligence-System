@@ -1,0 +1,24 @@
+/* =========================================================
+   PRICEPILOT AI - MAIN LAYOUT
+   ========================================================= */
+
+.main-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    background: #f8fafc;
+}
+
+/* Main page area beside sidebar */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+}
