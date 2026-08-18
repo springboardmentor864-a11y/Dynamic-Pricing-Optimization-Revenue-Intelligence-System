@@ -26,25 +26,37 @@ def test_executive_bi_kpis_and_drilldown(app):
         assert isinstance(drilldown['items'], list)
 
 def test_executive_report_generation(app):
-    """Test multi-format PDF, Excel, and CSV report generation."""
+    """Test multi-format PDF, Excel, and CSV report generation across all 8 report types."""
     with app.app_context():
-        # 1. PDF Generation
-        pdf_bytes, pdf_mime, pdf_fname = ExecutiveReportService.generate_report('Executive Summary', 'pdf')
-        assert pdf_mime == 'application/pdf'
-        assert pdf_fname.endswith('.pdf')
-        assert len(pdf_bytes) > 0
+        report_types = [
+            'Executive Summary',
+            'Revenue Report',
+            'Profit Report',
+            'Market Intelligence Report',
+            'Competitor Analysis Report',
+            'Forecast Report',
+            'Pricing Recommendation Report',
+            'Simulation Report'
+        ]
+        
+        for rtype in report_types:
+            # 1. PDF Generation
+            pdf_bytes, pdf_mime, pdf_fname = ExecutiveReportService.generate_report(rtype, 'pdf')
+            assert pdf_mime == 'application/pdf'
+            assert pdf_fname.endswith('.pdf')
+            assert len(pdf_bytes) > 0
 
-        # 2. Excel Generation
-        xlsx_bytes, xlsx_mime, xlsx_fname = ExecutiveReportService.generate_report('Revenue Report', 'xlsx')
-        assert xlsx_mime == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        assert xlsx_fname.endswith('.xlsx')
-        assert len(xlsx_bytes) > 0
+            # 2. Excel Generation
+            xlsx_bytes, xlsx_mime, xlsx_fname = ExecutiveReportService.generate_report(rtype, 'xlsx')
+            assert xlsx_mime == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            assert xlsx_fname.endswith('.xlsx')
+            assert len(xlsx_bytes) > 0
 
-        # 3. CSV Generation
-        csv_bytes, csv_mime, csv_fname = ExecutiveReportService.generate_report('Market Intelligence Report', 'csv')
-        assert csv_mime == 'text/csv'
-        assert csv_fname.endswith('.csv')
-        assert len(csv_bytes) > 0
+            # 3. CSV Generation
+            csv_bytes, csv_mime, csv_fname = ExecutiveReportService.generate_report(rtype, 'csv')
+            assert csv_mime == 'text/csv'
+            assert csv_fname.endswith('.csv')
+            assert len(csv_bytes) > 0
 
 def test_alert_service(app):
     """Test active business alert triggers and severity classifications."""
