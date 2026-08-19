@@ -60,7 +60,7 @@ graph TD
     
     MLEngine -->|Load Models| ModelsDir[outputs/models/best_model.pkl]
     MarketEngine -->|Price Ledgers| DB
-    RevenueEngine -->|Elasticity Q(P)| DB
+    RevenueEngine -->|Elasticity Q-P| DB
 ```
 
 ---
