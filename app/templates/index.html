@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PricePilot AI — Enterprise Pricing Intelligence & Revenue Analytics Platform</title>
+  <meta name="description" content="Enterprise dynamic pricing optimization, competitor intelligence, multi-horizon demand forecasting, and revenue analytics.">
+  <!-- Inter Font & ApexCharts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <div class="brand-title">PricePilot</div>
+      <span class="brand-badge">Enterprise</span>
+    </div>
+
+    <ul class="nav-menu" role="tablist" aria-label="Main Navigation">
+      <li class="nav-group-title">General</li>
+      <li class="nav-item active" data-tab="dashboard" role="tab" aria-selected="true" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </li>
+
+      <li class="nav-group-title">Pricing</li>
+      <li class="nav-item" data-tab="pricing" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        AI Price Engine
+      </li>
+      <li class="nav-item" data-tab="forecasting" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        Demand Forecast
+      </li>
+
+      <li class="nav-group-title">Catalog</li>
+      <li class="nav-item" data-tab="products" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Product Catalog
+      </li>
+      <li class="nav-item" data-tab="competitors" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20z"/></svg>
+        Competitor Radar
+      </li>
+
+      <li class="nav-group-title">Intelligence</li>
+      <li class="nav-item" data-tab="market-intelligence" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M2 20h20"/><path d="M5 14l4-4 4 4 6-6"/><circle cx="19" cy="8" r="2"/></svg>
+        Market & Revenue Intelligence
+      </li>
+      <li class="nav-item" data-tab="executive-bi" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Executive BI
+      </li>
+
+      <li class="nav-group-title">System</li>
+      <li class="nav-item" data-tab="admin" role="tab" aria-selected="false" tabindex="0">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Audit Trail
+      </li>
+    </ul>
+
+    <!-- User Profile Footer -->
+    <div class="user-profile-box">
+      <div class="user-avatar" id="user-avatar-initial">A</div>
+      <div class="user-info">
+        <div class="user-name" id="user-display-name">System Administrator</div>
+        <div class="user-role" id="user-display-role">Admin Role</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Top Navbar -->
+  <header class="top-navbar">
+    <div class="navbar-left">
+      <div class="workspace-pill">
+        <span>PricePilot / Production Analytics</span>
+      </div>
+
+      <div class="breadcrumbs">
+        <span>PricePilot</span>
+        <span>/</span>
+        <span class="current" id="breadcrumb-current-page">Overview</span>
+      </div>
+    </div>
+
+    <div class="navbar-right">
+      <button class="cmd-search-btn" onclick="App.openModal('search-modal')" aria-label="Search catalog">
+        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search catalog, SKUs, models...</span>
+        <span class="kbd-badge">⌘K</span>
+      </button>
+
+      <button class="icon-btn" title="System Notifications" onclick="App.showToast('System operational. Models loaded with R² = 94.2%', 'info')">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="unread-dot"></span>
+      </button>
+
+      <div id="auth-btn-group" style="display: flex; gap: 6px;">
+        <button class="btn-minimal btn-ghost-minimal" onclick="App.openModal('login-modal')">Sign In</button>
+        <button class="btn-minimal btn-primary-solid" onclick="App.openModal('register-modal')">Register</button>
+      </div>
+      <button class="btn-minimal btn-ghost-minimal" id="logout-btn" style="display: none; color: #f87171;">Logout</button>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-wrapper">
+
+    <!-- Global Filters Bar -->
+    <div class="filters-bar">
+      <span class="filter-label">Filters:</span>
+
+      <select class="filter-select" id="filter-date-range" onchange="App.handleFilterChange()">
+        <option value="all">Date Range: All Time (100k Orders)</option>
+        <option value="2018">Full Year 2018</option>
+        <option value="2017">Full Year 2017</option>
+        <option value="30d">Last 30 Days</option>
+      </select>
+
+      <select class="filter-select" id="filter-category" onchange="App.handleFilterChange()">
+        <option value="all">Category: All Categories</option>
+        <option value="bed_bath_table">Bed Bath Table</option>
+        <option value="health_beauty">Health Beauty</option>
+        <option value="sports_leisure">Sports Leisure</option>
+        <option value="computers_accessories">Computers Accessories</option>
+      </select>
+
+      <select class="filter-select" id="filter-state" onchange="App.handleFilterChange()">
+        <option value="all">Region: All States (27 Regions)</option>
+        <option value="SP">São Paulo (SP)</option>
+        <option value="RJ">Rio de Janeiro (RJ)</option>
+        <option value="MG">Minas Gerais (MG)</option>
+      </select>
+
+      <select class="filter-select" id="filter-payment" onchange="App.handleFilterChange()">
+        <option value="all">Payment: All Types</option>
+        <option value="credit_card">Credit Card (73.9%)</option>
+        <option value="boleto">Boleto (19.0%)</option>
+      </select>
+    </div>
+
+    <!-- Tab 1: Overview Dashboard -->
+    <section id="tab-dashboard" class="tab-pane active" role="tabpanel" aria-labelledby="tab-dashboard">
+      
+      <!-- 6 Compact Enterprise KPI Cards -->
+      <div class="kpi-grid-6">
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">
+            <span>Total Order Revenue</span>
+            <svg class="icon-svg" style="opacity:0.4;" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="kpi-value" id="kpi-total-revenue">R$ 16.01M</div>
+          <div class="kpi-subtext"><span class="kpi-trend-pill positive">↑ 14.2% YoY</span> vs previous period</div>
+        </div>
+
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">
+            <span>Average Order Value</span>
+            <svg class="icon-svg" style="opacity:0.4;" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+          <div class="kpi-value" id="kpi-avg-order-value">R$ 162.25</div>
+          <div class="kpi-subtext"><span class="kpi-trend-pill positive">↑ 5.8%</span> per completed basket</div>
+        </div>
+
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">
+            <span>Fulfilled Orders</span>
+            <svg class="icon-svg" style="opacity:0.4;" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="kpi-value" id="kpi-total-orders">98,666</div>
+          <div class="kpi-subtext"><span class="kpi-trend-pill positive">99.4%</span> delivery fulfillment rate</div>
+        </div>
+
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">
+            <span>Projected Revenue</span>
+            <svg class="icon-svg" style="opacity:0.4;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="kpi-value" id="kpi-predicted-revenue" style="color: #60a5fa;">R$ 17.37M</div>
+          <div class="kpi-subtext"><span class="kpi-trend-pill neutral">R² 99.04%</span> ExtraTrees Regressor</div>
+        </div>
+
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">
+            <span>Demand Run-rate Index</span>
+            <svg class="icon-svg" style="opacity:0.4;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="kpi-value">118.5</div>
+          <div class="kpi-subtext"><span class="kpi-trend-pill positive">Expanding</span> 30-day index</div>
+        </div>
+
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">
+            <span>Catalog Gross Margin</span>
+            <svg class="icon-svg" style="opacity:0.4;" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="kpi-value" id="rev-kpi-gross-margin">34.8%</div>
+          <div class="kpi-subtext"><span class="kpi-trend-pill positive">+2.4% MoM</span> portfolio average</div>
+        </div>
+      </div>
+
+      <!-- Financial Charts Grid -->
+      <div class="charts-grid-2">
+        <div class="chart-card-minimal">
+          <div class="chart-header-row">
+            <div>
+              <h3 class="chart-title-text">Monthly Revenue Performance</h3>
+              <div class="chart-sub-text">Comparative revenue trends across fiscal periods</div>
+            </div>
+          </div>
+          <div id="monthly-revenue-chart"></div>
+        </div>
+
+        <div class="chart-card-minimal">
+          <div class="chart-header-row">
+            <div>
+              <h3 class="chart-title-text">Weekly Orders & Revenue Volume</h3>
+              <div class="chart-sub-text">Grouped volume run-rate across rolling 12 weeks</div>
+            </div>
+          </div>
+          <div id="weekly-revenue-chart"></div>
+        </div>
+
+        <div class="chart-card-minimal">
+          <div class="chart-header-row">
+            <div>
+              <h3 class="chart-title-text">Customer Distribution by State</h3>
+              <div class="chart-sub-text">Top transaction volume regional breakdown</div>
+            </div>
+          </div>
+          <div id="customer-state-chart"></div>
+        </div>
+
+        <div class="chart-card-minimal">
+          <div class="chart-header-row">
+            <div>
+              <h3 class="chart-title-text">Model Feature Importance Ranking</h3>
+              <div class="chart-sub-text">Key physical and temporal variables driving price predictions</div>
+            </div>
+          </div>
+          <div id="feature-importance-chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: AI Price Engine -->
+    <section id="tab-pricing" class="tab-pane">
+      <div class="chart-card-minimal">
+        <div class="chart-header-row">
+          <div>
+            <h3 class="chart-title-text">Real-Time Price & Margin Optimization Engine</h3>
+            <div class="chart-sub-text">Input product attributes to compute optimal price recommendations (ExtraTrees Regressor R² = 0.9904)</div>
+          </div>
+        </div>
+
+        <form id="predict-price-form">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">Product SKU / ID</label>
+              <input type="text" id="pred-product-id" class="form-input" value="PROD_8912_BED_BATH" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select id="pred-category" class="form-select">
+                <option value="bed_bath_table">Bed Bath Table</option>
+                <option value="health_beauty">Health Beauty</option>
+                <option value="sports_leisure">Sports Leisure</option>
+                <option value="computers_accessories">Computers Accessories</option>
+                <option value="furniture_decor">Furniture Decor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Base Retail Cost (BRL)</label>
+              <input type="number" step="0.01" id="pred-base-price" class="form-input" value="129.90" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Freight Value (BRL)</label>
+              <input type="number" step="0.01" id="pred-freight" class="form-input" value="18.50" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product Weight (grams)</label>
+              <input type="number" id="pred-weight" class="form-input" value="650" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Length (cm)</label>
+              <input type="number" id="pred-length" class="form-input" value="25" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Height (cm)</label>
+              <input type="number" id="pred-height" class="form-input" value="18" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Width (cm)</label>
+              <input type="number" id="pred-width" class="form-input" value="18" required>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-minimal btn-primary-solid" style="margin-top: 10px;">Compute Optimal Price</button>
+        </form>
+
+        <div id="prediction-results-box" style="display: none; margin-top: 16px;"></div>
+        <div id="price-elasticity-chart-box" style="display: none; margin-top: 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; color: var(--text-heading); margin-bottom: 6px;">Price Elasticity & Profit Maximization Curve</h4>
+          <div id="price-elasticity-chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Products Catalog -->
+    <section id="tab-products" class="tab-pane">
+      <div class="table-card-minimal">
+        <div class="chart-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h3 class="chart-title-text">Product Catalog & Active Pricing</h3>
+            <div class="chart-sub-text">Catalog records, dimensional specifications, and current selling prices</div>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" id="product-search-input" class="form-input" placeholder="Search SKU..." style="width: 180px;" onkeyup="App.handleProductSearch(this.value)">
+            <button class="btn-minimal btn-ghost-minimal" onclick="App.exportTableCSV('products-table-body', 'products_catalog.csv')">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table-minimal">
+            <thead>
+              <tr>
+                <th>Product SKU</th>
+                <th>Category</th>
+                <th class="text-right">Weight</th>
+                <th>Dimensions</th>
+                <th class="text-right">Current Price</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body">
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 14px;">Loading catalog records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Market & Revenue Intelligence (Operational Dashboard) -->
+    <section id="tab-market-intelligence" class="tab-pane">
+      <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h1 class="page-title">Market & Revenue Intelligence</h1>
+          <p class="page-subtitle">Operational pricing analytics, competitor gap monitoring, volatility tracking, margin optimization, and scenario simulations.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-minimal btn-primary-solid" onclick="App.loadMarketIntelligenceTab()">Refresh Intelligence</button>
+        </div>
+      </div>
+
+      <!-- SECTION A: MARKET SNAPSHOT -->
+      <div style="margin-bottom: 20px;">
+        <div class="section-header-row">
+          <div class="section-title">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20z"/></svg>
+            Section A: Market Snapshot
+          </div>
+        </div>
+        <div class="kpi-grid-4">
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Market Stability Score</div>
+            <div class="kpi-value" id="market-kpi-stability">0.0</div>
+            <div class="kpi-subtext">0–100 scale (100 - volatility index)</div>
+          </div>
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Catalog Price Volatility</div>
+            <div class="kpi-value" id="market-kpi-volatility" style="color: #fbbf24;">0.0%</div>
+            <div class="kpi-subtext">Standard deviation price ratio</div>
+          </div>
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Catalog Price Position</div>
+            <div class="kpi-value" id="market-kpi-position" style="color: #38bdf8; font-size: 20px;">Competitive</div>
+            <div class="kpi-subtext">Relative to monitored benchmarks</div>
+          </div>
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Overall Trend Direction</div>
+            <div class="kpi-value" id="market-kpi-trend" style="color: #10b981; font-size: 20px;">Stable</div>
+            <div class="kpi-subtext">Catalog 30-day moving trajectory</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION B: TOP PRICING OPPORTUNITIES -->
+      <div style="margin-bottom: 20px;">
+        <div class="section-header-row">
+          <div class="section-title">
+            <svg class="icon-svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Section B: Top Pricing Opportunities
+          </div>
+          <span style="font-size: 11px; color: var(--text-muted);">Actionable margin expansion items identified by market benchmarks</span>
+        </div>
+
+        <div class="card-minimal" style="padding: 0; overflow: hidden;">
+          <div class="table-container">
+            <table class="data-table-minimal">
+              <thead>
+                <tr>
+                  <th>Product SKU</th>
+                  <th class="text-right">Current Price</th>
+                  <th class="text-right">Market Median</th>
+                  <th class="text-right">Price Gap</th>
+                  <th class="text-center">Demand Run-rate</th>
+                  <th class="text-center">Opportunity Type</th>
+                  <th>Recommended Action</th>
+                </tr>
+              </thead>
+              <tbody id="market-opportunity-table-body">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 14px;">Loading pricing opportunities...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION C: PRICE & MARKET TRENDS -->
+      <div style="margin-bottom: 20px;">
+        <div class="section-header-row">
+          <div class="section-title">
+            <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            Section C: Historical Price & Market Trends
+          </div>
+        </div>
+        <div class="charts-grid-2">
+          <div class="card-minimal">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+              <h3 class="card-title">Rolling Moving Averages (7d, 14d, 30d)</h3>
+              <span style="font-size: 11px; color: var(--text-muted);">Daily frequency</span>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-bottom: 10px;">
+              Rolling averages smooth short-term price fluctuations. A rising 7-day average above the 30-day average indicates recent upward price movement.
+            </p>
+            <div id="chart-rolling-average" style="min-height: 270px;"></div>
+          </div>
+
+          <div class="card-minimal">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
+              <h3 class="card-title">Price Trend Direction Breakdown</h3>
+              <span style="font-size: 11px; color: var(--text-muted);">Catalog distribution</span>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-secondary); margin-bottom: 10px;">
+              Based on observed catalog price history across rolling 30-day evaluation windows.
+            </p>
+            <div id="chart-market-trend" style="min-height: 270px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION D: REVENUE OPTIMIZATION SUMMARY & RECOMMENDATIONS -->
+      <div style="margin-bottom: 20px;">
+        <div class="section-header-row">
+          <div class="section-title">
+            <svg class="icon-svg" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Section D: Revenue Optimization Summary & Pricing Strategies
+          </div>
+        </div>
+        <div class="kpi-grid-4" style="margin-bottom: 16px;">
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Projected Catalog Revenue</div>
+            <div class="kpi-value" id="rev-kpi-projected-revenue" style="color: #60a5fa;">R$ 0.00</div>
+            <div class="kpi-subtext" id="rev-kpi-growth-subtext">+0.0% expected growth</div>
+          </div>
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Projected Net Profit</div>
+            <div class="kpi-value" id="rev-kpi-projected-profit" style="color: #10b981;">R$ 0.00</div>
+            <div class="kpi-subtext" id="rev-kpi-profit-lift-subtext">+R$ 0.00 net profit lift</div>
+          </div>
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Catalog Gross Margin</div>
+            <div class="kpi-value" id="rev-kpi-gross-margin-dup">34.8%</div>
+            <div class="kpi-subtext">Portfolio average margin</div>
+          </div>
+          <div class="kpi-card-minimal">
+            <div class="kpi-label">Expected Catalog ROI</div>
+            <div class="kpi-value" id="rev-kpi-roi" style="color: #c084fc;">0.0%</div>
+            <div class="kpi-subtext">Return on investment optimization</div>
+          </div>
+        </div>
+
+        <!-- Strategy Recommendations Table -->
+        <div class="card-minimal">
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <h3 class="card-title">Pricing Strategy Recommendations</h3>
+              <p style="font-size: 11.5px; color: var(--text-muted); margin: 0;">Automated strategy assignments, cost floors, break-even targets, and expected ROI lift</p>
+            </div>
+
+            <!-- Controls -->
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+              <input type="text" id="revenue-search-input" class="form-input" placeholder="Search SKU..." style="width: 160px;" oninput="App.onRevenueSearchChange()">
+
+              <select id="revenue-filter-strategy" class="form-select" style="width: 150px;" onchange="App.loadRevenueEngineTab()">
+                <option value="all">All Strategies</option>
+                <option value="Aggressive Pricing">Aggressive Pricing</option>
+                <option value="Competitive Matching">Competitive Matching</option>
+                <option value="Premium Pricing">Premium Pricing</option>
+                <option value="Margin Protection">Margin Protection</option>
+                <option value="Market Penetration">Market Penetration</option>
+                <option value="Revenue Maximization">Revenue Maximization</option>
+                <option value="Demand Recovery">Demand Recovery</option>
+                <option value="Loss Prevention">Loss Prevention</option>
+              </select>
+
+              <select id="revenue-filter-risk" class="form-select" style="width: 110px;" onchange="App.loadRevenueEngineTab()">
+                <option value="all">All Risks</option>
+                <option value="LOW">Low Risk</option>
+                <option value="MEDIUM">Medium Risk</option>
+                <option value="HIGH">High Risk</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table-minimal">
+              <thead>
+                <tr>
+                  <th>Product SKU</th>
+                  <th class="text-right">Cost Price</th>
+                  <th class="text-right">Current Price</th>
+                  <th class="text-right">Break-even</th>
+                  <th class="text-right">Optimal Price</th>
+                  <th class="text-center">Strategy</th>
+                  <th class="text-right">Exp. Profit</th>
+                  <th class="text-right">Expected ROI</th>
+                  <th class="text-center">Risk</th>
+                  <th>Analytical Explanation</th>
+                </tr>
+              </thead>
+              <tbody id="revenue-table-body">
+                <tr><td colspan="10" style="text-align: center; color: var(--text-muted); padding: 14px;">Loading pricing strategies...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION E: WHAT-IF SCENARIO SIMULATOR -->
+      <div>
+        <div class="section-header-row">
+          <div class="section-title">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Section E: Interactive What-If Scenario Simulator
+          </div>
+          <button class="btn-minimal btn-ghost-minimal" onclick="App.resetSimulationSliders()">Reset Sliders</button>
+        </div>
+
+        <div class="card-minimal" style="border: 1px solid var(--border-medium); background: var(--bg-subtle);">
+          <div style="margin-bottom: 14px;">
+            <p style="font-size: 12px; color: var(--text-secondary);">Simulate real-time elasticity response, competitor counter-moves, cost inflation, and demand shifts across the catalog.</p>
+          </div>
+
+          <!-- Sliders Grid -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; background: var(--bg-card); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div>
+              <label style="font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; font-weight: 600;">
+                <span>Price Adjustment %:</span>
+                <strong id="sim-val-price" style="color: #60a5fa;">0.0%</strong>
+              </label>
+              <input type="range" id="sim-slider-price" min="-25" max="25" step="1" value="0" style="width: 100%; margin-top: 6px;" oninput="App.onSimulationInputChange()">
+            </div>
+
+            <div>
+              <label style="font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; font-weight: 600;">
+                <span>Competitor Move %:</span>
+                <strong id="sim-val-comp" style="color: #f59e0b;">0.0%</strong>
+              </label>
+              <input type="range" id="sim-slider-comp" min="-20" max="20" step="1" value="0" style="width: 100%; margin-top: 6px;" oninput="App.onSimulationInputChange()">
+            </div>
+
+            <div>
+              <label style="font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; font-weight: 600;">
+                <span>Cost Inflation %:</span>
+                <strong id="sim-val-cost" style="color: #f87171;">0.0%</strong>
+              </label>
+              <input type="range" id="sim-slider-cost" min="-10" max="30" step="1" value="0" style="width: 100%; margin-top: 6px;" oninput="App.onSimulationInputChange()">
+            </div>
+
+            <div>
+              <label style="font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; font-weight: 600;">
+                <span>Demand Multiplier:</span>
+                <strong id="sim-val-demand" style="color: #34d399;">1.00x</strong>
+              </label>
+              <input type="range" id="sim-slider-demand" min="0.5" max="2.0" step="0.05" value="1.0" style="width: 100%; margin-top: 6px;" oninput="App.onSimulationInputChange()">
+            </div>
+          </div>
+
+          <!-- Simulation Output Cards Grid -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px;">
+            <div class="kpi-card-minimal" style="padding: 10px 12px;">
+              <span style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Simulated Revenue</span>
+              <div id="sim-out-revenue" style="font-size: 17px; font-weight: 700; color: var(--text-heading); margin-top: 2px;">R$ 0.00</div>
+              <span id="sim-out-rev-delta" style="font-size: 10.5px; color: #10b981;">(0.0%)</span>
+            </div>
+
+            <div class="kpi-card-minimal" style="padding: 10px 12px;">
+              <span style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Simulated Net Profit</span>
+              <div id="sim-out-profit" style="font-size: 17px; font-weight: 700; color: #10b981; margin-top: 2px;">R$ 0.00</div>
+              <span id="sim-out-prof-delta" style="font-size: 10.5px; color: #10b981;">(+R$ 0.00)</span>
+            </div>
+
+            <div class="kpi-card-minimal" style="padding: 10px 12px;">
+              <span style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Simulated Margin %</span>
+              <div id="sim-out-margin" style="font-size: 17px; font-weight: 700; color: #fbbf24; margin-top: 2px;">0.0%</div>
+              <span style="font-size: 10.5px; color: var(--text-muted);">Net margin ratio</span>
+            </div>
+
+            <div class="kpi-card-minimal" style="padding: 10px 12px;">
+              <span style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Break-even Price Shift</span>
+              <div id="sim-out-breakeven" style="font-size: 17px; font-weight: 700; color: var(--text-heading); margin-top: 2px;">R$ 0.00</div>
+              <span id="sim-out-be-delta" style="font-size: 10.5px; color: var(--text-muted);">(R$ 0.00 shift)</span>
+            </div>
+          </div>
+
+          <!-- Simulation Sensitivity Charts -->
+          <div class="charts-grid-2">
+            <div class="card-minimal" style="background: var(--bg-card);">
+              <h3 class="card-title">Revenue vs Profit Optimization Curve</h3>
+              <div id="chart-revenue-profit-trend" style="min-height: 260px;"></div>
+            </div>
+
+            <div class="card-minimal" style="background: var(--bg-card);">
+              <h3 class="card-title">Price Sensitivity & Net Margin Response</h3>
+              <div id="chart-scenario-sensitivity" style="min-height: 260px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: Executive Business Intelligence & Reporting -->
+    <section id="tab-executive-bi" class="tab-pane">
+      <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h1 class="page-title">Executive Decision Platform</h1>
+          <p class="page-subtitle">Executive portfolio monitoring, multi-dimensional drill-downs, automated report generation, and system health status.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-minimal btn-primary-solid" onclick="App.openReportExportModal()">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Reports
+          </button>
+          <button class="btn-minimal btn-ghost-minimal" onclick="App.loadExecutiveBITab()">Refresh BI</button>
+        </div>
+      </div>
+
+      <!-- System Health Monitor Bar -->
+      <div class="card-minimal" style="margin-bottom: 16px; padding: 10px 14px; background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          <strong style="color: var(--text-heading); font-size: 12px; letter-spacing: 0.2px;">PLATFORM STATUS: OPERATIONAL</strong>
+        </div>
+        <div style="display: flex; gap: 18px; font-size: 11px; color: var(--text-secondary);">
+          <span>Database Pool: <strong id="sys-db-status" style="color: #10b981;">HEALTHY (3,115 SKUs)</strong></span>
+          <span>ML Models: <strong id="sys-ml-status" style="color: #60a5fa;">LOADED (94.2% R²)</strong></span>
+          <span>Response Latency: <strong id="sys-latency" style="color: #fbbf24;">1.8 ms</strong></span>
+          <span>Memory Usage: <strong id="sys-memory" style="color: var(--text-heading);">42.5 MB</strong></span>
+        </div>
+      </div>
+
+      <!-- Active Alert Banner -->
+      <div id="exec-alert-banner" style="margin-bottom: 16px;"></div>
+
+      <!-- Executive KPI Grid -->
+      <div class="kpi-grid-6" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 18px;">
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Executive Gross Revenue</div>
+          <div class="kpi-value" id="exec-kpi-revenue" style="color: #60a5fa;">R$ 0.00</div>
+          <div class="kpi-subtext" id="exec-kpi-growth-sub">+0.0% catalog revenue growth</div>
+        </div>
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Optimized Net Profit</div>
+          <div class="kpi-value" id="exec-kpi-profit" style="color: #10b981;">R$ 0.00</div>
+          <div class="kpi-subtext" id="exec-kpi-lift-sub">+R$ 0.00 profit lift</div>
+        </div>
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Forecast Accuracy (R²)</div>
+          <div class="kpi-value" id="exec-kpi-accuracy" style="color: #38bdf8;">94.2%</div>
+          <div class="kpi-subtext">Random Forest Time-Series Regressor</div>
+        </div>
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Market Leader Share</div>
+          <div class="kpi-value" id="exec-kpi-share" style="color: #c084fc;">0.0%</div>
+          <div class="kpi-subtext">Top competitive volume positioning</div>
+        </div>
+      </div>
+
+      <!-- Advanced Visualizations Grid -->
+      <div class="charts-grid-2">
+        <div class="card-minimal">
+          <h3 class="card-title">Financial Lift Waterfall</h3>
+          <p class="card-subtext">Net margin contribution bridge from baseline to optimized pricing</p>
+          <div id="chart-exec-waterfall" style="min-height: 270px;"></div>
+        </div>
+
+        <div class="card-minimal">
+          <h3 class="card-title">Strategy Distribution Portfolio</h3>
+          <p class="card-subtext">SKU allocation across 8 pricing playbooks</p>
+          <div id="chart-exec-treemap" style="min-height: 270px;"></div>
+        </div>
+      </div>
+
+      <!-- Radar and Drill-down Grid -->
+      <div class="charts-grid-2">
+        <div class="card-minimal">
+          <h3 class="card-title">Competitive Positioning Matrix</h3>
+          <p class="card-subtext">Multi-category benchmark distribution</p>
+          <div id="chart-exec-radar" style="min-height: 270px;"></div>
+        </div>
+
+        <div class="card-minimal">
+          <h3 class="card-title">Category-Level Financial Drill-down</h3>
+          <p class="card-subtext">Aggregated revenue, net profit, and gross margin ratios</p>
+          <div class="table-container">
+            <table class="data-table-minimal">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th class="text-right">SKUs</th>
+                  <th class="text-right">Total Revenue</th>
+                  <th class="text-right">Total Profit</th>
+                  <th class="text-right">Margin %</th>
+                </tr>
+              </thead>
+              <tbody id="exec-drilldown-table-body">
+                <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 12px;">Loading category drill-down metrics...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 6: Demand Forecast -->
+    <section id="tab-forecasting" class="tab-pane">
+      <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h1 class="page-title">Demand Forecasting Engine</h1>
+          <p class="page-subtitle">Time-series autoregressive machine learning with 95% confidence bounds and multi-horizon projection.</p>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <label style="font-size: 11px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Product SKU:</label>
+          <select id="fc-product-select" class="form-select" style="min-width: 240px;" onchange="App.onForecastProductChange()">
+            <option value="health_beauty_001">health_beauty_001 (Natura)</option>
+          </select>
+          <button class="btn-minimal btn-primary-solid" onclick="App.loadDemandForecast(App.activeForecastHorizon)">Generate Forecast</button>
+        </div>
+      </div>
+
+      <!-- Error Notification Banner (Initially Hidden) -->
+      <div id="fc-error-banner" style="display: none; background: rgba(239, 68, 68, 0.08); border: 1px solid var(--danger-border); color: #fca5a5; padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 12.5px; font-weight: 600;"></div>
+
+      <div class="chart-card-minimal">
+        <div class="chart-header-row" style="flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 class="chart-title-text" id="fc-prod-title">Selected Product Demand Horizon</h3>
+            <div class="chart-sub-text" id="fc-prod-name">Loading product details...</div>
+          </div>
+
+          <!-- Multi-Horizon Selector Buttons -->
+          <div class="horizon-btn-group" style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <button class="btn-minimal btn-ghost-minimal horizon-btn" data-days="7" onclick="App.changeForecastHorizon(7)">7 Days</button>
+            <button class="btn-minimal btn-ghost-minimal horizon-btn" data-days="14" onclick="App.changeForecastHorizon(14)">14 Days</button>
+            <button class="btn-minimal btn-ghost-minimal horizon-btn active" data-days="30" onclick="App.changeForecastHorizon(30)">30 Days</button>
+            <button class="btn-minimal btn-ghost-minimal horizon-btn" data-days="90" onclick="App.changeForecastHorizon(90)">90 Days</button>
+            <button class="btn-minimal btn-ghost-minimal horizon-btn" data-days="180" onclick="App.changeForecastHorizon(180)">180 Days</button>
+            <button class="btn-minimal btn-ghost-minimal horizon-btn" data-days="365" onclick="App.changeForecastHorizon(365)">365 Days</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Forecast Summary Banner -->
+        <div class="kpi-grid-4" style="margin: 12px 0 16px 0; background: var(--bg-subtle); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div>
+            <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Total Forecasted Demand</div>
+            <div style="font-size: 19px; font-weight: 700; color: var(--text-heading);" id="fc-total-units">--</div>
+          </div>
+          <div>
+            <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Avg Daily Demand</div>
+            <div style="font-size: 19px; font-weight: 700; color: var(--text-heading);" id="fc-avg-daily">--</div>
+          </div>
+          <div>
+            <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Trend Classification</div>
+            <div id="fc-trend-badge" style="margin-top: 3px;"><span class="badge-minimal primary">--</span></div>
+          </div>
+          <div>
+            <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Model Confidence Score</div>
+            <div style="font-size: 19px; font-weight: 700; color: var(--success);" id="fc-confidence">--</div>
+          </div>
+        </div>
+
+        <!-- Dynamic Interpretation Card -->
+        <div style="background: rgba(37, 99, 235, 0.05); border: 1px solid var(--primary-border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: flex-start; gap: 10px;">
+          <svg class="icon-svg" style="color: #60a5fa; margin-top: 2px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div>
+            <strong style="font-size: 11px; color: #93c5fd; text-transform: uppercase; letter-spacing: 0.5px;">Demand Analysis & Recommendation:</strong>
+            <p id="fc-interpretation-text" style="font-size: 12px; color: var(--text-body); margin-top: 2px; line-height: 1.4;">Analyzing time-series demand patterns...</p>
+          </div>
+        </div>
+        
+        <div id="demand-forecast-chart" style="min-height: 330px;"></div>
+
+        <!-- Model Architecture & Parameters Information Panel -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; padding: 10px 12px; background: var(--bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div>
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Model Architecture</div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-heading); margin-top: 2px;">Random Forest Regressor</div>
+          </div>
+          <div>
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Lag & Temporal Features</div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-heading); margin-top: 2px;">12 Regressors (Lag 1-30, Rolling)</div>
+          </div>
+          <div>
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Residual Uncertainty (95% CI)</div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-heading); margin-top: 2px;">σ = 20.46 units</div>
+          </div>
+          <div>
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Model Accuracy (R²)</div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--success); margin-top: 2px;">94.2% Empirical Fit</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 7: Competitor Radar -->
+    <section id="tab-competitors" class="tab-pane">
+      <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h1 class="page-title">Competitor Radar & Price Comparison</h1>
+          <p class="page-subtitle">Real-time competitor price tracking, market spread analysis, and position benchmarking.</p>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn-minimal btn-primary-solid" onclick="App.openModal('add-competitor-modal')">+ Add Competitor</button>
+          <button class="btn-minimal btn-ghost-minimal" onclick="App.openModal('ingest-price-modal')">Manual Price Entry</button>
+          <button class="btn-minimal btn-ghost-minimal" onclick="App.openModal('import-csv-modal')">Import CSV</button>
+          <button class="btn-minimal btn-ghost-minimal" onclick="App.downloadReport('csv')">Export CSV</button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="kpi-grid-4" style="margin-bottom: 18px;">
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Tracked Competitors</div>
+          <div class="kpi-value" id="comp-kpi-count">0</div>
+          <div class="kpi-subtext">Active monitoring sources</div>
+        </div>
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Avg Market Price Gap</div>
+          <div class="kpi-value" id="comp-kpi-gap">R$ 0.00</div>
+          <div class="kpi-subtext">Catalog price vs market avg</div>
+        </div>
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Competitive SKUs</div>
+          <div class="kpi-value" id="comp-kpi-competitive-pct">0%</div>
+          <div class="kpi-subtext">Priced within benchmark range</div>
+        </div>
+        <div class="kpi-card-minimal">
+          <div class="kpi-label">Overpriced SKUs</div>
+          <div class="kpi-value" id="comp-kpi-overpriced-count" style="color: #f87171;">0</div>
+          <div class="kpi-subtext">Items above market max</div>
+        </div>
+      </div>
+
+      <!-- Price Comparison Table Section -->
+      <div class="card-minimal">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <h3 class="card-title">Catalog Competitor Price Comparisons</h3>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin: 0;">Multi-source price observations, spreads, and market position classifications</p>
+          </div>
+
+          <!-- Controls -->
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+            <input type="text" id="comp-search-input" class="form-input" placeholder="Search SKU..." style="width: 170px;" oninput="App.onCompetitorSearchChange()">
+            
+            <select id="comp-filter-position" class="form-select" style="width: 130px;" onchange="App.loadCompetitorsTab()">
+              <option value="all">All Positions</option>
+              <option value="Lowest">Lowest</option>
+              <option value="Competitive">Competitive</option>
+              <option value="Premium">Premium</option>
+              <option value="Overpriced">Overpriced</option>
+            </select>
+
+            <button class="btn-minimal btn-ghost-minimal" onclick="App.loadCompetitorsTab()">Refresh</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table-minimal">
+            <thead>
+              <tr>
+                <th onclick="App.sortCompetitorTable('product_id')" style="cursor: pointer;">Product SKU ↕</th>
+                <th>Category</th>
+                <th class="text-right" onclick="App.sortCompetitorTable('our_price')" style="cursor: pointer;">Our Price ↕</th>
+                <th class="text-right">Min Comp</th>
+                <th class="text-right">Avg Market</th>
+                <th class="text-right">Max Comp</th>
+                <th class="text-right" onclick="App.sortCompetitorTable('price_difference_pct')" style="cursor: pointer;">Price Gap ↕</th>
+                <th class="text-center">Position</th>
+                <th>Recommended Action</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-table-body">
+              <tr><td colspan="9" style="text-align: center; color: var(--text-muted); padding: 14px;">Loading price comparisons...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+          <span style="font-size: 11px; color: var(--text-muted);" id="comp-pagination-info">Showing 0-0 of 0 products</span>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn-minimal btn-ghost-minimal" id="comp-prev-btn" onclick="App.compPrevPage()">Previous</button>
+            <button class="btn-minimal btn-ghost-minimal" id="comp-next-btn" onclick="App.compNextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 8: Admin Audit Trail -->
+    <section id="tab-admin" class="tab-pane">
+      <div class="table-card-minimal">
+        <h3 class="chart-title-text" style="margin-bottom: 2px;">System Security & Audit Trail</h3>
+        <p style="color: var(--text-muted); font-size: 11.5px; margin-bottom: 14px;">Security event tracking, administrative access logs, and API execution records.</p>
+
+        <div class="table-container">
+          <table class="data-table-minimal">
+            <thead>
+              <tr>
+                <th>Log ID</th>
+                <th>Action</th>
+                <th>Endpoint</th>
+                <th>User ID</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 14px;">Loading system audit trail...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Report Export Modal -->
+  <div class="modal-overlay" id="report-export-modal" style="display: none;">
+    <div class="modal-box-minimal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2 style="font-size: 14px; font-weight: 600; color: var(--text-heading);">Generate Executive Report</h2>
+        <button class="btn-minimal btn-ghost-minimal" style="padding: 2px 6px;" onclick="App.closeReportExportModal()">✕</button>
+      </div>
+      <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 14px;">Select report type and export format. Reports are dynamically compiled from live backend database records.</p>
+      
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label">Report Type</label>
+        <select id="report-modal-type" class="form-select">
+          <option value="Executive Summary">Executive Summary Report</option>
+          <option value="Revenue Report">Revenue & Profit Optimization Report</option>
+          <option value="Profit Report">Net Profit & Gross Margin Report</option>
+          <option value="Market Intelligence Report">Market Intelligence & Volatility Report</option>
+          <option value="Competitor Analysis Report">Competitor Analysis & Position Report</option>
+          <option value="Forecast Report">Demand Forecasting & CI Bounds Report</option>
+          <option value="Pricing Recommendation Report">Pricing Strategy Recommendations Report</option>
+          <option value="Simulation Report">What-If Scenario Simulation Report</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label class="form-label">Export Format</label>
+        <select id="report-modal-format" class="form-select">
+          <option value="pdf">PDF Document (.pdf)</option>
+          <option value="xlsx">Excel Workbook (.xlsx)</option>
+          <option value="csv">CSV Spreadsheet (.csv)</option>
+        </select>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 6px;">
+        <button class="btn-minimal btn-ghost-minimal" onclick="App.closeReportExportModal()">Cancel</button>
+        <button class="btn-minimal btn-primary-solid" onclick="App.downloadModalReport()">Download Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="login-modal" style="display: none;">
+    <div class="modal-box-minimal">
+      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 2px;">Sign In to PricePilot</h2>
+      <p style="color: var(--text-muted); font-size: 11.5px; margin-bottom: 14px;">Enter credentials for JWT role authentication.</p>
+      <form id="login-form">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="login-email" class="form-input" value="admin@pricepilot.ai" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" class="form-input" value="Admin@123456" required>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="submit" class="btn-minimal btn-primary-solid" style="flex: 1;">Login</button>
+          <button type="button" class="btn-minimal btn-ghost-minimal" onclick="App.closeModal('login-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal-overlay" id="register-modal" style="display: none;">
+    <div class="modal-box-minimal">
+      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 2px;">Register Account</h2>
+      <p style="color: var(--text-muted); font-size: 11.5px; margin-bottom: 14px;">Create a user account with role permissions.</p>
+      <form id="register-form">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="User Name" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="user@pricepilot.ai" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Password</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Role</label>
+          <select id="reg-role" class="form-select">
+            <option value="Business Analyst">Business Analyst</option>
+            <option value="Pricing Manager">Pricing Manager</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="submit" class="btn-minimal btn-primary-solid" style="flex: 1;">Create Account</button>
+          <button type="button" class="btn-minimal btn-ghost-minimal" onclick="App.closeModal('register-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Search Modal -->
+  <div class="modal-overlay" id="search-modal" style="display: none;">
+    <div class="modal-box-minimal" style="max-width: 500px;">
+      <div style="display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px; margin-bottom: 10px;">
+        <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="global-search-input" class="form-input" placeholder="Search catalog SKUs, categories, modules..." style="flex: 1; border: none; background: transparent; padding: 0; font-size: 13px;" onkeyup="App.handleGlobalSearch(this.value)">
+        <button class="btn-minimal btn-ghost-minimal" style="padding: 2px 6px;" onclick="App.closeModal('search-modal')">ESC</button>
+      </div>
+      <div id="search-results-list" style="max-height: 260px; overflow-y: auto; font-size: 12px;">
+        <div style="color: var(--text-muted); text-align: center; padding: 16px;">Type SKU ID or category name to search...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Competitor Modal -->
+  <div class="modal-overlay" id="add-competitor-modal" style="display: none;">
+    <div class="modal-box-minimal">
+      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 2px;">Add Competitor Source</h2>
+      <p style="color: var(--text-muted); font-size: 11.5px; margin-bottom: 14px;">Register a competitor e-commerce domain to track pricing feeds.</p>
+      <form id="add-competitor-form" onsubmit="App.handleAddCompetitor(event)">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Competitor Name</label>
+          <input type="text" id="new-comp-name" class="form-input" placeholder="e.g. Mercado Livre BR" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Website URL</label>
+          <input type="url" id="new-comp-url" class="form-input" placeholder="https://www.mercadolivre.com.br">
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Country Code</label>
+          <input type="text" id="new-comp-country" class="form-input" value="BR" maxlength="2">
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="submit" class="btn-minimal btn-primary-solid" style="flex: 1;">Save Competitor</button>
+          <button type="button" class="btn-minimal btn-ghost-minimal" onclick="App.closeModal('add-competitor-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Manual Price Ingestion Modal -->
+  <div class="modal-overlay" id="ingest-price-modal" style="display: none;">
+    <div class="modal-box-minimal">
+      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 2px;">Manual Price Observation Entry</h2>
+      <p style="color: var(--text-muted); font-size: 11.5px; margin-bottom: 14px;">Record a verified market price observation for a specific competitor SKU.</p>
+      <form id="ingest-price-form" onsubmit="App.handleIngestPrice(event)">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Competitor</label>
+          <select id="ingest-comp-id" class="form-select" required>
+            <option value="">Select competitor...</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Product SKU (Internal)</label>
+          <input type="text" id="ingest-product-sku" class="form-input" placeholder="e.g. health_beauty_001" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Observed Price (BRL)</label>
+          <input type="number" step="0.01" id="ingest-price" class="form-input" placeholder="139.90" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Stock Availability</label>
+          <select id="ingest-availability" class="form-select">
+            <option value="in_stock">In Stock</option>
+            <option value="limited_stock">Limited Stock</option>
+            <option value="out_of_stock">Out of Stock</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="submit" class="btn-minimal btn-primary-solid" style="flex: 1;">Record Observation</button>
+          <button type="button" class="btn-minimal btn-ghost-minimal" onclick="App.closeModal('ingest-price-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CSV Import Modal -->
+  <div class="modal-overlay" id="import-csv-modal" style="display: none;">
+    <div class="modal-box-minimal">
+      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 2px;">Import Competitor Price Feed (CSV)</h2>
+      <p style="color: var(--text-muted); font-size: 11.5px; margin-bottom: 14px;">Upload batch CSV containing competitor pricing records.</p>
+      <form id="import-csv-form" onsubmit="App.handleImportCSV(event)">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Competitor</label>
+          <select id="import-comp-id" class="form-select" required>
+            <option value="">Select competitor...</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">CSV File</label>
+          <input type="file" id="import-file" class="form-input" accept=".csv" required>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="submit" class="btn-minimal btn-primary-solid" style="flex: 1;">Upload Feed</button>
+          <button type="button" class="btn-minimal btn-ghost-minimal" onclick="App.closeModal('import-csv-modal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/charts.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
