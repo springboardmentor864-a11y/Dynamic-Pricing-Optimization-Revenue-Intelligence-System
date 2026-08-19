@@ -1,0 +1,241 @@
+@import "tailwindcss";
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GLOBAL TYPOGRAPHY (INCREASED FONT SIZES & HIGH VISIBILITY)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+html {
+  font-size: 17px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #0f172a;
+}
+
+/* Base Headings & Labels */
+h1 { font-size: 1.8rem; font-weight: 700; line-height: 1.2; }
+h2 { font-size: 1.4rem; font-weight: 600; line-height: 1.25; }
+h3 { font-size: 1.15rem; font-weight: 600; line-height: 1.35; }
+h4 { font-size: 1.05rem; font-weight: 600; }
+
+p, span, label, td, th {
+  font-size: 1.02rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DARK MODE - PERFECT VISIBILITY & HIGH-CONTRAST NEON COLORS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.dark body {
+  background-color: #090d16 !important;
+  background-image: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.7) 0%, rgba(10, 15, 26, 0.95) 90%) !important;
+  color: #f8fafc !important;
+}
+
+/* Layout Containers & Card Backgrounds */
+.dark .bg-gradient-to-br.from-slate-100 {
+  background: linear-gradient(to bottom right, #090d16, #0f172a) !important;
+}
+
+.dark .bg-white {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
+}
+
+.dark .bg-slate-50,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-100,
+.dark .bg-gray-100 {
+  background-color: #1e293b !important;
+}
+
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-50\/50:hover,
+.dark .hover\:bg-slate-50\/30:hover {
+  background-color: #1e293b !important;
+}
+
+/* Border Color Overrides */
+.dark .border,
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-b,
+.dark .border-t {
+  border-color: #334155 !important;
+}
+
+/* High Visibility Pure White & Silver Typography */
+.dark .text-slate-900,
+.dark .text-gray-900,
+.dark .text-slate-800,
+.dark .text-black,
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark th {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.dark .text-slate-700,
+.dark .text-gray-700,
+.dark .text-slate-600,
+.dark .text-gray-600 {
+  color: #f1f5f9 !important;
+  font-size: 1.05rem !important;
+}
+
+.dark .text-slate-500,
+.dark .text-gray-500,
+.dark p,
+.dark span {
+  color: #e2e8f0 !important;
+}
+
+/* Vibrant High-Contrast Accent Colors for Metrics */
+.dark .text-blue-600,
+.dark .text-blue-700,
+.dark .text-blue-400 {
+  color: #60a5fa !important;
+  font-weight: 800 !important;
+}
+
+.dark .text-green-600,
+.dark .text-green-700,
+.dark .text-emerald-600,
+.dark .text-emerald-700 {
+  color: #34d399 !important;
+  font-weight: 800 !important;
+}
+
+.dark .text-purple-600,
+.dark .text-purple-700,
+.dark .text-violet-600,
+.dark .text-violet-700 {
+  color: #c084fc !important;
+  font-weight: 800 !important;
+}
+
+.dark .text-yellow-600,
+.dark .text-yellow-700,
+.dark .text-amber-600,
+.dark .text-amber-700,
+.dark .text-amber-800,
+.dark .text-orange-600 {
+  color: #fbbf24 !important;
+  font-weight: 800 !important;
+}
+
+.dark .text-red-600,
+.dark .text-red-700,
+.dark .text-red-800 {
+  color: #f87171 !important;
+  font-weight: 800 !important;
+}
+
+/* Price Alerts & Notification Badges in Dark Mode */
+.dark .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.25) !important;
+  color: #fca5a5 !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+.dark .bg-amber-100,
+.dark .bg-orange-100,
+.dark .bg-yellow-100 {
+  background-color: rgba(245, 158, 11, 0.25) !important;
+  color: #fde047 !important;
+  border-color: rgba(245, 158, 11, 0.5) !important;
+}
+
+.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  color: #93c5fd !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+}
+
+.dark .bg-green-100,
+.dark .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.25) !important;
+  color: #86efac !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+}
+
+.dark .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.25) !important;
+  color: #d8b4fe !important;
+  border-color: rgba(168, 85, 247, 0.5) !important;
+}
+
+/* Form Controls in Dark Mode */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+}
+
+.dark input:focus,
+.dark select:focus {
+  background-color: #1e293b !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3) !important;
+}
+
+.dark input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Sidebar & Navigation Header */
+.dark aside,
+.dark header,
+.dark nav {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+.dark aside a {
+  color: #f1f5f9 !important;
+  font-weight: 600 !important;
+  font-size: 1.05rem !important;
+}
+
+.dark aside a.active,
+.dark aside a:hover {
+  color: #60a5fa !important;
+  background-color: rgba(96, 165, 250, 0.2) !important;
+}
+
+/* Table Headers & Rows */
+.dark table thead {
+  background-color: #1e293b !important;
+}
+
+.dark table thead th {
+  color: #cbd5e1 !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.dark table tbody tr {
+  border-color: #334155 !important;
+}
+
+.dark option {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}

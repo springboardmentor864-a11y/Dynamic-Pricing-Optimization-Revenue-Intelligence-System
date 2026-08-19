@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+python-multipart
+joblib
+openpyxl
+pyjwt
+statsmodels
+prophet
+xgboost
+lightgbm
+catboost
+pymongo
+python-dotenv
+bcrypt
