@@ -387,7 +387,7 @@ For enterprise production deployment:
 ---
 
 ## 22. Contributors
-- **Akhil** — Solution Architect, Lead Engineer & ML Developer
+- **Priyanka** — Solution Architect, Lead Engineer & ML Developer
 
 ---
 
