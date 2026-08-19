@@ -1,0 +1,15 @@
+# GitHub Linguist Language Detection Configuration
+# Fix: Exclude generated HTML reports, plots, and document assets from repository language stats
+
+# Generated data profiling reports and interactive HTML plot bundles
+outputs/** linguist-vendored
+outputs/** linguist-generated=true
+outputs/** linguist-documentation=true
+
+# Ignore standalone presentation HTML from skewing backend language metrics
+*.html linguist-detectable=false
+
+# Mark Jupyter notebooks and extracted doc assets as documentation
+notebooks/** linguist-documentation=true
+extracted_doc_assets/** linguist-documentation=true
+extracted_doc_assets/** linguist-vendored
