@@ -1,0 +1,666 @@
+.sales-container {
+    min-height: 100vh;
+    padding: 32px;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(79, 70, 229, 0.08),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(14, 165, 233, 0.07),
+            transparent 25%
+        ),
+        #f8fafc;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.sales-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 28px;
+}
+
+.page-eyebrow,
+.section-label {
+    display: block;
+
+    color: #6366f1;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+.sales-header h1 {
+    margin: 6px 0 6px;
+
+    color: #0f172a;
+
+    font-size: 32px;
+    font-weight: 800;
+
+    letter-spacing: -0.7px;
+}
+
+.sales-header p {
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   PRIMARY ACTION
+========================= */
+
+.primary-action {
+    padding: 12px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(79, 70, 229, 0.22);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 26px rgba(79, 70, 229, 0.28);
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+
+    background: #fef2f2;
+    color: #b91c1c;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   KPI CARDS
+========================= */
+
+.sales-kpis {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.sales-kpi {
+    padding: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.sales-kpi:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.kpi-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.sales-kpi strong {
+    display: block;
+
+    color: #0f172a;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.sales-kpi small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   SALES EDITOR
+========================= */
+
+.sales-editor {
+    margin-bottom: 30px;
+    padding: 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.editor-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.editor-heading h2,
+.sales-section-header h2 {
+    margin: 5px 0 0;
+
+    color: #0f172a;
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.sales-form {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 17px;
+
+    margin-bottom: 0;
+}
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.input-group label {
+    color: #475569;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 13px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+
+    background: #f8fafc;
+    color: #0f172a;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    background: #ffffff;
+
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 3px rgba(99, 102, 241, 0.10);
+}
+
+.input-group input::placeholder {
+    color: #a1acba;
+}
+
+.input-group select:disabled {
+    background: #f1f5f9;
+
+    color: #94a3b8;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+.save-sale-button {
+    grid-column: span 4;
+
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #4f46e5,
+            #2563eb
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.save-sale-button:hover {
+    transform: translateY(-1px);
+}
+
+.save-sale-button:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================
+   CANCEL BUTTON
+========================= */
+
+.cancel-button {
+    padding: 8px 13px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #475569;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.cancel-button:hover {
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+}
+
+
+/* =========================
+   SALES SECTION
+========================= */
+
+.sales-section {
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.05);
+
+    overflow: hidden;
+}
+
+.sales-section-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #eef2f7;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.sales-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.sales-table {
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: collapse;
+}
+
+.sales-table th {
+    padding: 13px 16px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+
+    text-align: left;
+}
+
+.sales-table td {
+    padding: 15px 16px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #eef2f7;
+
+    font-size: 12px;
+}
+
+.sales-table tbody tr {
+    transition:
+        background 0.2s ease;
+}
+
+.sales-table tbody tr:hover {
+    background: #f8faff;
+}
+
+.sales-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================
+   PRODUCT CELL
+========================= */
+
+.sale-product-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.product-avatar {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef2ff,
+            #dbeafe
+        );
+
+    color: #4f46e5;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.sale-product-cell strong {
+    display: block;
+
+    color: #0f172a;
+
+    font-size: 12px;
+}
+
+.sale-product-cell span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   REVENUE
+========================= */
+
+.sales-table td strong {
+    color: #0f172a;
+
+    font-weight: 800;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.table-actions {
+    display: flex;
+
+    gap: 6px;
+}
+
+.edit-btn,
+.delete-btn {
+    padding: 7px 10px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.edit-btn {
+    border: 1px solid #c7d2fe;
+
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.delete-btn {
+    border: 1px solid #fecaca;
+
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+    transform: translateY(-1px);
+
+    opacity: 0.8;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.sales-empty {
+    padding: 55px 20px;
+
+    text-align: center;
+}
+
+.sales-empty h3 {
+    margin: 0;
+
+    color: #334155;
+
+    font-size: 15px;
+}
+
+.sales-empty p {
+    margin: 7px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .sales-kpis {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .sales-form {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .save-sale-button {
+        grid-column: span 2;
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .sales-container {
+        padding: 20px;
+    }
+
+    .sales-header {
+        flex-direction: column;
+    }
+
+    .sales-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .sales-form {
+        grid-template-columns: 1fr;
+    }
+
+    .save-sale-button {
+        grid-column: span 1;
+    }
+
+    .sales-section-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .table-actions {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,1432 @@
+/* =========================================================
+   PRICING PAGE
+========================================================= */
+
+.pricing-container {
+    min-height: 100vh;
+    width: 100%;
+    padding: 34px;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 8% 0%,
+            rgba(99, 102, 241, 0.14),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 8%,
+            rgba(139, 92, 246, 0.10),
+            transparent 26%
+        ),
+        #f7f8fc;
+
+    color: #172033;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.pricing-header {
+    margin-bottom: 28px;
+}
+
+.pricing-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 13px;
+    margin-bottom: 10px;
+
+    border-radius: 999px;
+    background: #eef0ff;
+    color: #4f46e5;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.pricing-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.pricing-header p {
+    margin: 9px 0 0;
+    max-width: 720px;
+
+    color: #697386;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.pricing-error {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 20px;
+    padding: 13px 16px;
+
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+
+    background: #fff5f5;
+    color: #b91c1c;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pricing-error-icon {
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: #fee2e2;
+
+    font-weight: 800;
+}
+
+.pricing-error button {
+    margin-left: auto;
+    border: 0;
+    background: transparent;
+    color: #991b1b;
+
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   PRODUCT SELECTOR
+========================================================= */
+
+.pricing-selector {
+    padding: 24px;
+    margin-bottom: 24px;
+
+    border: 1px solid #e6e8f0;
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.pricing-selector-header {
+    margin-bottom: 20px;
+}
+
+.pricing-selector h2 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.pricing-selector p {
+    margin: 6px 0 0;
+
+    color: #7a8293;
+    font-size: 13px;
+}
+
+.pricing-selector label,
+.scenario-input-section label {
+    display: block;
+    margin-bottom: 8px;
+
+    color: #626b7d;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.pricing-selector select {
+    width: 100%;
+    height: 48px;
+
+    padding: 0 15px;
+
+    border: 1px solid #dfe3eb;
+    border-radius: 11px;
+
+    background: #fff;
+    color: #1f2937;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.pricing-selector select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.pricing-loading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 18px 20px;
+    margin-bottom: 24px;
+
+    border: 1px solid #e3e6ef;
+    border-radius: 15px;
+
+    background: #fff;
+
+    color: #626b7d;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pricing-loading-spinner,
+.pricing-button-spinner {
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid #dfe3ff;
+    border-top-color: #6366f1;
+
+    border-radius: 50%;
+
+    animation: pricingSpin 0.8s linear infinite;
+}
+
+@keyframes pricingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   PRODUCT HEADER
+========================================================= */
+
+.pricing-product {
+    padding: 24px;
+    margin-bottom: 18px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #f8f8ff
+        );
+
+    border: 1px solid #e6e8f0;
+}
+
+.pricing-result-eyebrow,
+.scenario-eyebrow,
+.competitor-summary-eyebrow {
+    color: #6366f1;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.pricing-product h2 {
+    margin: 6px 0 5px;
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.pricing-product p {
+    margin: 0;
+
+    color: #7b8495;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   PRICE CARDS
+========================================================= */
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.pricing-card {
+    min-height: 110px;
+    padding: 20px;
+
+    border: 1px solid #e5e7ef;
+    border-radius: 16px;
+
+    background: #fff;
+
+    box-shadow:
+        0 7px 22px rgba(15, 23, 42, 0.04);
+}
+
+.pricing-card span,
+.scenario-result-card span,
+.scenario-details span {
+    display: block;
+
+    color: #7b8495;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.pricing-card strong {
+    display: block;
+    margin-top: 13px;
+
+    color: #172033;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   AI RECOMMENDATION
+========================================================= */
+
+.recommendation-card {
+    padding: 24px;
+    margin-bottom: 18px;
+
+    border: 1px solid #dddfff;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f4f3ff,
+            #ffffff
+        );
+
+    transition: 0.25s ease;
+}
+
+.recommendation-card.increase {
+    border-color: #c7ead8;
+    background: linear-gradient(135deg, #f0fdf7, #fff);
+}
+
+.recommendation-card.decrease {
+    border-color: #d7d9ff;
+}
+
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.recommendation-content p {
+    margin: 7px 0 0;
+
+    color: #667085;
+    font-size: 13px;
+}
+
+.recommendation-content h2 {
+    margin: 0;
+
+    color: #4f46e5;
+    font-size: 30px;
+    font-weight: 850;
+}
+
+.recommendation-message {
+    display: block;
+    margin-top: 14px;
+
+    color: #626b7d;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.recommendation-use-button {
+    margin-top: 17px;
+
+    padding: 10px 16px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #4f46e5;
+    color: #fff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.recommendation-use-button:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   COMPETITOR SUMMARY
+========================================================= */
+
+.competitor-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+    margin-bottom: 24px;
+
+    border: 1px solid #e5e7ef;
+    border-radius: 17px;
+
+    background: #fff;
+}
+
+.competitor-summary h3 {
+    margin: 5px 0 4px;
+
+    font-size: 17px;
+}
+
+.competitor-summary p {
+    margin: 0;
+
+    color: #7b8495;
+    font-size: 12px;
+}
+
+.competitor-summary > strong {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: #eef0ff;
+    color: #4f46e5;
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   SCENARIO LAB
+========================================================= */
+
+.scenario-lab {
+    position: relative;
+
+    padding: 28px;
+    margin-top: 8px;
+
+    border: 1px solid #dfe2ed;
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #fafaff 55%,
+            #f6f5ff 100%
+        );
+
+    box-shadow:
+        0 18px 45px rgba(31, 41, 55, 0.07);
+}
+
+
+/* =========================================================
+   SCENARIO HEADER
+========================================================= */
+
+.scenario-lab-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    padding-bottom: 23px;
+    margin-bottom: 23px;
+
+    border-bottom: 1px solid #e8e9f0;
+}
+
+.scenario-lab-header h2 {
+    margin: 5px 0 7px;
+
+    font-size: 24px;
+    font-weight: 850;
+    letter-spacing: -0.4px;
+}
+
+.scenario-lab-header p {
+    margin: 0;
+
+    color: #70798a;
+    font-size: 13px;
+}
+
+.scenario-badge {
+    padding: 8px 12px;
+
+    border-radius: 999px;
+
+    background: #eef0ff;
+    color: #4f46e5;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   SCENARIO CONTROLS
+========================================================= */
+
+.scenario-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 230px;
+    gap: 18px;
+    align-items: end;
+}
+
+.scenario-input-wrapper {
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    border: 1px solid #dfe3ec;
+    border-radius: 13px;
+
+    background: #fff;
+
+    transition: 0.2s ease;
+}
+
+.scenario-input-wrapper:focus-within {
+    border-color: #6366f1;
+    box-shadow:
+        0 0 0 4px rgba(99, 102, 241, 0.09);
+}
+
+.scenario-input-wrapper span {
+    width: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid #eceef3;
+
+    color: #4f46e5;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.scenario-input-wrapper input {
+    flex: 1;
+
+    height: 100%;
+    padding: 0 15px;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: #172033;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.scenario-run-button {
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    border: 0;
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #7c3aed
+        );
+
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 18px rgba(79, 70, 229, 0.20);
+
+    transition: 0.2s ease;
+}
+
+.scenario-run-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 24px rgba(79, 70, 229, 0.26);
+}
+
+.scenario-run-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   QUICK SCENARIOS
+========================================================= */
+
+.quick-scenarios {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 17px;
+    padding: 13px;
+
+    border: 1px solid #eceef4;
+    border-radius: 13px;
+
+    background: #fafbff;
+}
+
+.quick-scenarios > span {
+    margin-right: 4px;
+
+    color: #818899;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.quick-scenarios button {
+    padding: 8px 12px;
+
+    border: 1px solid #e1e4ed;
+    border-radius: 8px;
+
+    background: #fff;
+    color: #4b5563;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.18s ease;
+}
+
+.quick-scenarios button:hover {
+    border-color: #a5b4fc;
+    background: #f5f5ff;
+    color: #4f46e5;
+}
+
+
+/* =========================================================
+   CURRENT VS PROPOSED
+========================================================= */
+
+.scenario-comparison {
+    display: grid;
+    grid-template-columns: 1fr 50px 1fr 150px;
+    align-items: stretch;
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+.scenario-price-box {
+    padding: 17px;
+
+    border: 1px solid #e5e7ef;
+    border-radius: 13px;
+
+    background: #fff;
+}
+
+.scenario-price-box span,
+.scenario-change span {
+    display: block;
+
+    color: #8991a1;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.scenario-price-box strong {
+    display: block;
+    margin-top: 8px;
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.scenario-price-box small {
+    display: block;
+    margin-top: 4px;
+
+    color: #9299a8;
+    font-size: 10px;
+}
+
+.scenario-price-box.proposed {
+    border-color: #cfd1ff;
+    background: #fafaff;
+}
+
+.scenario-price-box.proposed strong {
+    color: #4f46e5;
+}
+
+.scenario-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #9aa1b0;
+    font-size: 22px;
+}
+
+.scenario-change {
+    padding: 17px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #f5f6fa;
+}
+
+.scenario-change strong {
+    margin-top: 7px;
+
+    color: #4f46e5;
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+.scenario-results {
+    margin-top: 25px;
+    padding-top: 25px;
+
+    border-top: 1px solid #e7e9f0;
+}
+
+.scenario-results-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 17px;
+}
+
+.scenario-results-heading h3 {
+    margin: 5px 0 0;
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.scenario-status {
+    padding: 8px 12px;
+
+    border-radius: 999px;
+
+    background: #f1f3f7;
+    color: #667085;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.scenario-status.positive {
+    background: #eafaf1;
+    color: #15803d;
+}
+
+.scenario-status.negative {
+    background: #fff0f0;
+    color: #dc2626;
+}
+
+.scenario-status.neutral {
+    background: #f3f4f6;
+    color: #64748b;
+}
+
+
+/* =========================================================
+   RESULT GRID
+========================================================= */
+
+.scenario-result-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 13px;
+}
+
+.scenario-result-card {
+    min-height: 105px;
+    padding: 18px;
+
+    border: 1px solid #e5e7ef;
+    border-radius: 14px;
+
+    background: #fff;
+}
+
+.scenario-result-card strong {
+    display: block;
+    margin-top: 11px;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.scenario-result-card small {
+    display: block;
+    margin-top: 6px;
+
+    color: #9299a8;
+    font-size: 10px;
+}
+
+.scenario-result-card.positive {
+    border-color: #bce8cc;
+    background: #f6fdf8;
+}
+
+.scenario-result-card.positive strong {
+    color: #15803d;
+}
+
+.scenario-result-card.negative {
+    border-color: #f4caca;
+    background: #fff8f8;
+}
+
+.scenario-result-card.negative strong {
+    color: #dc2626;
+}
+
+.market-position-value {
+    text-transform: uppercase;
+    font-size: 14px !important;
+}
+
+
+/* =========================================================
+   REVENUE OUTLOOK
+========================================================= */
+
+.revenue-comparison {
+    margin-top: 18px;
+    padding: 21px;
+
+    border: 1px solid #e6e8f0;
+    border-radius: 16px;
+
+    background: #fff;
+}
+
+.revenue-comparison-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.revenue-comparison-header span,
+.market-position-header > div > span {
+    color: #818899;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.revenue-comparison-header h4,
+.market-position-header h4 {
+    margin: 5px 0 0;
+
+    font-size: 15px;
+}
+
+.revenue-comparison-header > strong {
+    font-size: 18px;
+}
+
+.revenue-comparison-header > strong.positive {
+    color: #15803d;
+}
+
+.revenue-comparison-header > strong.negative {
+    color: #dc2626;
+}
+
+.revenue-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.revenue-bar-row {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    align-items: center;
+    gap: 15px;
+}
+
+.revenue-bar-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    color: #70798a;
+    font-size: 11px;
+}
+
+.revenue-bar-label strong {
+    color: #252b3a;
+}
+
+.revenue-bar-track {
+    height: 13px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+    background: #edf0f5;
+}
+
+.revenue-bar {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #9ca3af;
+
+    transition: width 0.5s ease;
+}
+
+.revenue-bar.proposed {
+    background: #6366f1;
+}
+
+.revenue-bar.proposed.positive {
+    background: #16a34a;
+}
+
+.revenue-bar.proposed.negative {
+    background: #dc2626;
+}
+
+
+/* =========================================================
+   MARKET POSITION
+========================================================= */
+
+.market-position-panel {
+    margin-top: 18px;
+    padding: 21px;
+
+    border: 1px solid #e6e8f0;
+    border-radius: 16px;
+
+    background: #fff;
+}
+
+.market-position-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.market-position-header > strong {
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: #fff3e8;
+    color: #c2410c;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.market-range {
+    margin-top: 28px;
+}
+
+.market-range-labels,
+.market-range-caption {
+    display: flex;
+    justify-content: space-between;
+
+    color: #6f7787;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.market-range-track {
+    position: relative;
+
+    height: 10px;
+    margin: 13px 0;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #dbeafe,
+            #ddd6fe,
+            #fee2e2
+        );
+}
+
+.market-range-low,
+.market-range-high {
+    position: absolute;
+    top: 50%;
+
+    width: 16px;
+    height: 16px;
+
+    transform: translateY(-50%);
+
+    border: 3px solid #fff;
+    border-radius: 50%;
+
+    background: #6366f1;
+
+    box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+}
+
+.market-range-low {
+    left: 0;
+}
+
+.market-range-high {
+    right: 0;
+}
+
+.market-range-average {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    width: 3px;
+    height: 27px;
+
+    transform: translate(-50%, -50%);
+
+    background: #4f46e5;
+}
+
+.market-range-average span {
+    position: absolute;
+
+    top: -24px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    white-space: nowrap;
+
+    color: #4f46e5;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.market-position-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 18px;
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    background: #f7f8fc;
+
+    color: #6f7787;
+    font-size: 11px;
+}
+
+.market-position-note strong {
+    color: #202636;
+}
+
+.market-position-note span {
+    margin-left: auto;
+
+    color: #c2410c;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.market-no-data {
+    margin-top: 18px;
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: #f7f8fc;
+    color: #737c8c;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   AI DECISION
+========================================================= */
+
+.ai-decision-card {
+    display: flex;
+    gap: 15px;
+
+    margin-top: 18px;
+    padding: 20px;
+
+    border: 1px solid #dcdcff;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5f4ff,
+            #ffffff
+        );
+}
+
+.ai-decision-card.positive {
+    border-color: #bfe8cf;
+    background: #f5fdf8;
+}
+
+.ai-decision-card.negative {
+    border-color: #f0caca;
+    background: #fff8f8;
+}
+
+.ai-decision-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #4f46e5;
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.ai-decision-content h3 {
+    margin: 5px 0 7px;
+
+    font-size: 16px;
+}
+
+.ai-decision-content p {
+    margin: 0;
+
+    color: #687184;
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   DETAILED METRICS
+========================================================= */
+
+.scenario-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.scenario-details > div {
+    padding: 17px;
+
+    border: 1px solid #e6e8f0;
+    border-radius: 13px;
+
+    background: #fff;
+}
+
+.scenario-details strong {
+    display: block;
+    margin-top: 9px;
+
+    font-size: 15px;
+}
+
+.scenario-details small {
+    display: block;
+    margin-top: 5px;
+
+    color: #9299a8;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   NOTE
+========================================================= */
+
+.simulation-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    margin-top: 18px;
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: #f5f6fa;
+}
+
+.simulation-note-icon {
+    width: 21px;
+    height: 21px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e5e7eb;
+    color: #667085;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.simulation-note p {
+    margin: 0;
+
+    color: #737c8c;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.pricing-empty {
+    padding: 50px 25px;
+    margin-top: 20px;
+
+    text-align: center;
+
+    border: 1px dashed #d7dbe5;
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.65);
+}
+
+.pricing-empty-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 14px;
+
+    border-radius: 16px;
+
+    background: #eef0ff;
+    color: #4f46e5;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.pricing-empty h3 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.pricing-empty p {
+    max-width: 500px;
+
+    margin: 8px auto 0;
+
+    color: #7a8292;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .pricing-cards,
+    .scenario-result-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .scenario-comparison {
+        grid-template-columns: 1fr 40px 1fr;
+    }
+
+    .scenario-change {
+        grid-column: 1 / -1;
+    }
+
+    .scenario-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 760px) {
+
+    .pricing-container {
+        padding: 20px;
+    }
+
+    .pricing-header h1 {
+        font-size: 26px;
+    }
+
+    .pricing-cards,
+    .scenario-result-grid,
+    .scenario-details {
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-lab {
+        padding: 20px;
+    }
+
+    .scenario-lab-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .scenario-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-comparison {
+        grid-template-columns: 1fr;
+    }
+
+    .scenario-arrow {
+        transform: rotate(90deg);
+        height: 25px;
+    }
+
+    .scenario-change {
+        grid-column: auto;
+    }
+
+    .revenue-bar-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+
+    .recommendation-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .market-position-note {
+        flex-wrap: wrap;
+    }
+
+    .market-position-note span {
+        margin-left: 0;
+        width: 100%;
+    }
+}
