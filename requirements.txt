@@ -1,3 +1,4 @@
+reportlab
 Flask==3.1.1
 Flask-CORS==6.0.1
 Flask-SQLAlchemy==3.1.1
