@@ -60,7 +60,7 @@ graph TD
     
     MLEngine -->|Load Models| ModelsDir[outputs/models/best_model.pkl]
     MarketEngine -->|Price Ledgers| DB
-    RevenueEngine -->|Elasticity Q(P)| DB
+    RevenueEngine -->|Elasticity Q-P| DB
 ```
 
 ---
@@ -387,7 +387,7 @@ For enterprise production deployment:
 ---
 
 ## 22. Contributors
-- **Akhil** — Solution Architect, Lead Engineer & ML Developer
+- **Priyanka** — Solution Architect, Lead Engineer & ML Developer
 
 ---
 
