@@ -94,7 +94,6 @@ def seed():
                     product_id=prod.id,
                     old_price=round(prod.selling_price * random.uniform(0.90, 1.05), 2),
                     new_price=prod.selling_price,
-                    change_reason="AI dynamic price adjustment",
                     changed_at=datetime.utcnow() - timedelta(days=random.randint(1, 30))
                 )
                 db.add(ph)
