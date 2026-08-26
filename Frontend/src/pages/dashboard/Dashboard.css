@@ -1,0 +1,354 @@
+/* =========================================================
+   PRICEPILOT AI — DASHBOARD
+   EXECUTIVE OVERVIEW STYLE
+   ========================================================= */
+
+.dashboard-container {
+    min-height: 100vh;
+    width: 100%;
+    padding: 30px 34px;
+    box-sizing: border-box;
+    background:
+        radial-gradient(
+            circle at 92% 0%,
+            rgba(99, 102, 241, 0.10),
+            transparent 24%
+        ),
+        linear-gradient(
+            135deg,
+            #f7f9fc 0%,
+            #f1f4f8 55%,
+            #f8fafc 100%
+        );
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header {
+    position: relative;
+    margin-bottom: 28px;
+    padding: 26px 28px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            120deg,
+            #111827 0%,
+            #1e293b 65%,
+            #273449 100%
+        );
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.dashboard-header::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -45px;
+    width: 180px;
+    height: 180px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+}
+
+.dashboard-header::after {
+    content: "";
+    position: absolute;
+    top: -30px;
+    right: 20px;
+    width: 110px;
+    height: 110px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+}
+
+.dashboard-header h1 {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    color: #ffffff;
+    font-size: 29px;
+    line-height: 1.15;
+    font-weight: 850;
+    letter-spacing: -0.8px;
+}
+
+.dashboard-header p {
+    position: relative;
+    z-index: 2;
+    margin: 7px 0 0;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dashboard-header span {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    margin-top: 13px;
+    padding: 5px 10px;
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(129, 140, 248, 0.20);
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+/* =========================================================
+   DASHBOARD CARD
+   ========================================================= */
+
+.dashboard-card {
+    position: relative;
+    min-height: 142px;
+    padding: 19px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.035);
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.dashboard-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    border-color: #d3dae5;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.07);
+}
+
+.dashboard-card h3 {
+    margin: 3px 0 12px;
+    color: #7b8798;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.dashboard-card h2 {
+    margin: 0 0 7px;
+    color: #172033;
+    font-size: 27px;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    word-break: break-word;
+}
+
+.dashboard-card p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 11.5px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   AI PRICING INTELLIGENCE
+   ========================================================= */
+
+.dashboard-ai {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.dashboard-ai-info {
+    position: relative;
+    padding: 25px 26px;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #eef2ff 0%, #f8f9ff 55%, #ffffff 100%);
+    border: 1px solid #dfe3f5;
+    border-radius: 12px;
+}
+
+.dashboard-ai-info h2 {
+    margin: 0 0 7px;
+    color: #252b45;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.dashboard-ai-info p {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.dashboard-model {
+    padding: 22px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.035);
+}
+
+.dashboard-model span {
+    display: block;
+    margin-bottom: 8px;
+    color: #8a94a6;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.dashboard-model h2 {
+    margin: 0 0 7px;
+    color: #4f46e5;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.dashboard-model p {
+    margin: 0;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.dashboard-model strong {
+    color: #1f2937;
+    font-weight: 800;
+}
+
+/* =========================================================
+   BUSINESS OVERVIEW
+   ========================================================= */
+
+.dashboard-summary {
+    position: relative;
+    padding: 22px 24px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.035);
+}
+
+.dashboard-summary h2 {
+    margin: 0 0 17px;
+    color: #172033;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.dashboard-summary p {
+    position: relative;
+    margin: 0 0 10px;
+    padding-left: 16px;
+    color: #596579;
+    font-size: 12.5px;
+    line-height: 1.6;
+}
+
+.dashboard-summary p:last-child {
+    margin-bottom: 0;
+}
+
+.dashboard-summary p::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+
+.dashboard-summary strong {
+    color: #1f2937;
+    font-weight: 800;
+}
+
+/* =========================================================
+   LOADING / ERROR / EMPTY
+   ========================================================= */
+
+.dashboard-message {
+    padding: 45px 25px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e1e6ee;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.dashboard-message h2 {
+    margin: 0 0 6px;
+    color: #1f2937;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.dashboard-message p {
+    margin: 5px 0 0;
+    color: #8a94a6;
+    font-size: 12px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+    .dashboard-container {
+        padding: 28px;
+    }
+    .dashboard-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 750px) {
+    .dashboard-container {
+        padding: 24px 20px;
+    }
+    .dashboard-header {
+        padding: 23px;
+    }
+    .dashboard-header h1 {
+        font-size: 27px;
+    }
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-ai {
+        grid-template-columns: 1fr;
+    }
+}

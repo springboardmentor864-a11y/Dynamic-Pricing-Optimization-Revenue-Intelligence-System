@@ -1,38 +1,46 @@
-# Python caching
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.pyo
 
-# Environment & Secrets
-.env
+# Virtual environment
 .venv/
-env/
 venv/
+env/
 
-# Database & Instance Files
-instance/
-*.sqlite
-*.db
+# Environment variables
+.env
+.env.*
 
-# Testing & Coverage
-.pytest_cache/
-.coverage
-htmlcov/
+# Node
+node_modules/
+Frontend/node_modules/
 
-# Logs & Temporary Files
-logs/
-*.log
-catboost_info/
+# Build files
+dist/
+build/
 
-# Office / Temporary Generation Artifacts
-*.docx
-~$*.docx
-*.pdf
-*.xlsx
-
-# IDE & OS Specific
+# IDE
 .vscode/
 .idea/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Python cache
+.pytest_cache/
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter
 .ipynb_checkpoints/
+# Large dataset and model files
+Datasets/olist_geolocation_dataset.csv
+Backend/app/ML/saved_models/random_forest.pkl
